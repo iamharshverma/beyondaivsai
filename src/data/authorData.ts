@@ -19,6 +19,8 @@ export const AUTHOR_DATA = {
   socialProfiles: {
     website: 'https://www.harshverma.me',
     linkedin: 'https://www.linkedin.com/in/harshverma59/',
+    rsa: 'https://www.rsaconference.com/experts/Harsh%20Verma',
+    forbes: 'https://www.forbes.com/councils/forbestechcouncil/people/harshverma/',
     youtube: 'https://www.youtube.com/@aiwithharshverma',
     substack: 'https://aiwithharsh.substack.com/',
     googleScholar: 'https://scholar.google.com/citations?hl=en&user=zSt9oRMAAAAJ',

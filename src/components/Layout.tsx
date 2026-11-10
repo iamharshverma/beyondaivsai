@@ -331,8 +331,8 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
                   { label: 'harshverma.me', href: AUTHOR_DATA.socialProfiles.website },
                   { label: 'LinkedIn', href: AUTHOR_DATA.socialProfiles.linkedin },
                   { label: 'Google Scholar', href: AUTHOR_DATA.socialProfiles.googleScholar },
-                  { label: 'Substack', href: AUTHOR_DATA.socialProfiles.substack },
-                  { label: 'YouTube', href: AUTHOR_DATA.socialProfiles.youtube },
+                  { label: 'RSA Conference', href: AUTHOR_DATA.socialProfiles.rsa },
+                  { label: 'Forbes Profile', href: AUTHOR_DATA.socialProfiles.forbes },
                 ].map((soc) => (
                   <a
                     key={soc.label}
