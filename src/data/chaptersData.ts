@@ -97,10 +97,10 @@ export const CHAPTERS_DATA: ChapterDetail[] = [
       defensiveCountermeasure: 'Real-time behavioral telemetry, anomaly correlation, and policy-bound containment',
       humanOversightGate: 'Strategic policy threshold, blast-radius governance, and escalation sign-off',
     },
-    infographicUrl: '/assets/aistudio/AI_vs._AI_Cybersecurity_Blueprint_a4e7209d.png',
-    infographicTitle: 'Chapter 1 & Master Blueprint: The New Cyber Arms Race (AI as Weapon, Target & Shield)',
+    infographicUrl: '/assets/aistudio/The_New_Cyber_Arms_Race_Infographic_eb3f7914.png',
+    infographicTitle: 'Chapter 1 Infographic: The New Cyber Arms Race — When the Battlefield Learned to Think',
     infographicKeyTakeaway:
-      'Cybersecurity is now a continuous AI-vs-AI race that keeps accelerating—requiring AI to be understood simultaneously as Weapon, Target, and Shield.',
+      'Cybersecurity is now a machine-speed contest where AI is simultaneously a weapon, a target, and a shield—defenders must think in systems at AI scale to stay in control.',
     relatedChapters: [2, 3, 11],
   },
   {

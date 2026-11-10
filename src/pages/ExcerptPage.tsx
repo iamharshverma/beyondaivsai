@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Sun, Moon, ArrowRight, CheckCircle2 } from 'lucide-react';
+import { Sun, Moon, ArrowRight, CheckCircle2, Maximize2 } from 'lucide-react';
 import { BOOK_METADATA } from '../data/bookConfig';
-import { CHAPTER_ONE_EXCERPT } from '../data/chaptersData';
+import { CHAPTER_ONE_EXCERPT, CHAPTERS_DATA } from '../data/chaptersData';
+import { InfographicLightboxModal } from '../components/ChapterInfographicAtlas';
 import { LeadCaptureModule } from '../components/LeadCaptureModule';
 import { useTheme } from '../context/ThemeContext';
 import { usePageSEO, trackEvent } from '../utils/analytics';
@@ -13,6 +14,9 @@ export const ExcerptPage: React.FC = () => {
   const [readerTheme, setReaderTheme] = useState<'dark' | 'light'>(theme);
   const [scrollProgress, setScrollProgress] = useState(0);
   const [markedComplete, setMarkedComplete] = useState(false);
+  const [lightboxOpen, setLightboxOpen] = useState(false);
+
+  const chapterOne = CHAPTERS_DATA[0];
 
   useEffect(() => {
     setReaderTheme(theme);
@@ -157,6 +161,28 @@ export const ExcerptPage: React.FC = () => {
             >
               {CHAPTER_ONE_EXCERPT.alternateSubtitle}
             </p>
+
+            {/* Official Chapter 1 Infographic Visual Overview */}
+            {chapterOne && (
+              <div className="mt-6 rounded-xl overflow-hidden border border-slate-200 dark:border-slate-400/20 bg-slate-50 dark:bg-[#07111F] p-3">
+                <button
+                  type="button"
+                  onClick={() => setLightboxOpen(true)}
+                  className="relative group block w-full cursor-zoom-in focus:outline-none"
+                  aria-label="Inspect Chapter 1 Infographic in full screen"
+                >
+                  <img
+                    src={chapterOne.infographicUrl}
+                    alt={chapterOne.infographicTitle}
+                    className="w-full h-auto rounded-lg object-contain"
+                  />
+                  <span className="absolute bottom-3 right-3 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-900/85 text-white text-xs font-mono font-semibold backdrop-blur-xs">
+                    <Maximize2 className="w-3.5 h-3.5" />
+                    <span>Zoom Chapter 1 Infographic</span>
+                  </span>
+                </button>
+              </div>
+            )}
           </header>
 
           <div className="space-y-10 max-w-[68ch] mx-auto">
@@ -238,6 +264,12 @@ export const ExcerptPage: React.FC = () => {
         {/* Optional Explicit Opt-In Module */}
         <LeadCaptureModule />
       </div>
+
+      <InfographicLightboxModal
+        isOpen={lightboxOpen}
+        initialSlideId="ch-1"
+        onClose={() => setLightboxOpen(false)}
+      />
     </div>
   );
 };
