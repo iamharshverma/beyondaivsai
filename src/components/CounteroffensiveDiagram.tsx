@@ -27,56 +27,59 @@ export const CounteroffensiveHeroGraphic: React.FC = () => {
   const gateTextAmber = isLight ? '#92400E' : '#FCD34D';
 
   return (
-    <div className="relative rounded-2xl bg-white/90 dark:bg-[#0B1628] backdrop-blur-md border border-[#D8E2F0] dark:border-slate-400/15 p-5 shadow-[0_14px_34px_-12px_rgba(15,23,42,0.08)] dark:shadow-2xl overflow-hidden transition-all duration-300">
-      <div className="flex flex-wrap items-center justify-between gap-3 pb-4 mb-4 border-b border-slate-200/90 dark:border-slate-400/10">
-        <div className="text-xs font-mono text-slate-600 dark:text-[#AAB8CC]">
-          <span>Interactive System Topology</span>
-          <span className="mx-2 text-slate-400 dark:text-slate-600">·</span>
-          <span className="text-[#091122] dark:text-[#F5F8FF] font-semibold">
+    <div className="relative rounded-2xl bg-white/95 dark:bg-[#0A1426] backdrop-blur-md border border-[#D8E2F0] dark:border-slate-400/15 p-3.5 sm:p-5 shadow-[0_14px_34px_-12px_rgba(225,29,72,0.08),0_14px_34px_-12px_rgba(29,78,216,0.1)] dark:shadow-2xl overflow-hidden transition-all duration-300">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 pb-3.5 mb-3.5 border-b border-slate-200/90 dark:border-slate-400/10">
+        <div className="flex items-center gap-2 text-xs font-mono">
+          <span className="inline-block w-2 h-2 rounded-full bg-[#E11D48] animate-ping" />
+          <span className="font-bold bg-gradient-to-r from-[#E11D48] to-[#1D4ED8] dark:from-[#FB7185] dark:to-[#38BDF8] bg-clip-text text-transparent">
+            LIVE AI VS. AI TOPOLOGY
+          </span>
+          <span className="hidden sm:inline text-slate-400">·</span>
+          <span className="hidden sm:inline text-[#091122] dark:text-[#F5F8FF] font-semibold">
             Contested Digital Environment
           </span>
         </div>
-        <div className="flex items-center gap-1 bg-[#EDF2F9] dark:bg-[#07111F] p-1 rounded-lg border border-slate-200/90 dark:border-slate-400/15">
+        <div className="flex items-center gap-1 bg-[#EDF2F9] dark:bg-[#060D1A] p-1 rounded-lg border border-slate-200/90 dark:border-slate-400/15 overflow-x-auto no-scrollbar">
           <button
             type="button"
             onClick={() => setActiveLayer('all')}
-            className={`px-2.5 py-1 text-xs font-medium rounded transition-colors whitespace-nowrap shrink-0 ${
+            className={`px-2.5 py-1 text-[11px] sm:text-xs font-semibold rounded transition-colors whitespace-nowrap shrink-0 cursor-pointer ${
               activeLayer === 'all'
-                ? 'bg-white dark:bg-[#101F34] text-[#091122] dark:text-[#F5F8FF] shadow-xs border border-slate-300/80 dark:border-slate-400/20'
+                ? 'bg-gradient-to-r from-[#E11D48] to-[#1D4ED8] text-white shadow-xs'
                 : 'text-slate-600 dark:text-[#AAB8CC] hover:text-slate-900 dark:hover:text-[#F5F8FF]'
             }`}
           >
-            All Systems
+            All Clash
           </button>
           <button
             type="button"
             onClick={() => setActiveLayer('offensive')}
-            className={`px-2.5 py-1 text-xs font-medium rounded transition-colors whitespace-nowrap shrink-0 ${
+            className={`px-2.5 py-1 text-[11px] sm:text-xs font-semibold rounded transition-colors whitespace-nowrap shrink-0 cursor-pointer ${
               activeLayer === 'offensive'
-                ? 'bg-red-50 dark:bg-[#F05252]/20 text-red-700 dark:text-[#F05252] border border-red-200 dark:border-[#F05252]/40'
-                : 'text-slate-600 dark:text-[#AAB8CC] hover:text-slate-900 dark:hover:text-[#F5F8FF]'
+                ? 'bg-[#E11D48] text-white shadow-xs'
+                : 'text-[#E11D48] dark:text-[#FB7185] hover:bg-red-50 dark:hover:bg-[#E11D48]/15'
             }`}
           >
-            Offensive AI
+            Red AI (Offense)
           </button>
           <button
             type="button"
             onClick={() => setActiveLayer('defensive')}
-            className={`px-2.5 py-1 text-xs font-medium rounded transition-colors whitespace-nowrap shrink-0 ${
+            className={`px-2.5 py-1 text-[11px] sm:text-xs font-semibold rounded transition-colors whitespace-nowrap shrink-0 cursor-pointer ${
               activeLayer === 'defensive'
-                ? 'bg-blue-50 dark:bg-[#3478F6]/20 text-[#1D4ED8] dark:text-[#37D5F5] border border-blue-200 dark:border-[#37D5F5]/40'
-                : 'text-slate-600 dark:text-[#AAB8CC] hover:text-slate-900 dark:hover:text-[#F5F8FF]'
+                ? 'bg-[#1D4ED8] text-white shadow-xs'
+                : 'text-[#1D4ED8] dark:text-[#38BDF8] hover:bg-blue-50 dark:hover:bg-[#1D4ED8]/15'
             }`}
           >
-            Defensive AI
+            Blue AI (Defense)
           </button>
           <button
             type="button"
             onClick={() => setActiveLayer('oversight')}
-            className={`px-2.5 py-1 text-xs font-medium rounded transition-colors whitespace-nowrap shrink-0 ${
+            className={`px-2.5 py-1 text-[11px] sm:text-xs font-semibold rounded transition-colors whitespace-nowrap shrink-0 cursor-pointer ${
               activeLayer === 'oversight'
-                ? 'bg-amber-50 dark:bg-amber-500/20 text-amber-800 dark:text-amber-300 border border-amber-200 dark:border-amber-400/40'
-                : 'text-slate-600 dark:text-[#AAB8CC] hover:text-slate-900 dark:hover:text-[#F5F8FF]'
+                ? 'bg-amber-600 text-white shadow-xs'
+                : 'text-amber-700 dark:text-amber-300 hover:bg-amber-50 dark:hover:bg-amber-500/15'
             }`}
           >
             Human Gate

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Volume2, Square, Maximize2, X, BookOpen, Layers } from 'lucide-react';
+import { motion } from 'motion/react';
 import { BOOK_METADATA } from '../data/bookConfig';
 
 interface BookMockup3DProps {
@@ -48,15 +49,15 @@ export const BookMockup3D: React.FC<BookMockup3DProps> = ({
   };
 
   return (
-    <div className="flex flex-col items-center">
+    <div className="flex flex-col items-center w-full">
       {/* View Switcher Controls */}
-      <div className="flex items-center gap-1 p-1 mb-4 rounded-lg bg-slate-100 dark:bg-[#0B1628] border border-slate-200 dark:border-slate-400/15">
+      <div className="flex flex-wrap items-center justify-center gap-1 p-1 mb-4 rounded-xl bg-white/90 dark:bg-[#0B1628] border border-[#D5E0F0] dark:border-slate-400/15 shadow-2xs">
         <button
           type="button"
           onClick={() => setViewMode('hardcover')}
-          className={`flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-md transition-colors whitespace-nowrap shrink-0 ${
+          className={`flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-lg transition-all whitespace-nowrap shrink-0 cursor-pointer ${
             viewMode === 'hardcover'
-              ? 'bg-[#2563EB] dark:bg-[#3478F6] text-white shadow-xs'
+              ? 'bg-gradient-to-r from-[#E11D48] to-[#1D4ED8] text-white shadow-xs'
               : 'text-slate-600 dark:text-[#AAB8CC] hover:text-slate-900 dark:hover:text-[#F5F8FF]'
           }`}
         >
@@ -66,117 +67,132 @@ export const BookMockup3D: React.FC<BookMockup3DProps> = ({
         <button
           type="button"
           onClick={() => setViewMode('jacket')}
-          className={`flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-md transition-colors whitespace-nowrap shrink-0 ${
+          className={`flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-lg transition-all whitespace-nowrap shrink-0 cursor-pointer ${
             viewMode === 'jacket'
-              ? 'bg-[#2563EB] dark:bg-[#3478F6] text-white shadow-xs'
+              ? 'bg-gradient-to-r from-[#E11D48] to-[#1D4ED8] text-white shadow-xs'
               : 'text-slate-600 dark:text-[#AAB8CC] hover:text-slate-900 dark:hover:text-[#F5F8FF]'
           }`}
         >
           <Layers className="w-3.5 h-3.5" />
-          <span>Full Panoramic Jacket</span>
+          <span>Full Jacket</span>
         </button>
         <button
           type="button"
           onClick={() => setLightboxOpen(true)}
-          className="flex items-center gap-1 px-2.5 py-1.5 text-xs font-medium text-slate-600 dark:text-[#AAB8CC] hover:text-slate-900 dark:hover:text-[#F5F8FF] transition-colors whitespace-nowrap shrink-0"
+          className="flex items-center gap-1 px-2.5 py-1.5 text-xs font-medium text-slate-600 dark:text-[#AAB8CC] hover:text-[#E11D48] dark:hover:text-[#38BDF8] transition-colors whitespace-nowrap shrink-0 cursor-pointer"
           title="Inspect high-resolution cover artwork"
         >
           <Maximize2 className="w-3.5 h-3.5" />
-          <span>Enlarge</span>
+          <span className="hidden xs:inline">Enlarge</span>
         </button>
       </div>
 
-      {/* Main Artwork Stage */}
-      <div className="relative group w-full flex justify-center">
+      {/* Main Artwork Stage with Red vs. Blue Clash Aura */}
+      <motion.div
+        initial={{ opacity: 0, y: 16 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.55, ease: 'easeOut' }}
+        className="relative group w-full flex justify-center"
+      >
+        {/* Dual Red (Left) vs. Blue (Right) Ambient Clash Halo */}
         <div
-          className="absolute -inset-4 rounded-2xl opacity-20 dark:opacity-35 blur-2xl pointer-events-none transition-opacity group-hover:opacity-40 dark:group-hover:opacity-55"
+          className="absolute -inset-4 sm:-inset-6 rounded-3xl opacity-45 dark:opacity-55 blur-2xl pointer-events-none transition-opacity duration-300 group-hover:opacity-75 animate-pulse-clash"
           style={{
             background:
-              'radial-gradient(circle at 35% 40%, rgba(37, 99, 235, 0.38), rgba(220, 38, 38, 0.2), transparent 70%)',
+              'linear-gradient(125deg, rgba(225, 29, 72, 0.42) 0%, rgba(124, 58, 237, 0.25) 50%, rgba(29, 78, 216, 0.45) 100%)',
           }}
         />
 
         {viewMode === 'hardcover' ? (
-          <button
+          <motion.button
             type="button"
+            whileHover={{ y: -6, scale: 1.015 }}
+            transition={{ type: 'spring', stiffness: 260, damping: 20 }}
             onClick={() => setLightboxOpen(true)}
-            className={`relative block overflow-hidden rounded-xl border border-slate-200 dark:border-slate-400/20 bg-white dark:bg-[#101F34] shadow-xl dark:shadow-2xl transition-transform duration-200 hover:-translate-y-1 focus-visible:outline-2 focus-visible:outline-[#0284C7] dark:focus-visible:outline-[#37D5F5] ${
-              compact ? 'max-w-[290px]' : 'max-w-[380px]'
+            className={`relative block overflow-hidden rounded-2xl p-[1.5px] bg-gradient-to-br from-[#E11D48] via-[#6366F1] to-[#1D4ED8] shadow-[0_20px_45px_-12px_rgba(225,29,72,0.28),0_20px_45px_-12px_rgba(29,78,216,0.32)] cursor-pointer animate-float-slow ${
+              compact ? 'max-w-[260px] sm:max-w-[290px]' : 'max-w-[290px] sm:max-w-[370px]'
             } w-full`}
           >
-            {!imgError ? (
-              <img
-                src={BOOK_METADATA.coverImage}
-                alt="AI vs. AI: Engineering the Cybersecurity Counteroffensive 3D Hardcover by Harsh Verma"
-                referrerPolicy="no-referrer"
-                onError={() => setImgError(true)}
-                className="w-full h-auto object-cover"
-              />
-            ) : (
-              <div className="aspect-[3/4] w-full flex flex-col justify-between p-8 bg-slate-100 dark:bg-[#0B1628] text-left">
-                <div className="text-xs font-mono text-[#0284C7] dark:text-[#37D5F5]">HARSH VERMA</div>
-                <div>
-                  <div className="text-3xl font-bold font-display text-slate-900 dark:text-[#F5F8FF]">AI vs. AI</div>
-                  <div className="text-sm text-slate-600 dark:text-[#AAB8CC] mt-2">
-                    Engineering the Cybersecurity Counteroffensive
+            <div className="rounded-[14.5px] overflow-hidden bg-white dark:bg-[#0F1D33]">
+              {!imgError ? (
+                <img
+                  src={BOOK_METADATA.coverImage}
+                  alt="AI vs. AI: Engineering the Cybersecurity Counteroffensive 3D Hardcover by Harsh Verma"
+                  referrerPolicy="no-referrer"
+                  onError={() => setImgError(true)}
+                  className="w-full h-auto object-cover"
+                />
+              ) : (
+                <div className="aspect-[3/4] w-full flex flex-col justify-between p-8 bg-slate-100 dark:bg-[#0B1628] text-left">
+                  <div className="text-xs font-mono text-[#0284C7] dark:text-[#37D5F5]">HARSH VERMA</div>
+                  <div>
+                    <div className="text-3xl font-bold font-display text-slate-900 dark:text-[#F5F8FF]">AI vs. AI</div>
+                    <div className="text-sm text-slate-600 dark:text-[#AAB8CC] mt-2">
+                      Engineering the Cybersecurity Counteroffensive
+                    </div>
                   </div>
+                  <div className="text-xs font-mono text-slate-600 dark:text-[#AAB8CC]">Hardcover Edition</div>
                 </div>
-                <div className="text-xs font-mono text-slate-600 dark:text-[#AAB8CC]">Hardcover Edition</div>
+              )}
+              <div className="px-3.5 py-2.5 bg-white dark:bg-[#0A1426] border-t border-slate-200 dark:border-slate-400/15 flex items-center justify-between text-[11px] sm:text-xs text-slate-600 dark:text-[#AAB8CC]">
+                <span className="font-medium text-[#091122] dark:text-[#F5F8FF]">3D Hardcover Edition</span>
+                <span className="bg-gradient-to-r from-[#E11D48] to-[#1D4ED8] dark:from-[#FB7185] dark:to-[#38BDF8] bg-clip-text text-transparent font-mono font-bold">
+                  Tap to Inspect →
+                </span>
               </div>
-            )}
-            <div className="px-4 py-2.5 bg-white dark:bg-[#0B1628]/95 border-t border-slate-200 dark:border-slate-400/15 flex items-center justify-between text-xs text-slate-600 dark:text-[#AAB8CC]">
-              <span>Official 3D Hardcover Mockup</span>
-              <span className="text-[#0284C7] dark:text-[#37D5F5] font-mono font-medium">Click to inspect</span>
             </div>
-          </button>
+          </motion.button>
         ) : (
-          <button
+          <motion.button
             type="button"
+            whileHover={{ y: -5 }}
             onClick={() => setLightboxOpen(true)}
-            className="relative block w-full max-w-[520px] overflow-hidden rounded-xl border border-slate-200 dark:border-slate-400/20 bg-white dark:bg-[#101F34] shadow-xl dark:shadow-2xl transition-transform duration-200 hover:-translate-y-1"
+            className="relative block w-full max-w-[520px] overflow-hidden rounded-2xl p-[1.5px] bg-gradient-to-r from-[#E11D48] via-[#6366F1] to-[#1D4ED8] shadow-2xl cursor-pointer"
           >
-            <img
-              src={BOOK_METADATA.fullJacketImage}
-              alt="AI vs. AI Full Panoramic Dust Jacket Wrap (Back Cover, Spine, and Front Cover)"
-              referrerPolicy="no-referrer"
-              className="w-full h-auto object-contain bg-[#07111F]"
-            />
-            <div className="px-4 py-2.5 bg-white dark:bg-[#0B1628]/95 border-t border-slate-200 dark:border-slate-400/15 flex items-center justify-between text-xs text-slate-600 dark:text-[#AAB8CC]">
-              <span>Full Jacket Wrap (Back + Spine + Front)</span>
-              <span className="text-[#0284C7] dark:text-[#37D5F5] font-mono font-medium">Click to enlarge</span>
+            <div className="rounded-[14.5px] overflow-hidden bg-white dark:bg-[#0F1D33]">
+              <img
+                src={BOOK_METADATA.fullJacketImage}
+                alt="AI vs. AI Full Panoramic Dust Jacket Wrap (Back Cover, Spine, and Front Cover)"
+                referrerPolicy="no-referrer"
+                className="w-full h-auto object-contain bg-[#07111F]"
+              />
+              <div className="px-4 py-2.5 bg-white dark:bg-[#0A1426] border-t border-slate-200 dark:border-slate-400/15 flex items-center justify-between text-xs text-slate-600 dark:text-[#AAB8CC]">
+                <span>Full Jacket Wrap (Back + Spine + Front)</span>
+                <span className="text-[#E11D48] dark:text-[#38BDF8] font-mono font-semibold">Enlarge</span>
+              </div>
             </div>
-          </button>
+          </motion.button>
         )}
-      </div>
+      </motion.div>
 
       {/* Embedded Cyber-Warfare Audio Teaser & Author Voice Overview */}
       {showAudioTeaser && (
-        <div className="w-full max-w-[380px] mt-4 rounded-xl bg-white dark:bg-[#0B1628] border border-slate-200 dark:border-slate-400/15 p-3.5 shadow-xs">
-          <div className="flex items-center justify-between gap-3">
-            <div className="flex items-center gap-3">
+        <div className="w-full max-w-[290px] sm:max-w-[370px] mt-4 rounded-xl bg-white/95 dark:bg-[#0A1426] border border-[#D5E0F0] dark:border-slate-400/15 p-3 sm:p-3.5 shadow-sm">
+          <div className="flex items-center justify-between gap-2.5">
+            <div className="flex items-center gap-2.5 min-w-0">
               <button
                 type="button"
                 onClick={toggleAudioOverview}
-                className="w-9 h-9 rounded-lg bg-[#2563EB] dark:bg-[#3478F6] hover:bg-[#1D4ED8] text-white flex items-center justify-center transition-colors shrink-0"
+                className="w-9 h-9 rounded-lg bg-gradient-to-br from-[#E11D48] to-[#1D4ED8] hover:opacity-95 text-white flex items-center justify-center transition-all shrink-0 shadow-xs cursor-pointer"
                 aria-label={isPlayingAudio ? 'Stop Cyber Warfare Audio Teaser' : 'Play Cyber Warfare Audio Teaser'}
               >
                 {isPlayingAudio ? <Square className="w-4 h-4" /> : <Volume2 className="w-4 h-4" />}
               </button>
-              <div>
-                <div className="text-xs font-semibold text-slate-900 dark:text-[#F5F8FF]">
-                  Cyber-Warfare Teaser &amp; Voice Overview
+              <div className="min-w-0">
+                <div className="text-xs font-semibold text-[#091122] dark:text-[#F5F8FF] truncate">
+                  Audio Executive Overview
                 </div>
-                <div className="text-[11px] text-slate-600 dark:text-[#AAB8CC]">
-                  {isPlayingAudio ? 'Playing executive audio synthesis...' : 'Listen to book thesis overview'}
+                <div className="text-[11px] text-slate-600 dark:text-[#AAB8CC] truncate">
+                  {isPlayingAudio ? 'Playing synthesis...' : 'Listen to book thesis'}
                 </div>
               </div>
             </div>
             <button
               type="button"
               onClick={() => setShowTranscript((prev) => !prev)}
-              className="text-xs font-mono text-[#0284C7] dark:text-[#37D5F5] hover:underline whitespace-nowrap shrink-0 font-medium"
+              className="text-xs font-mono text-[#E11D48] dark:text-[#38BDF8] hover:underline whitespace-nowrap shrink-0 font-semibold cursor-pointer"
             >
-              {showTranscript ? 'Hide Text' : 'Transcript'}
+              {showTranscript ? 'Hide' : 'Transcript'}
             </button>
           </div>
           {showTranscript && (
@@ -190,43 +206,43 @@ export const BookMockup3D: React.FC<BookMockup3DProps> = ({
       {/* High-Resolution Cover & Jacket Lightbox Modal */}
       {lightboxOpen && (
         <div
-          className="fixed inset-0 z-50 bg-slate-900/80 dark:bg-black/85 backdrop-blur-sm flex items-center justify-center p-4"
+          className="fixed inset-0 z-50 bg-slate-900/85 dark:bg-black/85 backdrop-blur-sm flex items-center justify-center p-3 sm:p-4"
           role="dialog"
           aria-modal="true"
           aria-label="Book Cover Artwork Inspector"
         >
           <div className="relative max-w-4xl w-full bg-white dark:bg-[#0B1628] border border-slate-200 dark:border-slate-400/20 rounded-2xl overflow-hidden shadow-2xl">
-            <div className="flex items-center justify-between px-6 py-4 border-b border-slate-200 dark:border-slate-400/15">
-              <div>
-                <div className="text-sm font-semibold text-slate-900 dark:text-[#F5F8FF]">
+            <div className="flex flex-wrap items-center justify-between gap-2 px-4 sm:px-6 py-3.5 border-b border-slate-200 dark:border-slate-400/15">
+              <div className="min-w-0">
+                <div className="text-xs sm:text-sm font-semibold text-slate-900 dark:text-[#F5F8FF] truncate">
                   {BOOK_METADATA.fullTitle}
                 </div>
-                <div className="text-xs text-slate-600 dark:text-[#AAB8CC]">
-                  Original Cover &amp; Full Jacket Artwork · Author: {BOOK_METADATA.author}
+                <div className="text-[11px] text-slate-600 dark:text-[#AAB8CC]">
+                  Official Cover &amp; Jacket · {BOOK_METADATA.author}
                 </div>
               </div>
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-1.5">
                 <button
                   type="button"
                   onClick={() => setViewMode('hardcover')}
-                  className={`px-3 py-1.5 text-xs font-medium rounded-md transition-colors ${
+                  className={`px-2.5 py-1 text-xs font-medium rounded-md transition-colors ${
                     viewMode === 'hardcover'
-                      ? 'bg-[#2563EB] dark:bg-[#3478F6] text-white'
-                      : 'bg-slate-100 dark:bg-[#101F34] text-slate-700 dark:text-[#AAB8CC] hover:text-slate-900 dark:hover:text-white'
+                      ? 'bg-gradient-to-r from-[#E11D48] to-[#1D4ED8] text-white'
+                      : 'bg-slate-100 dark:bg-[#101F34] text-slate-700 dark:text-[#AAB8CC]'
                   }`}
                 >
-                  3D Hardcover
+                  Hardcover
                 </button>
                 <button
                   type="button"
                   onClick={() => setViewMode('jacket')}
-                  className={`px-3 py-1.5 text-xs font-medium rounded-md transition-colors ${
+                  className={`px-2.5 py-1 text-xs font-medium rounded-md transition-colors ${
                     viewMode === 'jacket'
-                      ? 'bg-[#2563EB] dark:bg-[#3478F6] text-white'
-                      : 'bg-slate-100 dark:bg-[#101F34] text-slate-700 dark:text-[#AAB8CC] hover:text-slate-900 dark:hover:text-white'
+                      ? 'bg-gradient-to-r from-[#E11D48] to-[#1D4ED8] text-white'
+                      : 'bg-slate-100 dark:bg-[#101F34] text-slate-700 dark:text-[#AAB8CC]'
                   }`}
                 >
-                  Full Jacket Wrap
+                  Full Jacket
                 </button>
                 <button
                   type="button"
@@ -238,7 +254,7 @@ export const BookMockup3D: React.FC<BookMockup3DProps> = ({
                 </button>
               </div>
             </div>
-            <div className="p-6 flex justify-center bg-slate-50 dark:bg-[#07111F] max-h-[78vh] overflow-auto">
+            <div className="p-4 sm:p-6 flex justify-center bg-slate-50 dark:bg-[#07111F] max-h-[75vh] overflow-auto">
               <img
                 src={
                   viewMode === 'hardcover'
@@ -247,7 +263,7 @@ export const BookMockup3D: React.FC<BookMockup3DProps> = ({
                 }
                 alt={BOOK_METADATA.fullTitle}
                 referrerPolicy="no-referrer"
-                className="max-h-[68vh] w-auto object-contain rounded-lg shadow-lg"
+                className="max-h-[65vh] w-auto object-contain rounded-lg shadow-lg"
               />
             </div>
           </div>
