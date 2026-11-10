@@ -56,8 +56,8 @@ const NAVIGATION_TREE_SECTIONS: NavTreeSection[] = [
       },
       {
         to: '/book',
-        label: 'The Book & Chapter Details',
-        sublabel: 'Full 11-chapter breakdown, audience matcher, FAQs & formats',
+        label: 'The Book & Sequence Details',
+        sublabel: 'Full 11-sequence breakdown, audience matcher, FAQs & formats',
         badge: 'Core',
         accent: 'blue',
         icon: <BookOpen className="w-4 h-4 text-[#1D4ED8] dark:text-[#38BDF8]" />,
@@ -72,7 +72,7 @@ const NAVIGATION_TREE_SECTIONS: NavTreeSection[] = [
       },
       {
         to: '/excerpt',
-        label: 'Read Chapter 1 Sample Excerpt',
+        label: 'Read Sequence 01 Sample Excerpt',
         sublabel: 'Interactive reader view for "The New Cyber Arms Race" + Infographic',
         badge: 'Free Preview',
         accent: 'blue',
@@ -89,9 +89,17 @@ const NAVIGATION_TREE_SECTIONS: NavTreeSection[] = [
   {
     id: 'architecture-toolkit',
     code: '02',
-    title: 'Architecture & Practitioner Toolkit',
-    subtitle: 'Interactive security design patterns, assessments & academic resources',
+    title: 'Assessment, Architecture & Toolkit',
+    subtitle: 'Interactive AI readiness diagnostic test, security design patterns & resources',
     items: [
+      {
+        to: '/assessment',
+        label: 'AI Counteroffensive Readiness Test',
+        sublabel: 'Interactive scenario diagnostic + personalized Basic Framework Blueprint',
+        badge: 'Take Test',
+        accent: 'red',
+        icon: <Sparkles className="w-4 h-4 text-[#E11D48] dark:text-[#FB7185]" />,
+      },
       {
         to: '/framework',
         label: 'AI-Native Security Framework',
@@ -103,7 +111,7 @@ const NAVIGATION_TREE_SECTIONS: NavTreeSection[] = [
       {
         to: '/resources',
         label: 'Practitioner Resource Library',
-        sublabel: '100-Question Assessment, 5-Stage Maturity Model & 30/60/90-Day Playbook',
+        sublabel: '100-Question Checklist, 5-Stage Maturity Model & 30/60/90-Day Playbook',
         badge: 'Toolkit',
         accent: 'purple',
         icon: <Terminal className="w-4 h-4 text-indigo-600 dark:text-indigo-400" />,
@@ -307,7 +315,7 @@ export const NavigationTreeModal: React.FC<NavigationTreeModalProps> = ({ isOpen
                     [
                       { id: 'all', label: 'Full Tree' },
                       { id: 'sections', label: 'Pages' },
-                      { id: 'chapters', label: '11 Chapters' },
+                      { id: 'chapters', label: 'Sequence' },
                     ] as const
                   ).map((tab) => (
                     <button
@@ -427,7 +435,7 @@ export const NavigationTreeModal: React.FC<NavigationTreeModalProps> = ({ isOpen
                     </span>
                     <div>
                       <h3 className="text-base sm:text-lg font-bold font-display text-[#091122] dark:text-[#F5F8FF]">
-                        11-Chapter Manuscript &amp; Infographic Tree
+                        11-Sequence Manuscript &amp; Infographic Tree
                       </h3>
                     </div>
                   </div>
@@ -436,7 +444,7 @@ export const NavigationTreeModal: React.FC<NavigationTreeModalProps> = ({ isOpen
                     onClick={onClose}
                     className="inline-flex items-center gap-1.5 text-xs font-mono font-semibold text-[#1D4ED8] dark:text-[#38BDF8] hover:underline"
                   >
-                    <span>Open Full 11-Chapter Visual Atlas</span>
+                    <span>Open Full Sequence Visual Atlas</span>
                     <ArrowRight className="w-3.5 h-3.5" />
                   </Link>
                 </div>
@@ -478,7 +486,7 @@ export const NavigationTreeModal: React.FC<NavigationTreeModalProps> = ({ isOpen
                                 />
                                 <div className="min-w-0">
                                   <div className="text-[10px] font-mono font-bold text-[#E11D48] dark:text-[#38BDF8]">
-                                    CHAPTER {String(ch.number).padStart(2, '0')} · {ch.readingTime}
+                                    SEQUENCE {String(ch.number).padStart(2, '0')} · {ch.readingTime}
                                   </div>
                                   <div className="text-xs font-bold font-display text-[#091122] dark:text-[#F5F8FF] group-hover:text-[#1D4ED8] dark:group-hover:text-[#38BDF8] truncate">
                                     {ch.title}
@@ -516,7 +524,15 @@ export const NavigationTreeModal: React.FC<NavigationTreeModalProps> = ({ isOpen
                 onClick={onClose}
                 className="hover:text-[#1D4ED8] dark:hover:text-[#38BDF8] underline underline-offset-4"
               >
-                11 Chapters &amp; Infographics
+                Sequence &amp; Infographics
+              </Link>
+              <span>·</span>
+              <Link
+                to="/assessment"
+                onClick={onClose}
+                className="hover:text-[#E11D48] dark:hover:text-[#FB7185] font-semibold underline underline-offset-4"
+              >
+                AI Readiness Assessment
               </Link>
               <span>·</span>
               <Link

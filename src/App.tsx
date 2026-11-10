@@ -14,6 +14,7 @@ import { AuthorPage } from './pages/AuthorPage';
 import { EducatorsPage } from './pages/EducatorsPage';
 import { InsightsPage, InsightDetailPage } from './pages/InsightsPage';
 import { BlogsPage } from './pages/BlogsPage';
+import { AssessmentPage } from './components/CounteroffensiveAssessment';
 import {
   MediaPage,
   ContactPage,
@@ -32,6 +33,7 @@ export function App() {
             <Route path="/order" element={<OrderPage />} />
             <Route path="/chapters" element={<ChaptersPage />} />
             <Route path="/chapters/:slug" element={<ChapterDetailPage />} />
+            <Route path="/assessment" element={<AssessmentPage />} />
             <Route path="/framework" element={<FrameworkPage />} />
             <Route path="/resources" element={<ResourcesPage />} />
             <Route path="/blogs" element={<BlogsPage />} />

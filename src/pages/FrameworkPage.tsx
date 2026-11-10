@@ -9,6 +9,7 @@ import {
   RESILIENCE_PHASES,
 } from '../data/frameworkData';
 import { CounteroffensiveHeroGraphic } from '../components/CounteroffensiveDiagram';
+import { CounteroffensiveAssessment } from '../components/CounteroffensiveAssessment';
 import { FadeInUp, fadeInUpVariants, staggerGridVariants } from '../components/FadeInUp';
 import { usePageSEO } from '../utils/analytics';
 
@@ -46,6 +47,13 @@ export const FrameworkPage: React.FC = () => {
 
         <FadeInUp delay={0.08}>
           <CounteroffensiveHeroGraphic />
+        </FadeInUp>
+      </section>
+
+      {/* Interactive AI vs. AI Counteroffensive Readiness Assessment */}
+      <section className="w-full max-w-[1280px] mx-auto px-4 sm:px-6">
+        <FadeInUp>
+          <CounteroffensiveAssessment />
         </FadeInUp>
       </section>
 

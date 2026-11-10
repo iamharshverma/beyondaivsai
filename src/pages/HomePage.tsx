@@ -22,6 +22,7 @@ import {
   PillarTechnicalIllustration,
 } from '../components/CounteroffensiveDiagram';
 import { ChapterInfographicAtlas } from '../components/ChapterInfographicAtlas';
+import { CounteroffensiveAssessment } from '../components/CounteroffensiveAssessment';
 import { LeadCaptureModule } from '../components/LeadCaptureModule';
 import { FadeInUp, fadeInUpVariants, staggerGridVariants } from '../components/FadeInUp';
 import { usePageSEO, trackEvent } from '../utils/analytics';
@@ -134,12 +135,11 @@ export const HomePage: React.FC = () => {
                   <span>EXPLORE THE BOOK</span>
                 </Link>
                 <Link
-                  to="/excerpt"
-                  onClick={() => trackEvent('sample_chapter_opened', { source: 'hero_cta' })}
-                  className="inline-flex items-center justify-center gap-2 px-4 py-3 rounded-xl text-xs sm:text-sm font-semibold text-[#1D4ED8] dark:text-[#38BDF8] hover:text-[#E11D48] dark:hover:text-[#FB7185] transition-colors"
+                  to="/assessment"
+                  className="inline-flex items-center justify-center gap-2 px-4 py-3 rounded-xl text-xs sm:text-sm font-semibold text-[#E11D48] dark:text-[#FB7185] hover:text-[#1D4ED8] dark:hover:text-[#38BDF8] transition-colors"
                 >
                   <BookOpen className="w-4 h-4 shrink-0" />
-                  <span>READ CHAPTER 1</span>
+                  <span>TAKE AI READINESS TEST</span>
                 </Link>
               </div>
 
@@ -407,13 +407,13 @@ export const HomePage: React.FC = () => {
           <FadeInUp className="flex flex-col md:flex-row md:items-end justify-between gap-4 sm:gap-6">
             <div>
               <div className="text-xs font-mono font-bold bg-gradient-to-r from-[#E11D48] to-[#1D4ED8] dark:from-[#FB7185] dark:to-[#38BDF8] bg-clip-text text-transparent mb-2">
-                APPROVED 11-CHAPTER MANUSCRIPT ARCHITECTURE &amp; VISUAL ATLAS
+                APPROVED 11-SEQUENCE MANUSCRIPT ARCHITECTURE &amp; VISUAL ATLAS
               </div>
               <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold font-display text-[#091122] dark:text-[#F5F8FF] text-balance">
-                Interactive Blueprint &amp; Chapter Infographic Atlas
+                Interactive Blueprint &amp; Sequence Infographic Atlas
               </h2>
               <p className="mt-2 text-sm sm:text-base text-[#334155] dark:text-[#AAB8CC] max-w-2xl">
-                Inspect the official Master Cybersecurity Blueprint and interactive chapter infographics below, or head to The Book page for the complete chapter-by-chapter syllabus and technical takeaways.
+                Inspect the official Master Cybersecurity Blueprint and interactive sequence infographics below, or head to The Book page for the complete sequence-by-sequence breakdown and technical takeaways.
               </p>
             </div>
             <div className="flex flex-wrap items-center gap-3 shrink-0">
@@ -422,13 +422,13 @@ export const HomePage: React.FC = () => {
                 className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-gradient-to-r from-[#E11D48] to-[#1D4ED8] text-white text-xs sm:text-sm font-bold shadow-xs hover:opacity-95 transition-opacity"
               >
                 <BookOpen className="w-4 h-4" />
-                <span>Chapter-Level Details in The Book</span>
+                <span>Sequence Details in The Book</span>
               </Link>
               <Link
                 to="/chapters"
                 className="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-xl bg-white dark:bg-[#0F1D33] border border-[#D5E0F0] dark:border-slate-400/20 text-xs sm:text-sm font-semibold text-[#1D4ED8] dark:text-[#38BDF8] hover:border-[#1D4ED8] transition-colors"
               >
-                <span>11-Chapter Syllabus</span>
+                <span>Explore Full Sequence</span>
                 <ArrowRight className="w-4 h-4" />
               </Link>
             </div>
@@ -437,6 +437,18 @@ export const HomePage: React.FC = () => {
           {/* Interactive Master Blueprint & Chapter Infographic Explorer */}
           <FadeInUp delay={0.05}>
             <ChapterInfographicAtlas />
+          </FadeInUp>
+        </div>
+      </section>
+
+      {/* 6.55 INTERACTIVE AI COUNTEROFFENSIVE READINESS ASSESSMENT & DIAGNOSTIC */}
+      <section
+        id="assessment"
+        className="py-12 sm:py-16 md:py-24 border-b border-[#D5E0F0] dark:border-slate-400/15"
+      >
+        <div className="w-full max-w-[1280px] mx-auto px-4 sm:px-6">
+          <FadeInUp>
+            <CounteroffensiveAssessment />
           </FadeInUp>
         </div>
       </section>
