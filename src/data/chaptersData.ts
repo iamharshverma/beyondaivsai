@@ -22,8 +22,27 @@ export interface ChapterDetail {
     defensiveCountermeasure: string;
     humanOversightGate: string;
   };
+  infographicUrl: string;
+  secondaryInfographicUrl?: string;
+  infographicTitle: string;
+  infographicKeyTakeaway: string;
   relatedChapters: number[];
 }
+
+export const MASTER_BLUEPRINT_INFOGRAPHIC = {
+  id: 'master-blueprint',
+  title: 'AI vs. AI: The Complete 11-Chapter Cybersecurity Blueprint',
+  subtitle: 'The Complete Visual Blueprint for Defending an AI-Powered World (Chapters 1–11 Overview)',
+  imageUrl: '/assets/aistudio/AI_vs._AI_Cybersecurity_Blueprint_a4e7209d.png',
+  keyTakeaway:
+    'Cybersecurity is now a continuous AI-vs-AI race: defenders must understand AI-powered threats, map the 5-layer attack surface, surround models with deterministic design patterns, and operationalize a 30/60/90-day counteroffensive.',
+  highlights: [
+    'Attack: Understand AI-enabled reconnaissance, deepfakes, and autonomous attack chains (Ch 1–3)',
+    'Design: Enforce Circuit Breakers, Shadow Evaluators, Retrieval Gatekeepers & Tool Brokers (Ch 4–5)',
+    'Defend: Build self-healing resilience, agent identity/OBO governance, and sector guardrails (Ch 6–9)',
+    'Advance: Develop AI cybersecurity talent and execute the 30/60/90-day counteroffensive (Ch 10–11)',
+  ],
+};
 
 export const CHAPTERS_DATA: ChapterDetail[] = [
   {
@@ -78,6 +97,10 @@ export const CHAPTERS_DATA: ChapterDetail[] = [
       defensiveCountermeasure: 'Real-time behavioral telemetry, anomaly correlation, and policy-bound containment',
       humanOversightGate: 'Strategic policy threshold, blast-radius governance, and escalation sign-off',
     },
+    infographicUrl: '/assets/aistudio/AI_vs._AI_Cybersecurity_Blueprint_a4e7209d.png',
+    infographicTitle: 'Chapter 1 & Master Blueprint: The New Cyber Arms Race (AI as Weapon, Target & Shield)',
+    infographicKeyTakeaway:
+      'Cybersecurity is now a continuous AI-vs-AI race that keeps accelerating—requiring AI to be understood simultaneously as Weapon, Target, and Shield.',
     relatedChapters: [2, 3, 11],
   },
   {
@@ -132,6 +155,10 @@ export const CHAPTERS_DATA: ChapterDetail[] = [
       defensiveCountermeasure: 'Behavioral anomaly scoring, cryptographic identity verification, and rate-limited honeytokens',
       humanOversightGate: 'High-privilege transaction confirmation and incident threat-hunt validation',
     },
+    infographicUrl: '/assets/aistudio/AI-Powered_Attacker_Playbook_Infographic_0b18f0e4.png',
+    infographicTitle: 'Chapter 2 Infographic: How AI Changes the Attacker’s Playbook',
+    infographicKeyTakeaway:
+      'AI enables attackers to operate faster, at larger scale, with greater stealth and persuasion across Reconnaissance, Weaponization, Delivery, Exploitation, and Post-Exploitation.',
     relatedChapters: [1, 3, 5],
   },
   {
@@ -186,6 +213,10 @@ export const CHAPTERS_DATA: ChapterDetail[] = [
       defensiveCountermeasure: 'Strict context privilege separation, provenance tagging, and least-privilege tool scoping',
       humanOversightGate: 'Mandatory operator approval for state-mutating or external tool executions',
     },
+    infographicUrl: '/assets/aistudio/Mapping_the_AI_Attack_Surface_093f2281.png',
+    infographicTitle: 'Chapter 3 Infographic: Mapping the AI Attack Surface',
+    infographicKeyTakeaway:
+      'The AI attack surface is broad, dynamic, and interconnected—spanning Application, Model, Data & Knowledge, Infrastructure, and Governance & Identity layers.',
     relatedChapters: [2, 4, 7],
   },
   {
@@ -245,6 +276,10 @@ export const CHAPTERS_DATA: ChapterDetail[] = [
       defensiveCountermeasure: 'Four-stage deterministic mediation pipeline isolating retrieval, evaluation, runtime state, and tool execution',
       humanOversightGate: 'Policy escalation queue when Circuit Breaker trips or high-risk tool parameters are detected',
     },
+    infographicUrl: '/assets/aistudio/AI-Native_Security_Architecture_Patterns_32482177.png',
+    infographicTitle: 'Chapter 4 Infographic: Designing AI-Native Security Architecture Patterns',
+    infographicKeyTakeaway:
+      'Secure AI is not a single control, but a set of four architectural patterns—Circuit Breaker, Shadow Evaluator, Retrieval Gatekeeper, and Sandboxed Tool Broker—across the entire AI lifecycle.',
     relatedChapters: [3, 5, 6],
   },
   {
@@ -299,6 +334,10 @@ export const CHAPTERS_DATA: ChapterDetail[] = [
       defensiveCountermeasure: 'Automated adversarial test harness, ensemble policy classifiers, and citation-backed triage',
       humanOversightGate: 'Red-team findings review and policy threshold sign-off before production promotion',
     },
+    infographicUrl: '/assets/aistudio/Building_Safe_AI__Testing___Red-Teaming_Lifecycle_2150fd99.png',
+    infographicTitle: 'Chapter 5 Infographic: Using AI to Build Safe AI — Testing & Red-Teaming Lifecycle',
+    infographicKeyTakeaway:
+      'Continuously test, evaluate, and red-team your AI systems across a 5-stage lifecycle (Plan, Test, Evaluate, Fix & Iterate, Report) before and after deployment.',
     relatedChapters: [2, 4, 6],
   },
   {
@@ -353,6 +392,10 @@ export const CHAPTERS_DATA: ChapterDetail[] = [
       defensiveCountermeasure: 'Canary honeytoken triggers, container quarantine, and episodic state rollback',
       humanOversightGate: 'Post-containment forensic audit and authorization to restore full autonomy tier',
     },
+    infographicUrl: '/assets/aistudio/Building_Resilient_AI_Systems_3a09a952.png',
+    infographicTitle: 'Chapter 6 Infographic: Building Resilient and Self-Healing AI Systems',
+    infographicKeyTakeaway:
+      'Resilient AI doesn’t just avoid failure—it detects anomalies early, contains blast radius, recovers clean state, and keeps improving with minimal disruption.',
     relatedChapters: [4, 5, 7],
   },
   {
@@ -407,6 +450,11 @@ export const CHAPTERS_DATA: ChapterDetail[] = [
       defensiveCountermeasure: 'Centralized AI Gateway, OBO cryptographic delegation, and per-chunk ACL enforcement',
       humanOversightGate: 'CISO/Governance policy console and high-sensitivity data access approval workflows',
     },
+    infographicUrl: '/assets/aistudio/Securing_Agentic_AI_Systems_9a7ddc13.png',
+    secondaryInfographicUrl: '/assets/aistudio/Securing_Multi-Agent_AI_Infographic_6cde3f65.png',
+    infographicTitle: 'Chapter 7 Infographic: Securing Agentic AI and Multi-Agent Systems at Scale',
+    infographicKeyTakeaway:
+      'Multi-agent AI unlocks massive capability, but it must be designed and governed from the start with strong agent identity, policy enforcement, least-privilege access, observability, and human-in-the-loop control.',
     relatedChapters: [3, 4, 8],
   },
   {
@@ -461,6 +509,10 @@ export const CHAPTERS_DATA: ChapterDetail[] = [
       defensiveCountermeasure: 'PII/PHI tokenization vaults, model risk anomaly monitors, and hard PLC/safety interlocks',
       humanOversightGate: 'Clinician, risk officer, or control-room operator sign-off before high-consequence actuation',
     },
+    infographicUrl: '/assets/aistudio/AI_Agent_Identity_and_Access_Control_Infographic_20747d7c.png',
+    infographicTitle: 'Chapter 8 Infographic: Identity, Authorization, Policy & High-Consequence Guardrails',
+    infographicKeyTakeaway:
+      'AI agents and high-consequence deployments need verifiable identity, least-privilege authorization, intent-based policy control, and end-to-end auditability.',
     relatedChapters: [6, 7, 9],
   },
   {
@@ -515,6 +567,10 @@ export const CHAPTERS_DATA: ChapterDetail[] = [
       defensiveCountermeasure: 'Per-tenant namespace encryption, strict JSON schema validation, and egress domain allowlisting',
       humanOversightGate: 'Customer admin policy controls and explicit approval for external integration scopes',
     },
+    infographicUrl: '/assets/aistudio/The_AI_Engineer_s_Toolkit_Infographic_e3ae62e8.png',
+    infographicTitle: 'Chapter 9 Infographic: The AI Engineer’s Toolkit & Day-One Secure Building Blocks',
+    infographicKeyTakeaway:
+      'A great AI engineer combines agent/workflow design, RAG grounding, function-calling guardrails, observability, and security-by-design across the 6-stage production lifecycle.',
     relatedChapters: [3, 4, 7],
   },
   {
@@ -569,6 +625,10 @@ export const CHAPTERS_DATA: ChapterDetail[] = [
       defensiveCountermeasure: 'Unified AI Security Engineering discipline spanning model internals, runtime guardrails, and SOC telemetry',
       humanOversightGate: 'Executive CISO/CTO governance and continuous practitioner red/blue exercises',
     },
+    infographicUrl: '/assets/aistudio/Careers_in_AI_Cybersecurity_2fdb36e9.png',
+    infographicTitle: 'Chapter 10 Infographic: Careers in AI Cybersecurity — Skills, Roles & Growth Path',
+    infographicKeyTakeaway:
+      'Build foundations in AI/ML, cloud, and cybersecurity, gain hands-on red/blue lab experience, specialize in secure AI architecture, and lead at the frontline of the AI security revolution.',
     relatedChapters: [1, 9, 11],
   },
   {
@@ -623,6 +683,11 @@ export const CHAPTERS_DATA: ChapterDetail[] = [
       defensiveCountermeasure: 'Phased deployment of AI Gateways, 4 core design patterns, honeytokens, and continuous red-teaming',
       humanOversightGate: 'Board/CISO maturity reviews, incident command authority, and ethical governance charters',
     },
+    infographicUrl: '/assets/aistudio/The_Road_Ahead__AI_s_Next_Decade_14cde121.png',
+    secondaryInfographicUrl: '/assets/aistudio/AI_vs._AI_Cybersecurity_Blueprint_a4e7209d.png',
+    infographicTitle: 'Chapter 11 Infographic: The Counteroffensive Playbook & The Next Decade of AI Engineering',
+    infographicKeyTakeaway:
+      'The next decade isn’t just about more powerful AI—it’s about engineering secure, reliable, and self-improving systems governed by a repeatable counteroffensive playbook.',
     relatedChapters: [1, 4, 6, 7],
   },
 ];

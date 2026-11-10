@@ -1,11 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowRight, BookOpen, CheckCircle2, HelpCircle } from 'lucide-react';
+import { ArrowRight, BookOpen, CheckCircle2, HelpCircle, Maximize2 } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { BOOK_METADATA, BOOK_FORMATS } from '../data/bookConfig';
 import { CHAPTERS_DATA, CHAPTER_ONE_EXCERPT } from '../data/chaptersData';
 import { FOUR_SECURITY_PATTERNS } from '../data/frameworkData';
 import { BookMockup3D } from '../components/BookMockup3D';
+import {
+  ChapterInfographicAtlas,
+  InfographicLightboxModal,
+} from '../components/ChapterInfographicAtlas';
 import { FadeInUp, fadeInUpVariants, staggerGridVariants } from '../components/FadeInUp';
 import { usePageSEO, trackEvent } from '../utils/analytics';
 
@@ -83,6 +87,7 @@ const BOOK_FAQS = [
 export const BookPage: React.FC = () => {
   const [selectedAudience, setSelectedAudience] = useState('all');
   const [previewFontSize, setPreviewFontSize] = useState<'sm' | 'base' | 'lg'>('base');
+  const [lightboxSlideId, setLightboxSlideId] = useState<string | null>(null);
 
   usePageSEO({
     title: 'The Book — AI vs. AI: Engineering the Cybersecurity Counteroffensive',
@@ -249,16 +254,16 @@ export const BookPage: React.FC = () => {
         </div>
       </section>
 
-      {/* 10 & 11. 11-Chapter Overview & Technical Highlights (Staggered Fade-In-Up) */}
+      {/* 10 & 11. 11-Chapter Overview, Visual Infographic Atlas & Technical Highlights */}
       <section className="py-12 sm:py-16 border-b border-slate-200 dark:border-slate-400/15 bg-slate-100/80 dark:bg-[#0A1426]">
-        <div className="w-full max-w-[1280px] mx-auto px-4 sm:px-6">
-          <FadeInUp className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8 sm:mb-10">
+        <div className="w-full max-w-[1280px] mx-auto px-4 sm:px-6 space-y-10">
+          <FadeInUp className="flex flex-col md:flex-row md:items-end justify-between gap-4">
             <div>
               <div className="text-xs font-mono font-bold bg-gradient-to-r from-[#E11D48] to-[#1D4ED8] dark:from-[#FB7185] dark:to-[#38BDF8] bg-clip-text text-transparent mb-2">
-                COMPLETE MANUSCRIPT STRUCTURE
+                COMPLETE MANUSCRIPT STRUCTURE &amp; VISUAL BLUEPRINTS
               </div>
               <h2 className="text-2xl sm:text-3xl font-bold font-display text-slate-900 dark:text-[#F5F8FF]">
-                11 Chapters &amp; Core Architectural Patterns
+                11 Chapters, Interactive Infographics &amp; Core Architectural Patterns
               </h2>
             </div>
             <Link
@@ -270,30 +275,71 @@ export const BookPage: React.FC = () => {
             </Link>
           </FadeInUp>
 
+          {/* Interactive Master Blueprint & Chapter Infographic Gallery */}
+          <FadeInUp delay={0.04}>
+            <ChapterInfographicAtlas />
+          </FadeInUp>
+
           <motion.div
             variants={staggerGridVariants}
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, amount: 0.08 }}
-            className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-10 sm:mb-12"
+            className="grid grid-cols-1 md:grid-cols-2 gap-4"
           >
             {CHAPTERS_DATA.map((ch) => (
               <motion.div key={ch.slug} variants={fadeInUpVariants} className="min-w-0">
-                <Link
-                  to={`/chapters/${ch.slug}`}
-                  className="h-full rounded-xl bg-white dark:bg-[#0F1D33] border border-slate-200 dark:border-slate-400/15 hover:border-[#1D4ED8] dark:hover:border-[#38BDF8]/40 p-4 sm:p-5 flex items-start justify-between gap-4 transition-all hover:-translate-y-0.5 shadow-2xs dark:shadow-none"
-                >
-                  <div className="min-w-0">
-                    <div className="text-xs font-mono font-semibold text-[#E11D48] dark:text-[#38BDF8]">
-                      Chapter {String(ch.number).padStart(2, '0')} · {ch.partLabel}
+                <div className="h-full rounded-xl bg-white dark:bg-[#0F1D33] border border-slate-200 dark:border-slate-400/15 hover:border-[#1D4ED8] dark:hover:border-[#38BDF8]/40 p-4 sm:p-5 flex flex-col sm:flex-row items-start gap-4 transition-all hover:-translate-y-0.5 shadow-2xs dark:shadow-none">
+                  <button
+                    type="button"
+                    onClick={() => setLightboxSlideId(`ch-${ch.number}`)}
+                    className="relative group w-full sm:w-36 h-28 sm:h-24 rounded-lg overflow-hidden bg-[#F4F7FC] dark:bg-[#07111F] border border-slate-200 dark:border-slate-400/15 shrink-0 cursor-zoom-in"
+                    aria-label={`Inspect Chapter ${ch.number} Infographic`}
+                  >
+                    <img
+                      src={ch.infographicUrl}
+                      alt={ch.infographicTitle}
+                      loading="lazy"
+                      className="w-full h-full object-cover object-top transition-transform duration-300 group-hover:scale-105"
+                    />
+                    <span className="absolute bottom-1.5 right-1.5 inline-flex items-center gap-1 px-1.5 py-0.5 rounded bg-slate-900/85 text-white text-[9px] font-mono">
+                      <Maximize2 className="w-2.5 h-2.5" />
+                      <span>Zoom</span>
+                    </span>
+                  </button>
+
+                  <div className="min-w-0 flex-1 flex flex-col justify-between h-full">
+                    <div>
+                      <div className="text-xs font-mono font-semibold text-[#E11D48] dark:text-[#38BDF8]">
+                        Chapter {String(ch.number).padStart(2, '0')} · {ch.partLabel}
+                      </div>
+                      <Link to={`/chapters/${ch.slug}`} className="block group">
+                        <h3 className="text-base font-bold font-display text-slate-900 dark:text-[#F5F8FF] group-hover:text-[#1D4ED8] dark:group-hover:text-[#38BDF8] mt-0.5 transition-colors">
+                          {ch.title}
+                        </h3>
+                        <p className="text-xs text-slate-600 dark:text-[#AAB8CC] mt-1 line-clamp-2">
+                          {ch.summary}
+                        </p>
+                      </Link>
                     </div>
-                    <h3 className="text-base font-bold font-display text-slate-900 dark:text-[#F5F8FF] mt-1">
-                      {ch.title}
-                    </h3>
-                    <p className="text-xs text-slate-600 dark:text-[#AAB8CC] mt-1.5 line-clamp-2">{ch.summary}</p>
+                    <div className="mt-2.5 flex items-center justify-between text-xs">
+                      <button
+                        type="button"
+                        onClick={() => setLightboxSlideId(`ch-${ch.number}`)}
+                        className="font-mono text-[11px] text-[#E11D48] dark:text-[#38BDF8] hover:underline cursor-pointer"
+                      >
+                        View Infographic
+                      </button>
+                      <Link
+                        to={`/chapters/${ch.slug}`}
+                        className="inline-flex items-center gap-1 font-semibold text-[#1D4ED8] dark:text-[#38BDF8] hover:underline"
+                      >
+                        <span>Chapter Blueprint</span>
+                        <ArrowRight className="w-3.5 h-3.5" />
+                      </Link>
+                    </div>
                   </div>
-                  <ArrowRight className="w-4 h-4 text-slate-400 dark:text-[#AAB8CC] shrink-0 mt-1" />
-                </Link>
+                </div>
               </motion.div>
             ))}
           </motion.div>
@@ -322,6 +368,12 @@ export const BookPage: React.FC = () => {
             ))}
           </motion.div>
         </div>
+
+        <InfographicLightboxModal
+          isOpen={Boolean(lightboxSlideId)}
+          initialSlideId={lightboxSlideId || 'master-blueprint'}
+          onClose={() => setLightboxSlideId(null)}
+        />
       </section>
 
       {/* 12. Embedded Sample Chapter Reading Preview */}

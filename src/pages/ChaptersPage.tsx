@@ -1,17 +1,24 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link, useParams, Navigate } from 'react-router-dom';
-import { ArrowLeft, ArrowRight, BookOpen, CheckCircle2, HelpCircle, Cpu } from 'lucide-react';
+import { ArrowLeft, ArrowRight, BookOpen, CheckCircle2, HelpCircle, Cpu, Maximize2, Sparkles } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { CHAPTERS_DATA } from '../data/chaptersData';
 import { BOOK_METADATA } from '../data/bookConfig';
 import { FadeInUp, fadeInUpVariants, staggerGridVariants } from '../components/FadeInUp';
+import {
+  ChapterInfographicAtlas,
+  ChapterDetailInfographicShowcase,
+  InfographicLightboxModal,
+} from '../components/ChapterInfographicAtlas';
 import { usePageSEO, trackEvent } from '../utils/analytics';
 
 export const ChaptersPage: React.FC = () => {
+  const [lightboxSlideId, setLightboxSlideId] = useState<string | null>(null);
+
   usePageSEO({
-    title: 'All 11 Chapters — AI vs. AI: Engineering the Cybersecurity Counteroffensive',
+    title: 'All 11 Chapters & Visual Infographics — AI vs. AI: Engineering the Cybersecurity Counteroffensive',
     description:
-      'Explore all 11 chapters of AI vs. AI by Harsh Verma: from The New Cyber Arms Race and Mapping the AI Attack Surface to AI Native Security Design Patterns and the Counter Offensive Playbook.',
+      'Explore all 11 chapters and official visual infographics of AI vs. AI by Harsh Verma: from The New Cyber Arms Race and Mapping the AI Attack Surface to AI Native Security Design Patterns and the Counter Offensive Playbook.',
     canonicalPath: '/chapters',
   });
 
@@ -28,6 +35,25 @@ export const ChaptersPage: React.FC = () => {
           <p className="mt-3 sm:mt-4 text-sm sm:text-base text-slate-600 dark:text-[#AAB8CC] leading-relaxed">
             Every chapter in <em>{BOOK_METADATA.fullTitle}</em> is structured around concrete engineering questions, threat models, architectural patterns, and actionable learning outcomes. Select any chapter below to inspect its themes, technical concepts, and architectural diagram.
           </p>
+        </FadeInUp>
+
+        {/* Interactive Master Blueprint & Chapter Infographic Explorer */}
+        <FadeInUp delay={0.04} className="space-y-4">
+          <div className="flex flex-wrap items-center justify-between gap-2">
+            <div className="inline-flex items-center gap-1.5 text-xs font-mono font-bold text-[#E11D48] dark:text-[#38BDF8]">
+              <Sparkles className="w-3.5 h-3.5" />
+              <span>INTERACTIVE VISUAL ATLAS · MASTER BLUEPRINT &amp; CHAPTER INFOGRAPHICS</span>
+            </div>
+            <button
+              type="button"
+              onClick={() => setLightboxSlideId('master-blueprint')}
+              className="inline-flex items-center gap-1.5 text-xs font-mono font-semibold text-[#1D4ED8] dark:text-[#38BDF8] hover:underline cursor-pointer"
+            >
+              <Maximize2 className="w-3.5 h-3.5" />
+              <span>Open Full-Screen Lightbox (All 12 Infographics)</span>
+            </button>
+          </div>
+          <ChapterInfographicAtlas />
         </FadeInUp>
 
         <motion.div
@@ -50,7 +76,8 @@ export const ChaptersPage: React.FC = () => {
                 } p-5 sm:p-6 md:p-8 transition-all shadow-2xs hover:shadow-md`}
               >
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 sm:gap-6 items-start">
-                  <div className="lg:col-span-8 space-y-3 min-w-0">
+                  {/* Left 5 cols: Chapter Overview & Concepts */}
+                  <div className="lg:col-span-5 space-y-3 min-w-0">
                     <div className="flex flex-wrap items-center gap-2 text-xs font-mono text-slate-500 dark:text-[#AAB8CC]">
                       <span
                         className={`font-bold ${
@@ -94,7 +121,33 @@ export const ChaptersPage: React.FC = () => {
                     </div>
                   </div>
 
-                  <div className="lg:col-span-4 bg-slate-50 dark:bg-[#0A1426] rounded-xl border border-slate-200 dark:border-slate-400/15 p-4 sm:p-5 flex flex-col justify-between h-full min-w-0">
+                  {/* Middle 4 cols: Interactive Chapter Infographic Preview Card */}
+                  <div className="lg:col-span-4 rounded-xl bg-[#F4F7FC] dark:bg-[#07111F] border border-slate-200 dark:border-slate-400/15 p-3 flex flex-col justify-between space-y-2.5">
+                    <button
+                      type="button"
+                      onClick={() => setLightboxSlideId(`ch-${ch.number}`)}
+                      className="relative group block w-full overflow-hidden rounded-lg border border-slate-200/80 dark:border-slate-400/15 bg-white dark:bg-[#0B1628] cursor-zoom-in"
+                      aria-label={`Inspect Chapter ${ch.number} Infographic`}
+                    >
+                      <img
+                        src={ch.infographicUrl}
+                        alt={ch.infographicTitle}
+                        loading="lazy"
+                        className="w-full h-40 sm:h-44 object-cover object-top transition-transform duration-300 group-hover:scale-105"
+                      />
+                      <span className="absolute bottom-2 right-2 inline-flex items-center gap-1 px-2.5 py-1 rounded-md bg-slate-900/85 text-white text-[10px] font-mono font-semibold backdrop-blur-xs">
+                        <Maximize2 className="w-3 h-3" />
+                        <span>Inspect Infographic</span>
+                      </span>
+                    </button>
+                    <p className="text-[11px] text-slate-600 dark:text-[#AAB8CC] leading-snug line-clamp-2 px-0.5">
+                      <strong className="text-slate-900 dark:text-[#F5F8FF]">Takeaway:</strong>{' '}
+                      {ch.infographicKeyTakeaway}
+                    </p>
+                  </div>
+
+                  {/* Right 3 cols: Key Learning Outcomes & Deep-Dive CTA */}
+                  <div className="lg:col-span-3 bg-slate-50 dark:bg-[#0A1426] rounded-xl border border-slate-200 dark:border-slate-400/15 p-4 sm:p-5 flex flex-col justify-between h-full min-w-0">
                     <div>
                       <div className="text-xs font-mono font-semibold text-[#1D4ED8] dark:text-[#38BDF8] mb-2">
                         KEY LEARNING OUTCOMES
@@ -109,7 +162,7 @@ export const ChaptersPage: React.FC = () => {
                       </ul>
                     </div>
 
-                    <div className="mt-5 pt-3 border-t border-slate-200 dark:border-slate-400/10 flex items-center justify-between">
+                    <div className="mt-5 pt-3 border-t border-slate-200 dark:border-slate-400/10 flex flex-col gap-2">
                       <Link
                         to={`/chapters/${ch.slug}`}
                         className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#1D4ED8] dark:text-[#38BDF8] hover:underline"
@@ -125,6 +178,12 @@ export const ChaptersPage: React.FC = () => {
           })}
         </motion.div>
       </div>
+
+      <InfographicLightboxModal
+        isOpen={Boolean(lightboxSlideId)}
+        initialSlideId={lightboxSlideId || 'master-blueprint'}
+        onClose={() => setLightboxSlideId(null)}
+      />
     </div>
   );
 };
@@ -182,6 +241,11 @@ export const ChapterDetailPage: React.FC = () => {
           <p className="text-xs sm:text-sm text-slate-600 dark:text-[#AAB8CC] leading-relaxed">
             {chapter.summary}
           </p>
+        </FadeInUp>
+
+        {/* Official High-Resolution Chapter Infographic with Zoom & Chapter Switcher */}
+        <FadeInUp delay={0.05}>
+          <ChapterDetailInfographicShowcase chapter={chapter} />
         </FadeInUp>
 
         {/* Chapter Architectural Visual Diagram */}
