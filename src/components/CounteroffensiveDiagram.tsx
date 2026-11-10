@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { motion } from 'framer-motion';
 import { useSvgTheme } from '../utils/svgTheme';
 
 export const CounteroffensiveHeroGraphic: React.FC = () => {
@@ -27,16 +28,27 @@ export const CounteroffensiveHeroGraphic: React.FC = () => {
   const gateTextAmber = isLight ? '#92400E' : '#FCD34D';
 
   return (
-    <div className="relative rounded-2xl bg-white/95 dark:bg-[#0A1426] backdrop-blur-md border border-[#D8E2F0] dark:border-slate-400/15 p-3.5 sm:p-5 shadow-[0_14px_34px_-12px_rgba(225,29,72,0.08),0_14px_34px_-12px_rgba(29,78,216,0.1)] dark:shadow-2xl overflow-hidden transition-all duration-300">
+    <motion.div
+      initial={{ opacity: 0, y: 18 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.55, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
+      className="relative rounded-2xl bg-white/95 dark:bg-[#0A1426] backdrop-blur-md border border-[#D8E2F0] dark:border-slate-400/15 p-3.5 sm:p-5 shadow-[0_10px_26px_-12px_rgba(225,29,72,0.06),0_10px_26px_-12px_rgba(29,78,216,0.08)] dark:shadow-2xl overflow-hidden transition-all duration-300"
+    >
+      {/* Animated Top Sweeping Telemetry Line */}
+      <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-[#E11D48] via-[#6366F1] to-[#1D4ED8] bg-ai-clash-gradient opacity-85" />
+
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 pb-3.5 mb-3.5 border-b border-slate-200/90 dark:border-slate-400/10">
         <div className="flex items-center gap-2 text-xs font-mono">
-          <span className="inline-block w-2 h-2 rounded-full bg-[#E11D48] animate-ping" />
+          <span className="relative flex h-2.5 w-2.5">
+            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#E11D48] opacity-75" />
+            <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-[#E11D48]" />
+          </span>
           <span className="font-bold bg-gradient-to-r from-[#E11D48] to-[#1D4ED8] dark:from-[#FB7185] dark:to-[#38BDF8] bg-clip-text text-transparent">
             LIVE AI VS. AI TOPOLOGY
           </span>
           <span className="hidden sm:inline text-slate-400">·</span>
           <span className="hidden sm:inline text-[#091122] dark:text-[#F5F8FF] font-semibold">
-            Contested Digital Environment
+            Real-Time Telemetry Simulation
           </span>
         </div>
         <div className="flex items-center gap-1 bg-[#EDF2F9] dark:bg-[#060D1A] p-1 rounded-lg border border-slate-200/90 dark:border-slate-400/15 overflow-x-auto no-scrollbar">
@@ -91,7 +103,7 @@ export const CounteroffensiveHeroGraphic: React.FC = () => {
         viewBox="0 0 760 300"
         className={`w-full h-auto select-none rounded-xl border border-slate-300/80 dark:border-slate-400/15 ${svgRootClass}`}
         role="img"
-        aria-label="Architectural diagram showing Offensive AI opposing Defensive AI across a contested environment with a central Human Oversight Gate."
+        aria-label="Architectural diagram showing Offensive AI opposing Defensive AI across a contested environment with a central Human Oversight Gate and animated telemetry pulses."
       >
         <defs>
           <linearGradient id="offGrad" x1="0%" y1="0%" x2="100%" y2="0%">
@@ -106,6 +118,14 @@ export const CounteroffensiveHeroGraphic: React.FC = () => {
             <stop offset="0%" stopColor={defBlue} stopOpacity={isLight ? '0.09' : '0.22'} />
             <stop offset="100%" stopColor={canvasFill} stopOpacity="0" />
           </radialGradient>
+
+          {/* Motion Trajectories for Live Signal Pulses */}
+          <path id="offPathTop" d="M 70 95 L 175 75 L 285 110 L 340 150" />
+          <path id="offPathMid" d="M 55 150 L 160 150 L 270 150 L 340 150" />
+          <path id="offPathBot" d="M 70 205 L 175 225 L 285 190 L 340 150" />
+          <path id="defPathTop" d="M 690 95 L 585 75 L 475 110 L 420 150" />
+          <path id="defPathMid" d="M 705 150 L 600 150 L 490 150 L 420 150" />
+          <path id="defPathBot" d="M 690 205 L 585 225 L 475 190 L 420 150" />
         </defs>
 
         {/* Contested Environment Canvas */}
@@ -158,24 +178,27 @@ export const CounteroffensiveHeroGraphic: React.FC = () => {
           </text>
 
           {/* Primary Vector Trajectories with Deep Ink Under-Stroke in Alabaster Mode */}
-          <path
-            d="M 70 95 L 175 75 L 285 110 L 340 150"
-            stroke="url(#offGrad)"
-            strokeWidth="2.2"
-            fill="none"
-          />
-          <path
-            d="M 55 150 L 160 150 L 270 150 L 340 150"
-            stroke="url(#offGrad)"
-            strokeWidth="2.6"
-            fill="none"
-          />
-          <path
-            d="M 70 205 L 175 225 L 285 190 L 340 150"
-            stroke="url(#offGrad)"
-            strokeWidth="2.2"
-            fill="none"
-          />
+          <use href="#offPathTop" stroke="url(#offGrad)" strokeWidth="2.2" fill="none" />
+          <use href="#offPathMid" stroke="url(#offGrad)" strokeWidth="2.6" fill="none" />
+          <use href="#offPathBot" stroke="url(#offGrad)" strokeWidth="2.2" fill="none" />
+
+          {/* Animated Red Offensive AI Signal Packets */}
+          <circle r="4" fill={offensiveAccent}>
+            <animateMotion dur="2.6s" repeatCount="indefinite" rotate="auto">
+              <mpath href="#offPathTop" />
+            </animateMotion>
+          </circle>
+          <circle r="4.5" fill={offensiveAccent}>
+            <animateMotion dur="2.1s" begin="0.4s" repeatCount="indefinite" rotate="auto">
+              <mpath href="#offPathMid" />
+            </animateMotion>
+          </circle>
+          <circle r="4" fill={offensiveAccent}>
+            <animateMotion dur="2.9s" begin="0.9s" repeatCount="indefinite" rotate="auto">
+              <mpath href="#offPathBot" />
+            </animateMotion>
+          </circle>
+
           {/* Deep Ink / High-Contrast Structural Mesh Lines */}
           <line
             x1="70"
@@ -237,7 +260,9 @@ export const CounteroffensiveHeroGraphic: React.FC = () => {
           />
 
           <circle cx="70" cy="95" r="6" fill={nodeFill} stroke={deepInkStroke} strokeWidth="2" />
-          <circle cx="55" cy="150" r="7" fill={offensiveAccent} stroke={deepInkStroke} strokeWidth="1.5" />
+          <circle cx="55" cy="150" r="7" fill={offensiveAccent} stroke={deepInkStroke} strokeWidth="1.5">
+            <animate attributeName="r" values="6.5;8.5;6.5" dur="2.2s" repeatCount="indefinite" />
+          </circle>
           <circle cx="70" cy="205" r="6" fill={nodeFill} stroke={deepInkStroke} strokeWidth="2" />
           <circle cx="175" cy="75" r="6" fill={offensiveAccent} stroke={deepInkStroke} strokeWidth="1.2" />
           <circle cx="160" cy="150" r="8" fill={nodeFill} stroke={offensiveAccent} strokeWidth="2.5" />
@@ -295,24 +320,27 @@ export const CounteroffensiveHeroGraphic: React.FC = () => {
             Circuit Breakers · Shadow Evaluators · Tool Brokers
           </text>
 
-          <path
-            d="M 690 95 L 585 75 L 475 110 L 420 150"
-            stroke="url(#defGrad)"
-            strokeWidth="2.2"
-            fill="none"
-          />
-          <path
-            d="M 705 150 L 600 150 L 490 150 L 420 150"
-            stroke="url(#defGrad)"
-            strokeWidth="2.6"
-            fill="none"
-          />
-          <path
-            d="M 690 205 L 585 225 L 475 190 L 420 150"
-            stroke="url(#defGrad)"
-            strokeWidth="2.2"
-            fill="none"
-          />
+          <use href="#defPathTop" stroke="url(#defGrad)" strokeWidth="2.2" fill="none" />
+          <use href="#defPathMid" stroke="url(#defGrad)" strokeWidth="2.6" fill="none" />
+          <use href="#defPathBot" stroke="url(#defGrad)" strokeWidth="2.2" fill="none" />
+
+          {/* Animated Blue Defensive AI Counter-Signals */}
+          <circle r="4" fill={defCyan}>
+            <animateMotion dur="2.5s" begin="0.2s" repeatCount="indefinite" rotate="auto">
+              <mpath href="#defPathTop" />
+            </animateMotion>
+          </circle>
+          <circle r="4.5" fill={defBlue}>
+            <animateMotion dur="2.0s" begin="0.6s" repeatCount="indefinite" rotate="auto">
+              <mpath href="#defPathMid" />
+            </animateMotion>
+          </circle>
+          <circle r="4" fill={defCyan}>
+            <animateMotion dur="2.8s" begin="1.1s" repeatCount="indefinite" rotate="auto">
+              <mpath href="#defPathBot" />
+            </animateMotion>
+          </circle>
+
           {/* Deep Ink / High-Contrast Defensive Structural Lines */}
           <line
             x1="690"
@@ -374,7 +402,9 @@ export const CounteroffensiveHeroGraphic: React.FC = () => {
           />
 
           <circle cx="690" cy="95" r="6" fill={nodeFill} stroke={deepInkStroke} strokeWidth="2" />
-          <circle cx="705" cy="150" r="7" fill={defCyan} stroke={deepInkStroke} strokeWidth="1.5" />
+          <circle cx="705" cy="150" r="7" fill={defCyan} stroke={deepInkStroke} strokeWidth="1.5">
+            <animate attributeName="r" values="6.5;8.5;6.5" dur="2.2s" begin="0.5s" repeatCount="indefinite" />
+          </circle>
           <circle cx="690" cy="205" r="6" fill={nodeFill} stroke={deepInkStroke} strokeWidth="2" />
           <circle cx="585" cy="75" r="6" fill={defBlue} stroke={deepInkStroke} strokeWidth="1.2" />
           <circle cx="600" cy="150" r="8" fill={nodeFill} stroke={defBlue} strokeWidth="2.5" />
@@ -437,6 +467,19 @@ export const CounteroffensiveHeroGraphic: React.FC = () => {
             strokeWidth="1.75"
             strokeDasharray="3 3"
           />
+
+          {/* Expanding Radar Pulse Ring on Trust Gate */}
+          <circle
+            cx="380"
+            cy="120"
+            r="18"
+            fill="none"
+            stroke={defBlue}
+            strokeWidth="1.5"
+          >
+            <animate attributeName="r" values="18;30;18" dur="2.8s" repeatCount="indefinite" />
+            <animate attributeName="opacity" values="0.65;0;0.65" dur="2.8s" repeatCount="indefinite" />
+          </circle>
 
           <circle
             cx="380"
@@ -502,8 +545,11 @@ export const CounteroffensiveHeroGraphic: React.FC = () => {
       </svg>
 
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mt-4 pt-3 border-t border-slate-200/90 dark:border-slate-400/10 text-xs">
-        <div className="flex items-start gap-2.5">
-          <span className="w-2.5 h-2.5 rounded-sm bg-[#DC2626] dark:bg-[#F05252] shrink-0 mt-1" />
+        <motion.div
+          whileHover={{ x: 2 }}
+          className="flex items-start gap-2.5 p-2 rounded-lg hover:bg-red-500/[0.04] transition-colors"
+        >
+          <span className="w-2.5 h-2.5 rounded-sm bg-[#DC2626] dark:bg-[#F05252] shrink-0 mt-1 animate-pulse" />
           <div>
             <div className="font-semibold text-[#091122] dark:text-[#F5F8FF]">
               Offensive AI (Red)
@@ -512,9 +558,12 @@ export const CounteroffensiveHeroGraphic: React.FC = () => {
               Automated reconnaissance, contextual lures, and adaptive probing.
             </div>
           </div>
-        </div>
-        <div className="flex items-start gap-2.5">
-          <span className="w-2.5 h-2.5 rounded-sm bg-[#1D4ED8] dark:bg-[#37D5F5] shrink-0 mt-1" />
+        </motion.div>
+        <motion.div
+          whileHover={{ x: 2 }}
+          className="flex items-start gap-2.5 p-2 rounded-lg hover:bg-blue-500/[0.04] transition-colors"
+        >
+          <span className="w-2.5 h-2.5 rounded-sm bg-[#1D4ED8] dark:bg-[#37D5F5] shrink-0 mt-1 animate-pulse" />
           <div>
             <div className="font-semibold text-[#091122] dark:text-[#F5F8FF]">
               Defensive AI (Cobalt/Cyan)
@@ -523,8 +572,11 @@ export const CounteroffensiveHeroGraphic: React.FC = () => {
               Retrieval Gatekeeper, Shadow Evaluator, Circuit Breaker &amp; Tool Broker.
             </div>
           </div>
-        </div>
-        <div className="flex items-start gap-2.5">
+        </motion.div>
+        <motion.div
+          whileHover={{ x: 2 }}
+          className="flex items-start gap-2.5 p-2 rounded-lg hover:bg-amber-500/[0.04] transition-colors"
+        >
           <span className="w-2.5 h-2.5 rounded-sm bg-amber-600 dark:bg-amber-400 shrink-0 mt-1" />
           <div>
             <div className="font-semibold text-[#091122] dark:text-[#F5F8FF]">
@@ -534,9 +586,9 @@ export const CounteroffensiveHeroGraphic: React.FC = () => {
               Verifiable authority, policy governance, and high-consequence approval.
             </div>
           </div>
-        </div>
+        </motion.div>
       </div>
-    </div>
+    </motion.div>
   );
 };
 

@@ -10,7 +10,8 @@ export type AnalyticsEventName =
   | 'sample_chapter_completed'
   | 'newsletter_signup'
   | 'bulk_order_enquiry'
-  | 'review_submitted';
+  | 'review_submitted'
+  | 'blog_article_clicked';
 
 const CONSENT_STORAGE_KEY = 'beyond_ai_vs_ai_analytics_consent';
 

@@ -13,6 +13,7 @@ import { ReviewsPage } from './pages/ReviewsPage';
 import { AuthorPage } from './pages/AuthorPage';
 import { EducatorsPage } from './pages/EducatorsPage';
 import { InsightsPage, InsightDetailPage } from './pages/InsightsPage';
+import { BlogsPage } from './pages/BlogsPage';
 import {
   MediaPage,
   ContactPage,
@@ -33,6 +34,8 @@ export function App() {
             <Route path="/chapters/:slug" element={<ChapterDetailPage />} />
             <Route path="/framework" element={<FrameworkPage />} />
             <Route path="/resources" element={<ResourcesPage />} />
+            <Route path="/blogs" element={<BlogsPage />} />
+            <Route path="/page-blog" element={<BlogsPage />} />
             <Route path="/excerpt" element={<ExcerptPage />} />
             <Route path="/reviews" element={<ReviewsPage />} />
             <Route path="/author" element={<AuthorPage />} />

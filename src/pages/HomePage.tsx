@@ -42,14 +42,14 @@ export const HomePage: React.FC = () => {
 
   return (
     <div className="w-full overflow-x-hidden">
-      {/* 6.1 HERO SECTION — Powerful Red (Offensive AI) vs. Blue (Defensive AI) Counteroffensive Stage */}
+      {/* 6.1 HERO SECTION — Refined Red (Offensive AI) vs. Blue (Defensive AI) Counteroffensive Stage */}
       <section className="relative pt-8 pb-12 sm:pt-12 sm:pb-16 md:pt-16 md:pb-24 border-b border-[#D5E0F0] dark:border-slate-400/15 overflow-hidden">
-        {/* Opposing Red vs. Blue Radial Clash Spotlights */}
+        {/* Softened Red vs. Blue Radial Clash Spotlights */}
         <div
-          className="absolute inset-0 pointer-events-none opacity-90 dark:opacity-55"
+          className="absolute inset-0 pointer-events-none opacity-65 dark:opacity-45"
           style={{
             background:
-              'radial-gradient(circle at 12% 22%, rgba(225, 29, 72, 0.16), transparent 46%), radial-gradient(circle at 88% 24%, rgba(29, 78, 216, 0.18), transparent 48%), radial-gradient(circle at 50% 80%, rgba(99, 102, 241, 0.09), transparent 52%)',
+              'radial-gradient(circle at 12% 22%, rgba(225, 29, 72, 0.065), transparent 46%), radial-gradient(circle at 88% 24%, rgba(29, 78, 216, 0.075), transparent 48%), radial-gradient(circle at 50% 80%, rgba(99, 102, 241, 0.04), transparent 52%)',
           }}
         />
 
@@ -664,12 +664,12 @@ export const HomePage: React.FC = () => {
         </div>
       </section>
 
-      {/* 6.8 AUTHOR SECTION */}
-      <section className="py-12 sm:py-16 md:py-24 bg-[#EAF0F8]/75 dark:bg-[#0A1426] border-b border-[#D5E0F0] dark:border-slate-400/15">
+      {/* 6.8 AUTHOR SECTION — EXECUTIVE AUTHORITY & RESEARCH SHOWCASE */}
+      <section className="py-12 sm:py-16 md:py-24 bg-[#F2F6FC]/80 dark:bg-[#0A1426] border-b border-[#D5E0F0] dark:border-slate-400/15">
         <div className="w-full max-w-[1280px] mx-auto px-4 sm:px-6">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-center">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-start">
             <FadeInUp className="lg:col-span-4">
-              <div className="rounded-2xl overflow-hidden p-[1.5px] bg-gradient-to-br from-[#E11D48] via-[#6366F1] to-[#1D4ED8] shadow-xl max-w-xs sm:max-w-sm mx-auto">
+              <div className="rounded-2xl overflow-hidden p-[1.5px] bg-gradient-to-br from-[#E11D48]/80 via-[#6366F1]/75 to-[#1D4ED8]/80 shadow-md max-w-xs sm:max-w-sm mx-auto">
                 <div className="rounded-[14.5px] overflow-hidden bg-white dark:bg-[#0F1D33]">
                   <img
                     src={AUTHOR_DATA.portraitUrl}
@@ -677,74 +677,117 @@ export const HomePage: React.FC = () => {
                     referrerPolicy="no-referrer"
                     className="w-full h-auto object-cover"
                   />
-                  <div className="p-4 bg-white dark:bg-[#060D1A] border-t border-slate-200 dark:border-slate-400/15">
-                    <div className="text-base font-bold font-display text-[#091122] dark:text-[#F5F8FF]">
-                      {AUTHOR_DATA.name}
+                  <div className="p-4 sm:p-5 bg-white dark:bg-[#060D1A] border-t border-slate-200 dark:border-slate-400/15 space-y-2.5">
+                    <div>
+                      <div className="text-lg font-bold font-display text-[#091122] dark:text-[#F5F8FF]">
+                        {AUTHOR_DATA.name}
+                      </div>
+                      <div className="text-xs font-semibold text-[#1D4ED8] dark:text-[#38BDF8] mt-0.5">
+                        {AUTHOR_DATA.currentTitle} · {AUTHOR_DATA.currentOrganization}
+                      </div>
                     </div>
-                    <div className="text-xs font-medium text-[#1D4ED8] dark:text-[#38BDF8] mt-0.5">
-                      {AUTHOR_DATA.currentTitle} at {AUTHOR_DATA.currentOrganization}
+                    <div className="pt-2 border-t border-slate-200/80 dark:border-slate-400/10 flex flex-wrap gap-1.5">
+                      {['FBCS Fellow', 'IEEE Senior Member', 'Forbes Tech Council', 'UC Berkeley SkyDeck'].map((badge) => (
+                        <span
+                          key={badge}
+                          className="px-2 py-0.5 rounded-md bg-[#F4F7FC] dark:bg-[#101F34] border border-[#D5E0F0] dark:border-slate-400/15 text-[10px] font-mono font-semibold text-slate-700 dark:text-[#AAB8CC]"
+                        >
+                          {badge}
+                        </span>
+                      ))}
                     </div>
                   </div>
                 </div>
               </div>
             </FadeInUp>
 
-            <FadeInUp delay={0.1} className="lg:col-span-8 space-y-4 sm:space-y-5 min-w-0">
-              <div className="text-xs font-mono font-bold bg-gradient-to-r from-[#E11D48] to-[#1D4ED8] dark:from-[#FB7185] dark:to-[#38BDF8] bg-clip-text text-transparent">
-                THE ENGINEER BEHIND THE COUNTEROFFENSIVE
+            <FadeInUp delay={0.1} className="lg:col-span-8 space-y-5 min-w-0">
+              <div className="space-y-2">
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white dark:bg-[#0F1D33] border border-[#D5E0F0] dark:border-slate-400/20 text-[11px] font-mono font-bold">
+                  <span className="w-2 h-2 rounded-full bg-gradient-to-r from-[#E11D48] to-[#1D4ED8]" />
+                  <span className="bg-gradient-to-r from-[#E11D48] to-[#1D4ED8] dark:from-[#FB7185] dark:to-[#38BDF8] bg-clip-text text-transparent">
+                    THE ENGINEER BEHIND THE COUNTEROFFENSIVE
+                  </span>
+                </div>
+                <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold font-display text-[#091122] dark:text-[#F5F8FF] text-balance">
+                  {AUTHOR_DATA.name} — Architecting Trusted AI &amp; Enterprise Cyber Defense at Global Scale
+                </h2>
               </div>
-              <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold font-display text-[#091122] dark:text-[#F5F8FF] text-balance">
-                {AUTHOR_DATA.name}
-              </h2>
+
               <p className="text-sm sm:text-base text-[#334155] dark:text-[#AAB8CC] leading-relaxed">
                 {AUTHOR_DATA.executiveBio}
               </p>
-              <p className="text-xs sm:text-sm text-[#334155] dark:text-[#AAB8CC] leading-relaxed">
-                {AUTHOR_DATA.engineerBehindBook.paragraphs[1]}
-              </p>
 
-              {/* Selected Credentials Grid */}
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 pt-2">
-                {AUTHOR_DATA.keyMetrics.map((metric) => (
+              {/* 4 Key Impact Metric Cards */}
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
+                {AUTHOR_DATA.keyMetrics.map((metric, idx) => (
                   <div
                     key={metric.label}
-                    className="rounded-xl bg-white dark:bg-[#0F1D33] border border-[#D5E0F0] dark:border-slate-400/15 p-3 sm:p-3.5"
+                    className="rounded-xl bg-white dark:bg-[#0F1D33] border border-[#D5E0F0] dark:border-slate-400/15 p-3.5 sm:p-4 shadow-2xs"
                   >
-                    <div className="text-sm sm:text-base font-bold font-mono text-[#091122] dark:text-[#F5F8FF] tabular-nums">
+                    <div
+                      className={`text-base sm:text-lg font-extrabold font-mono tabular-nums ${
+                        idx % 2 === 0
+                          ? 'text-[#E11D48] dark:text-[#FB7185]'
+                          : 'text-[#1D4ED8] dark:text-[#38BDF8]'
+                      }`}
+                    >
                       {metric.value}
                     </div>
-                    <div className="text-[11px] sm:text-xs text-slate-600 dark:text-[#AAB8CC] mt-1">
+                    <div className="text-[11px] sm:text-xs font-medium text-slate-600 dark:text-[#AAB8CC] mt-1">
                       {metric.label}
                     </div>
                   </div>
                 ))}
               </div>
 
-              <div className="pt-1 flex flex-wrap items-center gap-x-4 gap-y-1.5 text-xs text-slate-600 dark:text-[#AAB8CC]">
-                <span>Fellow of BCS (FBCS)</span>
-                <span aria-hidden="true">·</span>
-                <span>IEEE Senior Member</span>
-                <span aria-hidden="true">·</span>
-                <span>Official Forbes Technology Council Member</span>
-                <span aria-hidden="true">·</span>
-                <span>UC Berkeley SkyDeck Advisor &amp; Mentor</span>
+              {/* Executive Domain Pillars (Enterprise Track Record & Research Authority) */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 sm:gap-4">
+                <div className="rounded-xl bg-white dark:bg-[#0F1D33] border border-[#D5E0F0] dark:border-slate-400/15 p-4">
+                  <div className="text-xs font-mono font-bold text-[#1D4ED8] dark:text-[#38BDF8] mb-1.5">
+                    FORTUNE 500 ARCHITECTURE LEADERSHIP
+                  </div>
+                  <p className="text-xs text-[#334155] dark:text-[#AAB8CC] leading-relaxed">
+                    Principal &amp; Enterprise Security Leadership across{' '}
+                    <strong className="text-[#091122] dark:text-[#F5F8FF]">
+                      NortonLifeLock (Gen Digital), Wells Fargo, Western Union, and Oracle
+                    </strong>
+                    —securing mission-critical identity, cloud-native infrastructure, and millions of global consumers.
+                  </p>
+                </div>
+                <div className="rounded-xl bg-white dark:bg-[#0F1D33] border border-[#D5E0F0] dark:border-slate-400/15 p-4">
+                  <div className="text-xs font-mono font-bold text-[#E11D48] dark:text-[#FB7185] mb-1.5">
+                    PUBLISHED RESEARCH &amp; INDUSTRY THOUGHT LEADERSHIP
+                  </div>
+                  <p className="text-xs text-[#334155] dark:text-[#AAB8CC] leading-relaxed">
+                    Author of <strong className="text-[#091122] dark:text-[#F5F8FF]">27+ peer-reviewed papers</strong> (IEEE, Springer, Raptors 2026), <strong className="text-[#091122] dark:text-[#F5F8FF]">6 patent filings</strong>, and <strong className="text-[#091122] dark:text-[#F5F8FF]">30+ featured articles</strong> in Forbes Technology Council, RSA Conference, and HackerNoon.
+                  </p>
+                </div>
               </div>
 
-              <div className="pt-2 flex flex-wrap items-center gap-4">
+              {/* Action Buttons including Direct Link to the New Blogs Page */}
+              <div className="pt-1 flex flex-wrap items-center gap-3">
                 <Link
                   to="/author"
-                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-gradient-to-r from-[#E11D48] via-[#4F46E5] to-[#1D4ED8] hover:opacity-95 text-xs font-semibold text-white transition-all shadow-sm"
+                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-[#E11D48] via-[#4F46E5] to-[#1D4ED8] hover:opacity-95 text-xs font-semibold text-white transition-all shadow-sm"
                 >
-                  <span>Read Full Author Profile &amp; Career Timeline</span>
+                  <span>Full Author Profile &amp; Timeline</span>
                   <ArrowRight className="w-4 h-4" />
+                </Link>
+                <Link
+                  to="/blogs"
+                  className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-white dark:bg-[#0F1D33] hover:bg-slate-50 dark:hover:bg-[#162944] border border-[#CBD5E1] dark:border-slate-400/20 text-xs font-semibold text-[#091122] dark:text-[#F5F8FF] transition-all shadow-2xs"
+                >
+                  <BookOpen className="w-3.5 h-3.5 text-[#E11D48] dark:text-[#38BDF8]" />
+                  <span>Read 30+ Author Blogs</span>
                 </Link>
                 <a
                   href={AUTHOR_DATA.officialWebsite}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#1D4ED8] dark:text-[#38BDF8] hover:underline"
+                  className="inline-flex items-center gap-1.5 px-3 py-2 text-xs font-semibold text-[#1D4ED8] dark:text-[#38BDF8] hover:underline"
                 >
-                  <span>Visit harshverma.me</span>
+                  <span>harshverma.me</span>
                   <ExternalLink className="w-3.5 h-3.5" />
                 </a>
               </div>

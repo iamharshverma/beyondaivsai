@@ -34,26 +34,26 @@
     overflow-x: hidden;
   }
 
-  /* Red vs. Blue (AI vs. AI) Ambient Clash Surface for Light Mode */
+  /* Red vs. Blue (AI vs. AI) Soft Ambient Surface for Light Mode */
   html:not(.dark) body {
-    background-color: #F5F7FC;
+    background-color: #F8FAFE;
     background-image:
-      radial-gradient(at 8% 12%, rgba(225, 29, 72, 0.08) 0px, transparent 45%),
-      radial-gradient(at 92% 14%, rgba(29, 78, 216, 0.095) 0px, transparent 48%),
-      radial-gradient(at 18% 78%, rgba(225, 29, 72, 0.045) 0px, transparent 50%),
-      radial-gradient(at 82% 82%, rgba(2, 132, 199, 0.065) 0px, transparent 52%),
-      linear-gradient(180deg, #F8FAFF 0%, #EEF3FB 52%, #F6F8FD 100%);
+      radial-gradient(at 8% 12%, rgba(225, 29, 72, 0.035) 0px, transparent 45%),
+      radial-gradient(at 92% 14%, rgba(29, 78, 216, 0.045) 0px, transparent 48%),
+      radial-gradient(at 18% 78%, rgba(225, 29, 72, 0.02) 0px, transparent 50%),
+      radial-gradient(at 82% 82%, rgba(2, 132, 199, 0.03) 0px, transparent 52%),
+      linear-gradient(180deg, #FAFCFF 0%, #F3F7FD 52%, #F9FBFF 100%);
     background-attachment: fixed;
     color: #091122;
   }
 
-  /* Red vs. Blue (AI vs. AI) Ambient Clash Surface for Dark Mode */
+  /* Red vs. Blue (AI vs. AI) Soft Ambient Surface for Dark Mode */
   html.dark body {
     background-color: #060D1A;
     background-image:
-      radial-gradient(at 10% 12%, rgba(244, 63, 94, 0.13) 0px, transparent 46%),
-      radial-gradient(at 90% 15%, rgba(52, 120, 246, 0.15) 0px, transparent 48%),
-      radial-gradient(at 50% 60%, rgba(2, 132, 199, 0.07) 0px, transparent 60%);
+      radial-gradient(at 10% 12%, rgba(244, 63, 94, 0.075) 0px, transparent 46%),
+      radial-gradient(at 90% 15%, rgba(52, 120, 246, 0.085) 0px, transparent 48%),
+      radial-gradient(at 50% 60%, rgba(2, 132, 199, 0.04) 0px, transparent 60%);
     background-attachment: fixed;
   }
 

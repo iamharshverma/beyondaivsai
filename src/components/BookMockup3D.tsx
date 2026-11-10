@@ -87,29 +87,29 @@ export const BookMockup3D: React.FC<BookMockup3DProps> = ({
         </button>
       </div>
 
-      {/* Main Artwork Stage with Red vs. Blue Clash Aura */}
+      {/* Main Artwork Stage with Subtle Refined Aura */}
       <motion.div
         initial={{ opacity: 0, y: 16 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.55, ease: 'easeOut' }}
         className="relative group w-full flex justify-center"
       >
-        {/* Dual Red (Left) vs. Blue (Right) Ambient Clash Halo */}
+        {/* Subtle Ambient Halo (Reduced Shadow Outside Book) */}
         <div
-          className="absolute -inset-4 sm:-inset-6 rounded-3xl opacity-45 dark:opacity-55 blur-2xl pointer-events-none transition-opacity duration-300 group-hover:opacity-75 animate-pulse-clash"
+          className="absolute -inset-2 sm:-inset-3 rounded-3xl opacity-15 dark:opacity-20 blur-xl pointer-events-none transition-opacity duration-300 group-hover:opacity-25"
           style={{
             background:
-              'linear-gradient(125deg, rgba(225, 29, 72, 0.42) 0%, rgba(124, 58, 237, 0.25) 50%, rgba(29, 78, 216, 0.45) 100%)',
+              'linear-gradient(125deg, rgba(225, 29, 72, 0.22) 0%, rgba(124, 58, 237, 0.12) 50%, rgba(29, 78, 216, 0.24) 100%)',
           }}
         />
 
         {viewMode === 'hardcover' ? (
           <motion.button
             type="button"
-            whileHover={{ y: -6, scale: 1.015 }}
+            whileHover={{ y: -5, scale: 1.01 }}
             transition={{ type: 'spring', stiffness: 260, damping: 20 }}
             onClick={() => setLightboxOpen(true)}
-            className={`relative block overflow-hidden rounded-2xl p-[1.5px] bg-gradient-to-br from-[#E11D48] via-[#6366F1] to-[#1D4ED8] shadow-[0_20px_45px_-12px_rgba(225,29,72,0.28),0_20px_45px_-12px_rgba(29,78,216,0.32)] cursor-pointer animate-float-slow ${
+            className={`relative block overflow-hidden rounded-2xl p-[1.5px] bg-gradient-to-br from-[#E11D48]/80 via-[#6366F1]/70 to-[#1D4ED8]/80 shadow-[0_8px_20px_-8px_rgba(9,17,34,0.12)] hover:shadow-[0_12px_26px_-8px_rgba(29,78,216,0.16)] cursor-pointer animate-float-slow ${
               compact ? 'max-w-[260px] sm:max-w-[290px]' : 'max-w-[290px] sm:max-w-[370px]'
             } w-full`}
           >
@@ -145,9 +145,9 @@ export const BookMockup3D: React.FC<BookMockup3DProps> = ({
         ) : (
           <motion.button
             type="button"
-            whileHover={{ y: -5 }}
+            whileHover={{ y: -4 }}
             onClick={() => setLightboxOpen(true)}
-            className="relative block w-full max-w-[520px] overflow-hidden rounded-2xl p-[1.5px] bg-gradient-to-r from-[#E11D48] via-[#6366F1] to-[#1D4ED8] shadow-2xl cursor-pointer"
+            className="relative block w-full max-w-[520px] overflow-hidden rounded-2xl p-[1.5px] bg-gradient-to-r from-[#E11D48]/80 via-[#6366F1]/70 to-[#1D4ED8]/80 shadow-md hover:shadow-lg cursor-pointer"
           >
             <div className="rounded-[14.5px] overflow-hidden bg-white dark:bg-[#0F1D33]">
               <img

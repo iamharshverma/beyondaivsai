@@ -9,6 +9,7 @@ import { useTheme } from '../context/ThemeContext';
 import { BrandLogo, FloatingThemeSwitcher } from './BrandLogo';
 
 const SECONDARY_PLATFORM_LINKS = [
+  { to: '/blogs', label: 'Author Blogs (30+)' },
   { to: '/excerpt', label: 'Chapter 1 Excerpt' },
   { to: '/reviews', label: 'Reviews & Credibility' },
   { to: '/educators', label: 'Educators & Enterprises' },
@@ -22,6 +23,7 @@ const ESSENTIAL_FOOTER_LINKS = [
   { to: '/order', label: 'Order the Book', highlight: true },
   { to: '/chapters', label: '11 Chapters' },
   { to: '/framework', label: 'Security Framework' },
+  { to: '/blogs', label: 'Blogs' },
   { to: '/excerpt', label: 'Sample Chapter' },
   { to: '/resources', label: 'Resources' },
   { to: '/author', label: 'About Author' },
@@ -34,6 +36,8 @@ const ROUTE_LABELS: Record<string, string> = {
   chapters: '11 Chapters',
   framework: 'Security Framework',
   resources: 'Technical Resources',
+  blogs: 'Author Blogs & Articles',
+  'page-blog': 'Author Blogs & Articles',
   excerpt: 'Read Sample Chapter',
   reviews: 'Reviews & Credibility',
   author: 'About Harsh Verma',
@@ -91,13 +95,14 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
           {/* Zone 2: Primary Desktop Navigation */}
           <nav
             aria-label="Primary Navigation"
-            className="hidden md:flex items-center gap-6 lg:gap-7 text-sm font-medium text-slate-600 dark:text-[#AAB8CC]"
+            className="hidden md:flex items-center gap-5 lg:gap-6 text-sm font-medium text-slate-600 dark:text-[#AAB8CC]"
           >
             {[
               { to: '/book', label: 'Book' },
               { to: '/chapters', label: 'Chapters' },
               { to: '/framework', label: 'Framework' },
               { to: '/resources', label: 'Resources' },
+              { to: '/blogs', label: 'Blogs' },
               { to: '/author', label: 'Author' },
             ].map((item) => (
               <NavLink
@@ -180,6 +185,7 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
                     { to: '/chapters', label: '11 Chapters' },
                     { to: '/framework', label: 'Framework' },
                     { to: '/resources', label: 'Resources' },
+                    { to: '/blogs', label: 'Author Blogs (30+)' },
                     { to: '/excerpt', label: 'Sample Chapter' },
                     { to: '/author', label: 'About Author' },
                     { to: '/reviews', label: 'Reviews' },
