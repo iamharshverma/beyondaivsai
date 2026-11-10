@@ -1,0 +1,6 @@
+{
+  "name": "Beyond AI vs. AI — Official Book & Counteroffensive Platform",
+  "description": "Official platform for AI vs. AI: Engineering the Cybersecurity Counteroffensive by Harsh Verma. Explore the 11-chapter blueprint, AI-native security patterns, interactive frameworks, and ordering options.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

@@ -1,0 +1,1247 @@
+# MASTER BUILD PROMPT — BEYOND AI vs. AI
+## Premium Book Website, Direct Ordering & Global Bestseller Launch Platform
+
+Act as a world-class creative director, premium digital product designer, UX conversion strategist, book marketing strategist, technical SEO architect, and senior full-stack engineer.
+
+Your assignment is to design and build a premium, production-ready website for my book and its broader technology brand.
+
+This is not a basic author website.
+
+It should be a visually exceptional, technically credible, conversion-focused book platform capable of supporting a professional global book launch, direct sales, retailer purchases, academic adoption, enterprise enquiries, and long-term thought leadership.
+
+---
+
+# PART 1 — BRAND AND PROJECT IDENTITY
+
+**Website:** https://beyondaivsai.com
+
+**Brand:** Beyond AI vs. AI
+
+**Official book title:**
+
+AI vs. AI: Engineering the Cybersecurity Counteroffensive
+
+**Author:** Harsh Verma
+
+**Official author website:**
+https://www.harshverma.me
+
+**Author biography source:**
+https://www.harshverma.me/page-about
+
+**Existing book presentation and assets:**
+https://www.harshverma.me/page-books#book2
+
+**Author LinkedIn:**
+https://www.linkedin.com/in/harshverma59/
+
+**Author YouTube:**
+https://www.youtube.com/@aiwithharshverma
+
+**Author Substack:**
+https://aiwithharsh.substack.com/
+
+Use these pages as reference sources. Review their available content, images, book-cover artwork, biography, and existing promotional assets before building the new website.
+
+The new website must have its own distinctive identity while remaining consistent with the author's professional brand.
+
+Do not simply copy the existing author's website.
+
+---
+
+# PART 2 — STRATEGIC OBJECTIVE
+
+Build the website to achieve six objectives:
+
+1. Establish AI vs. AI as a credible, premium cybersecurity engineering book.
+2. Convert interested visitors into actual book purchasers.
+3. Provide clear purchasing options, including retailer ordering and direct ordering when configured.
+4. Build an owned audience through sample chapters, reader updates, and newsletters.
+5. Establish technical credibility through frameworks, architecture diagrams, labs, and practical resources.
+6. Create a long-term platform supporting reviews, academic adoption, speaking, enterprise engagement, and future publications.
+
+The website must support a coordinated book-launch and bestseller campaign.
+
+Do not claim that the book is a bestseller unless verified sales and recognized bestseller-list evidence exist.
+
+Instead, build the infrastructure and conversion experience that can support that objective.
+
+The core message:
+
+**The Future of Cybersecurity Is AI vs. AI. The Counteroffensive Must Be Engineered.**
+
+Supporting message:
+
+"Understand the threats. Engineer stronger defenses. Secure the intelligent future."
+
+---
+
+# PART 3 — DESIGN DIRECTION
+
+Create an exceptional visual identity.
+
+## Overall aesthetic
+
+Premium, futuristic, cinematic, enterprise-grade cybersecurity.
+
+The experience should feel like a combination of:
+
+- A high-end technology book launch.
+- An enterprise cybersecurity research platform.
+- A modern AI engineering publication.
+- An interactive technical learning experience.
+
+The website should look sophisticated enough for CISOs, CTOs, senior engineers, academic researchers, founders, and technology executives.
+
+## Color palette
+
+Primary background: #07111F
+
+Secondary background: #0B1628
+
+Card background: #101F34
+
+Electric blue: #3478F6
+
+Cyan: #37D5F5
+
+Offensive AI accent: #F05252
+
+Primary text: #F5F8FF
+
+Secondary text: #AAB8CC
+
+Subtle borders: Blue-grey with low opacity.
+
+Use restrained gradients, subtle glow, elegant shadows, and depth.
+
+## Typography
+
+Headings: Space Grotesk.
+
+Body: Inter.
+
+Technical labels: JetBrains Mono or equivalent.
+
+Use editorial-quality typography, large headlines, generous whitespace, carefully controlled line lengths, and highly readable body text.
+
+## Signature visual identity
+
+Develop an original visual system based on two opposing intelligent systems:
+
+- Offensive AI — red visual identity.
+- Defensive AI — blue/cyan visual identity.
+- The contested digital environment — dark navy.
+- Human oversight — a subtle third visual element representing judgment and control.
+
+Visual elements can include:
+
+- Opposing neural networks.
+- Agent communication graphs.
+- AI security architecture.
+- Data flows.
+- Threat pathways.
+- Trust boundaries.
+- Autonomous defense systems.
+- Human approval gates.
+- Digital infrastructure.
+
+Avoid generic hooded hackers, stock padlocks, ordinary shields, random robot images, Matrix code effects, and excessive neon.
+
+Use custom SVG illustrations and original technical diagrams wherever possible.
+
+The design should feel premium and intentional.
+
+---
+
+# PART 4 — AUTHOR PROFILE AND CREDIBILITY
+
+Use the actual author biography from:
+
+https://www.harshverma.me/page-about
+
+Build a dedicated premium author profile page and a concise author section on the homepage.
+
+Use the following approved source information as the initial content foundation, subject to final author confirmation:
+
+**Harsh Verma**
+
+Principal Software Engineer in AI at Palo Alto Networks.
+
+Professional focus:
+
+- Autonomous agent systems.
+- Multi-agent reasoning and orchestration.
+- Enterprise AI security.
+- AI engineering.
+- Cybersecurity and defensive AI.
+- Distributed cloud systems.
+- Machine learning infrastructure.
+- Responsible enterprise AI adoption.
+
+Professional profile:
+
+- 12+ years in technology and AI.
+- 27+ published research papers, as presented on the current author biography.
+- Six patents: two granted and four pending, as presented on the current author biography.
+- Fellow of the British Computer Society (FBCS).
+- IEEE Senior Member.
+- Official Forbes Technology Council member.
+- AI technology advisor and mentor.
+- UC Berkeley SkyDeck advisory and mentorship involvement.
+- International keynote speaker and technology judge.
+- Published technology thought leadership.
+
+Selected recognitions shown on the existing author page include:
+
+- Global Recognition Award 2026.
+- Most Admired Global Indians 2026.
+- Globee Business Awards recognition.
+
+Use the actual award names and verified descriptions. Do not invent additional award categories or imply that one recognition represents another.
+
+### Author page structure
+
+1. Premium professional portrait.
+2. Short executive biography.
+3. Full professional biography.
+4. Career journey.
+5. AI and cybersecurity expertise.
+6. Research and publications.
+7. Patents and innovation.
+8. Selected professional memberships.
+9. Awards and recognition.
+10. Speaking and keynote engagements.
+11. Advisory and mentorship.
+12. Links to professional profiles.
+13. Connection between the author's professional experience and the book.
+
+Use a polished professional timeline from earlier engineering experience through the current Palo Alto Networks role.
+
+Avoid turning the page into an overwhelming list of credentials.
+
+Prioritize the qualifications most relevant to AI engineering and cybersecurity.
+
+Do not describe Forbes Technology Council membership as employment at Forbes.
+
+Do not invent affiliations, research impact, patent status, sales figures, or endorsements.
+
+Use an elegant section titled:
+
+**The Engineer Behind the Counteroffensive**
+
+Explain why the author's experience building intelligent enterprise systems and working at the intersection of AI and cybersecurity informs the themes of this book.
+
+---
+
+# PART 5 — BOOK POSITIONING
+
+The exact official book title is:
+
+# AI vs. AI
+## Engineering the Cybersecurity Counteroffensive
+
+Author: Harsh Verma.
+
+Use the existing book positioning from:
+
+https://www.harshverma.me/page-books#book2
+
+Existing subtitle/tagline:
+
+"Architecting Autonomous AI Defenses Against Intelligent Adversaries."
+
+Use this as a supporting marketing tagline where appropriate, without implying that every concept described on the existing page is a fully implemented product or validated industry standard.
+
+The central book proposition:
+
+Artificial intelligence is changing the capabilities available to both attackers and defenders. AI systems also introduce their own attack surfaces, including models, prompts, data, retrieval systems, agents, APIs, and connected tools.
+
+The book examines how to understand these changes and engineer safer AI-enabled systems.
+
+The narrative should emphasize:
+
+- AI as a weapon.
+- AI as a target.
+- AI as a defensive instrument.
+- AI attack-surface mapping.
+- AI-native security design patterns.
+- Adversarial testing.
+- Resilience and self-healing systems.
+- Enterprise deployment.
+- High-consequence industries.
+- Secure AI startups and products.
+- Careers in AI cybersecurity.
+- A practical counteroffensive playbook.
+
+Use strong, persuasive marketing copy, but do not make exaggerated claims about AI being able to autonomously eliminate every cyberattack.
+
+---
+
+# PART 6 — HOMEPAGE EXPERIENCE
+
+Build a cinematic homepage with the following sections.
+
+## 6.1 Hero section
+
+Create a breathtaking, immersive hero.
+
+Large headline:
+
+**AI vs. AI**
+
+Subheadline:
+
+**Engineering the Cybersecurity Counteroffensive**
+
+Supporting copy:
+
+"Artificial intelligence is reshaping the cyber battlefield. Attackers can use it to accelerate deception, automate activity, and adapt their techniques. Defenders can use it to detect threats, investigate incidents, and respond intelligently. But the systems themselves must also be secured."
+
+Author:
+
+Harsh Verma
+
+Primary CTA:
+
+**ORDER THE BOOK**
+
+Secondary CTA:
+
+**EXPLORE THE BOOK**
+
+Third optional CTA:
+
+**READ CHAPTER 1**
+
+Visual:
+
+Two opposing AI intelligence systems facing one another across an interconnected digital environment.
+
+Use red for offensive AI and blue/cyan for defensive AI.
+
+Include subtle animated network activity, depth, and motion.
+
+The book cover should be displayed prominently in a premium 3D hardcover mockup.
+
+Use the actual cover artwork from the author's existing book page if accessible.
+
+Do not invent a replacement cover if the original image can be retrieved.
+
+The hero should be visually memorable and optimized for both desktop and mobile.
+
+## 6.2 Purchase strip
+
+Directly below the hero, add a compact purchase section:
+
+- Hardcover.
+- eBook, if available.
+- Other confirmed formats.
+- Buy from a retailer.
+- Order directly, if enabled.
+
+Only display formats and purchase options that are actually available.
+
+## 6.3 Three central pillars
+
+Headline:
+
+**AI Is the Weapon. AI Is the Target. AI Is the Shield.**
+
+Build three premium interactive panels.
+
+AI as Weapon:
+AI-assisted reconnaissance, deception, phishing, malicious content, and attack automation.
+
+AI as Target:
+Models, data, prompts, retrieval systems, agents, APIs, tools, and infrastructure.
+
+AI as Shield:
+AI-assisted detection, analysis, investigation, response, and defensive automation.
+
+Each panel should include a distinctive technical illustration.
+
+## 6.4 The changing cyber battlefield
+
+Compare conventional security environments with modern AI-enabled and agentic systems.
+
+Show how instructions, data retrieval, tool access, delegation, and autonomous actions introduce new security considerations.
+
+Explain why traditional security controls remain important while additional AI-specific controls are needed.
+
+## 6.5 Explore the book
+
+Display all 11 chapters in a visually sophisticated chapter journey.
+
+Every card should link to its chapter detail page.
+
+## 6.6 Technical engineering highlights
+
+Create four highlighted design patterns:
+
+- Circuit Breaker.
+- Shadow Evaluator.
+- Retrieval Gatekeeper.
+- Sandboxed Tool Broker.
+
+Show their security role and architectural placement.
+
+## 6.7 Book resources
+
+Highlight:
+
+- AI Security Manifesto.
+- Technical Reference Architecture.
+- Hands-on Labs.
+- Case Studies.
+- 100-Question Security Assessment.
+- 30/60/90-Day Implementation Roadmap.
+- AI Security Maturity Model.
+- AI Cybersecurity Career Roadmap.
+
+Only present actual completed resources as available.
+
+## 6.8 Author section
+
+Introduce Harsh Verma using a professional photograph, short biography, and selected credentials.
+
+Link to the full author page.
+
+## 6.9 Reviews and credibility
+
+Create a section for verified reviews, reader feedback, professional testimonials, and academic feedback.
+
+Only publish quotations with permission.
+
+Clearly distinguish independent manuscript feedback from reviews of the published book.
+
+Do not create fake Amazon reviews, fake ratings, fake customer counts, or fabricated endorsements.
+
+## 6.10 Final conversion section
+
+Headline:
+
+**The Next Era of Cybersecurity Will Be Engineered.**
+
+Supporting copy:
+
+"Explore the ideas, architectures, and engineering principles shaping the future of AI security."
+
+CTA:
+
+**ORDER AI vs. AI**
+
+Secondary CTA:
+
+**GET THE FIRST CHAPTER**
+
+---
+
+# PART 7 — BOOK PAGE
+
+Route: /book
+
+This is the primary book sales page.
+
+Create a highly persuasive, editorial-quality product presentation.
+
+Include:
+
+1. Large original book cover.
+2. 3D hardcover mockup.
+3. Full title and subtitle.
+4. Author name.
+5. Short book description.
+6. Extended book overview.
+7. Why the book matters.
+8. What readers will learn.
+9. Intended audience.
+10. Chapter overview.
+11. Technical highlights.
+12. Sample chapter.
+13. Existing cyber-warfare teaser.
+14. Author voice overview.
+15. Reviews and testimonials when verified.
+16. Book formats.
+17. Ordering options.
+18. Frequently asked questions.
+19. Final purchase CTA.
+
+Reuse existing promotional assets from the author's book page wherever possible.
+
+The existing page contains a book cover, a 3D hardcover/full-jacket presentation, an author voice overview, a cyber-warfare teaser, and a sample-chapter preview. Inspect these assets and reuse them if technically accessible.
+
+Create an engaging book preview experience with:
+
+- Chapter 1 reading preview.
+- Adjustable font size.
+- Comfortable reading layout.
+- Mobile-friendly presentation.
+- Clear transition to the purchase page.
+
+Do not expose the entire copyrighted manuscript as a free download.
+
+---
+
+# PART 8 — ORDER THE BOOK PAGE
+
+Route: /order
+
+This is a critical conversion page.
+
+Design it like a premium book-commerce experience.
+
+## Main purchase panel
+
+Display:
+
+- Actual book cover.
+- Full title.
+- Author.
+- Available formats.
+- Verified price.
+- Availability.
+- Purchase buttons.
+
+Provide configurable purchase channels:
+
+1. Amazon.
+2. Other confirmed book retailers.
+3. Direct author website purchase.
+4. Institutional and bulk orders.
+
+Do not invent retailer URLs, prices, ISBNs, stock levels, shipping options, or purchase availability.
+
+Create a centralized configuration file or content-management structure where the owner can enter and update:
+
+- Retailer name.
+- Retailer URL.
+- Book format.
+- Price.
+- Currency.
+- Availability.
+- Affiliate disclosure where applicable.
+- Shipping information.
+- ISBN.
+- Direct checkout URL.
+
+### Direct order functionality
+
+If direct sales are enabled, implement a secure commerce flow using a configured payment provider.
+
+Requirements:
+
+- Product selection.
+- Format selection.
+- Quantity.
+- Customer information.
+- Secure payment.
+- Order confirmation.
+- Order notification.
+- Purchase receipt.
+- Order management.
+- Refund and shipping policy links.
+
+Never store payment card information directly.
+
+Use a secure hosted checkout or payment-provider integration.
+
+Do not simulate successful purchases.
+
+If payment infrastructure is not configured, display a clear retailer-order or notification state rather than a fake checkout.
+
+### Purchase experience
+
+Make the purchase process easy:
+
+- Clear primary CTA.
+- Minimal unnecessary steps.
+- Transparent pricing.
+- No misleading urgency.
+- No hidden costs.
+- Mobile-friendly checkout.
+- Visible security and payment information when applicable.
+
+### Bulk and institutional orders
+
+Add a dedicated enquiry section for:
+
+- Universities.
+- Academic institutions.
+- Corporate security teams.
+- Enterprise AI teams.
+- Training organizations.
+- Conferences and workshops.
+
+Allow visitors to enquire about bulk purchases and institutional use.
+
+---
+
+# PART 9 — CHAPTERS PAGE
+
+Route: /chapters
+
+Use the exact chapter titles from the approved manuscript:
+
+1. The New Cyber Arms Race.
+2. How AI Changes the Attacker’s Playbook.
+3. Mapping the AI Attack Surface.
+4. AI Native Security Design Patterns.
+5. Using AI to Build Safe AI.
+6. Building Resilient and Self-Healing AI Systems.
+7. Enterprise AI and Secure Deployment at Scale.
+8. Healthcare, Finance, and Critical Infrastructure.
+9. Startups, Product Builders, and Secure AI from Day One.
+10. Careers in AI Cybersecurity.
+11. The AI Counter Offensive Playbook.
+
+Each chapter page should contain:
+
+- Chapter introduction.
+- Accurate summary.
+- Main themes.
+- Key questions.
+- Learning outcomes.
+- Technical concepts.
+- Relevant visual.
+- Related chapters.
+- Read an excerpt CTA.
+- Order the full book CTA.
+
+Use the manuscript as the source of truth.
+
+Do not replace the approved 11-chapter structure with the three-part marketing outline shown on the older author book page.
+
+---
+
+# PART 10 — FRAMEWORK PAGE
+
+Route: /framework
+
+Build a visually outstanding interactive technical experience.
+
+Include:
+
+### AI as Weapon, Target, and Shield
+
+An interactive visual explaining the central concept.
+
+### AI Attack Surface
+
+Create an interactive layered architecture:
+
+- Application.
+- Model.
+- Data and knowledge.
+- Infrastructure.
+- Governance and people.
+
+### AI-Native Security Patterns
+
+Create interactive architectural diagrams for:
+
+- Circuit Breaker.
+- Shadow Evaluator.
+- Retrieval Gatekeeper.
+- Sandboxed Tool Broker.
+
+### Resilient AI Systems
+
+Explain detection, containment, recovery, and adaptation.
+
+### Enterprise AI Security
+
+Explain trust boundaries, permissions, tool access, observability, human oversight, and secure deployment.
+
+Use diagrams that are technically meaningful.
+
+Do not label proposed frameworks as official standards.
+
+---
+
+# PART 11 — RESOURCES PAGE
+
+Route: /resources
+
+Build a searchable and filterable technical resource library.
+
+Resource types:
+
+- Manifesto.
+- Architecture.
+- Labs.
+- Case studies.
+- Assessments.
+- Roadmaps.
+- Maturity models.
+- Career guidance.
+
+Each resource card should show:
+
+- Title.
+- Short description.
+- Format.
+- Audience.
+- Availability.
+- Explore or download action.
+
+Use actual approved files only.
+
+Allow future resources to be added without rebuilding the website.
+
+---
+
+# PART 12 — READ A SAMPLE CHAPTER
+
+Route: /excerpt
+
+Create a beautiful reading environment.
+
+Include:
+
+- Chapter 1 preview.
+- Book cover thumbnail.
+- Author name.
+- Reading progress.
+- Font size controls.
+- Light and dark reading modes.
+- Mobile-friendly reading.
+- CTA to order the book.
+
+Capture email only when the reader explicitly opts in.
+
+If the sample requires email registration, explain the arrangement clearly.
+
+Do not imply that a visitor has subscribed merely by opening the sample.
+
+---
+
+# PART 13 — REVIEWS AND TESTIMONIALS
+
+Route: /reviews
+
+Build a dedicated credibility page.
+
+Include areas for:
+
+- Verified reader reviews.
+- Expert reviews.
+- Academic feedback.
+- Media coverage.
+- Interview appearances.
+- Reader testimonials.
+
+Use actual approved testimonials only.
+
+Important:
+
+The book has received early manuscript feedback. This must not be misrepresented as endorsement of the final published edition.
+
+Do not publish reviewer names, institutional affiliations, or quotations as endorsements without permission.
+
+Create an editorially elegant layout that can accommodate verified reviews after publication.
+
+---
+
+# PART 14 — ABOUT THE AUTHOR
+
+Route: /author
+
+Build the full author page using:
+
+https://www.harshverma.me/page-about
+
+Use the author biography and professional details described earlier.
+
+Include:
+
+- Professional portrait.
+- Executive biography.
+- Career timeline.
+- Palo Alto Networks experience.
+- AI engineering expertise.
+- Cybersecurity expertise.
+- Autonomous agent systems.
+- Research and publications.
+- Patents and innovation.
+- Fellowships and memberships.
+- Awards and recognition.
+- Advisory and mentorship.
+- Speaking engagements.
+- External profiles.
+
+Add a section:
+
+**Why I Wrote AI vs. AI**
+
+Explain the author's perspective on the growing intersection of artificial intelligence, cybersecurity, autonomous agents, and secure enterprise systems.
+
+Use first-person author writing only if approved by the author.
+
+Link to the full author website for visitors who want to explore his broader professional profile.
+
+---
+
+# PART 15 — FOR EDUCATORS AND ENTERPRISES
+
+Route: /educators
+
+Create a professional page for:
+
+- Universities.
+- Professors.
+- Students.
+- Cybersecurity programs.
+- Enterprise security teams.
+- AI engineering organizations.
+- Technology leaders.
+
+Include:
+
+- Book learning outcomes.
+- Chapter structure.
+- Technical concepts.
+- Suggested classroom use.
+- Group reading.
+- Workshop opportunities.
+- Bulk-order enquiries.
+- Institutional contact form.
+
+Do not claim that the book is formally adopted by an institution unless confirmed.
+
+---
+
+# PART 16 — INSIGHTS AND KNOWLEDGE HUB
+
+Route: /insights
+
+Create an editorial publication experience.
+
+Categories:
+
+- AI Cybersecurity.
+- Agentic AI Security.
+- LLM Security.
+- AI Threat Landscape.
+- AI Attack Surface.
+- Enterprise AI Security.
+- Security Architecture.
+- AI Governance.
+- Autonomous Systems.
+
+Support:
+
+- Article pages.
+- Search.
+- Categories.
+- Related articles.
+- Author attribution.
+- Reading time.
+- Publication dates.
+- Social sharing.
+- Internal linking.
+
+Use real articles and approved content.
+
+Do not invent publication dates, citations, research, or external coverage.
+
+---
+
+# PART 17 — BESTSELLER AND BOOK-LAUNCH CONVERSION STRATEGY
+
+Build the website to support a serious book launch.
+
+The website should be designed around the reader journey:
+
+Discover → Explore → Trust → Preview → Order → Review → Recommend.
+
+### A. Lead capture
+
+Create an elegant signup offer:
+
+"Get the First Chapter of AI vs. AI"
+
+Supporting text:
+
+"Explore the changing AI threat landscape and discover why the next generation of intelligent systems must be engineered for security."
+
+Capture:
+
+- Name.
+- Email.
+- Optional professional role.
+
+Integrate with a configurable email marketing provider.
+
+Allow the author to segment subscribers by:
+
+- AI engineers.
+- Cybersecurity professionals.
+- Founders.
+- Students.
+- Enterprise leaders.
+- Educators.
+
+Use explicit consent and an unsubscribe mechanism.
+
+### B. Launch notification
+
+Create a configurable launch campaign module.
+
+It should support:
+
+- Announcement date.
+- Purchase links.
+- Retailer links.
+- Launch updates.
+- Email announcements.
+- New-format announcements.
+- Reader resources.
+
+Only display countdowns when a real launch date is confirmed.
+
+### C. Reader community
+
+Create an opt-in reader community signup.
+
+Possible content:
+
+- New article announcements.
+- Technical diagrams.
+- Book updates.
+- New resources.
+- Author Q&A.
+- Events and speaking announcements.
+
+Do not promise a community or event until it exists.
+
+### D. Review collection
+
+Create a post-purchase reader review pathway.
+
+Allow readers to:
+
+- Share feedback.
+- Submit testimonials.
+- Suggest corrections.
+- Request additional resources.
+
+Do not incentivize only positive reviews or fabricate retailer reviews.
+
+### E. Institutional sales
+
+Create a dedicated bulk-order enquiry process.
+
+Capture:
+
+- Organization.
+- Contact.
+- Intended quantity.
+- Intended use.
+- Country.
+- Required format.
+- Message.
+
+### F. Purchase analytics
+
+Build analytics events for:
+
+- Book page viewed.
+- Order CTA clicked.
+- Retailer selected.
+- Direct checkout started.
+- Purchase completed.
+- Sample chapter opened.
+- Sample chapter completed, if measurable.
+- Newsletter signup.
+- Bulk order enquiry.
+- Review submitted.
+
+Use consent-aware analytics.
+
+Never record sensitive personal information in analytics events.
+
+### G. Conversion optimization
+
+Design for:
+
+- Clear calls to action.
+- Strong visual hierarchy.
+- Fast loading.
+- Trustworthy author information.
+- Easy purchasing.
+- Transparent book details.
+- Mobile conversion.
+- Minimal checkout friction.
+
+Allow future A/B testing of headlines, CTA wording, and purchase-page layouts.
+
+Do not use deceptive countdowns, fake scarcity, fabricated sales statistics, or false bestseller claims.
+
+---
+
+# PART 18 — PRESS AND MEDIA PAGE
+
+Route: /media
+
+Include:
+
+- High-resolution book cover.
+- 3D hardcover artwork.
+- Author portrait.
+- Short author bio.
+- Long author bio.
+- Book summary.
+- Interview topics.
+- Speaking topics.
+- Contact information.
+- Downloadable press materials.
+
+Only offer downloadable files when actual assets exist.
+
+---
+
+# PART 19 — CONTACT
+
+Route: /contact
+
+Provide enquiry categories:
+
+- Book questions.
+- Retailer and purchase issues.
+- Speaking.
+- Media and interviews.
+- Academic adoption.
+- Enterprise workshops.
+- Bulk orders.
+- General enquiries.
+
+Implement real form validation and a configured backend.
+
+Do not display fake successful submission messages.
+
+---
+
+# PART 20 — FOOTER
+
+Include:
+
+- Beyond AI vs. AI logo.
+- Book title.
+- Author name.
+- Main navigation.
+- Chapters.
+- Resources.
+- Order the Book.
+- Author website.
+- LinkedIn.
+- YouTube.
+- Substack.
+- Contact.
+- Privacy.
+- Terms.
+- Copyright.
+
+Use the tagline:
+
+**Understanding the Threats. Engineering the Counteroffensive.**
+
+---
+
+# PART 21 — SEO AND GOOGLE DISCOVERABILITY
+
+Treat SEO as a first-class requirement.
+
+Implement:
+
+- Unique page titles.
+- Meta descriptions.
+- Canonical URLs.
+- Open Graph tags.
+- Social sharing images.
+- XML sitemap.
+- robots.txt.
+- Breadcrumbs.
+- Semantic HTML.
+- Internal links.
+- Optimized image alt text.
+- Fast page loading.
+
+Add valid structured data where applicable:
+
+- Book.
+- Person.
+- Organization, where appropriate.
+- Article.
+- BreadcrumbList.
+- Offer only when an actual purchase offer exists.
+
+Use accurate book information.
+
+Optimize for:
+
+- AI vs. AI: Engineering the Cybersecurity Counteroffensive.
+- AI cybersecurity book.
+- AI security engineering.
+- Agentic AI security.
+- LLM security.
+- AI attack surface.
+- AI cybersecurity architecture.
+- Autonomous AI defense.
+- AI security design patterns.
+- Cybersecurity counteroffensive.
+
+Do not use keyword stuffing.
+
+Build a strong internal linking structure between book, chapters, framework, resources, author, and insights.
+
+Create social sharing graphics specifically for the book.
+
+---
+
+# PART 22 — TECHNICAL IMPLEMENTATION
+
+Build a real production-quality application.
+
+Preferred stack:
+
+- React.
+- TypeScript.
+- Tailwind CSS.
+- Reusable components.
+- React Router.
+- Lucide icons.
+- Lightweight animation library.
+
+Use the stack supported by the development environment if different.
+
+Create:
+
+- Shared navigation.
+- Shared footer.
+- Reusable hero components.
+- Reusable chapter cards.
+- Reusable resource cards.
+- Reusable book product cards.
+- Reusable article cards.
+- Reusable author profile components.
+- Centralized book metadata.
+- Centralized purchase-link configuration.
+- Reusable CTA components.
+
+Use a maintainable project structure.
+
+Separate content from presentation.
+
+Make it easy for the author to update prices, retailers, book formats, author biography, resources, and articles.
+
+Ensure all pages are responsive and accessible.
+
+---
+
+# PART 23 — PERFORMANCE AND SECURITY
+
+Implement:
+
+- Image optimization.
+- Responsive images.
+- Lazy loading.
+- Code splitting.
+- Fast page transitions.
+- Reduced-motion support.
+- Accessible contrast.
+- Keyboard navigation.
+- Semantic headings.
+- Form validation.
+- HTTPS.
+- Secure backend configuration.
+- No exposed API keys.
+- Spam protection.
+- Privacy-conscious analytics.
+
+Target excellent Lighthouse scores across performance, accessibility, SEO, and best practices.
+
+---
+
+# PART 24 — IMPORTANT CONTENT RULES
+
+These are mandatory.
+
+1. The official book title is "AI vs. AI: Engineering the Cybersecurity Counteroffensive".
+2. The author is Harsh Verma.
+3. Use the author's existing biography as the source for professional details.
+4. Use the approved manuscript as the source of truth for the 11 chapters.
+5. Do not confuse this book with "Beyond AI Engineering".
+6. Do not invent sales numbers, reviews, ratings, ISBNs, publishers, retailer links, or publication details.
+7. Do not use expired launch dates or outdated waitlist messaging.
+8. Do not claim the book is a bestseller without verified evidence.
+9. Do not present hypothetical case studies as documented incidents.
+10. Do not publish reviewer quotations without permission.
+11. Do not claim an order is completed unless the payment provider confirms it.
+12. Do not invent downloadable assets.
+13. Use real cover artwork, approved portraits, and available promotional media.
+14. Use placeholders only where information is genuinely unavailable.
+15. Do not make unsupported technical promises.
+
+---
+
+# PART 25 — FINAL QUALITY EXPECTATIONS
+
+I expect you to actually build the website.
+
+Do not return only a design proposal or static mockup.
+
+Build:
+
+- Complete homepage.
+- Book page.
+- Order page.
+- Chapters page.
+- Chapter detail template.
+- Framework page.
+- Resources page.
+- Sample chapter experience.
+- Author page.
+- Reviews page.
+- Educator page.
+- Insights page.
+- Media page.
+- Contact page.
+
+Implement responsive navigation, working routes, reusable components, interactions, forms, SEO foundations, and configurable commerce.
+
+Before finishing, verify:
+
+- Every navigation link works.
+- Every CTA has a valid destination.
+- Mobile and desktop layouts are polished.
+- Book cover displays correctly.
+- Chapter titles match the manuscript.
+- Author biography is accurate.
+- Ordering pathways are functional or clearly marked as not yet configured.
+- Forms are connected to actual services or clearly marked as requiring configuration.
+- No fake testimonials, fake ratings, or fake bestseller claims appear.
+- Page titles and metadata are unique.
+- The visual system is consistent.
+
+## FINAL CREATIVE DIRECTION
+
+The finished website should make a visitor think:
+
+"This is not just another book about AI. This is a serious engineering perspective on the future of cybersecurity."
+
+It should communicate technical depth, professional authority, a clear reason to buy the book, and an engaging path into the subject.
+
+**Brand:** Beyond AI vs. AI
+
+**Book:** AI vs. AI: Engineering the Cybersecurity Counteroffensive
+
+**Author:** Harsh Verma
+
+**Primary action:** ORDER THE BOOK
+
+**Secondary action:** EXPLORE THE BOOK
+
+**Signature message:**
+
+"Understand the threats. Engineer the counteroffensive. Secure the intelligent future."
