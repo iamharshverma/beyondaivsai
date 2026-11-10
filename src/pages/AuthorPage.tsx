@@ -129,21 +129,6 @@ export const AuthorPage: React.FC = () => {
               </p>
             </div>
 
-            {/* Key Metrics */}
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-              {AUTHOR_DATA.keyMetrics.map((m) => (
-                <div
-                  key={m.label}
-                  className="rounded-xl bg-white dark:bg-[#101F34] border border-slate-200 dark:border-slate-400/15 p-4 shadow-xs"
-                >
-                  <div className="text-lg font-bold font-mono text-slate-900 dark:text-[#F5F8FF] tabular-nums">
-                    {m.value}
-                  </div>
-                  <div className="text-xs text-slate-600 dark:text-[#AAB8CC] mt-1">{m.label}</div>
-                </div>
-              ))}
-            </div>
-
             {/* Full Biography */}
             <div className="space-y-4 text-sm sm:text-base text-slate-600 dark:text-[#AAB8CC] leading-relaxed">
               {AUTHOR_DATA.fullBioParagraphs.map((p, i) => (
