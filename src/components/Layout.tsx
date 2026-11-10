@@ -1,21 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { Link, NavLink, useLocation } from 'react-router-dom';
 import {
-  Menu,
-  X,
   ChevronRight,
   ExternalLink,
-  Sun,
-  Moon,
   ShieldAlert,
   ShieldCheck,
-  FolderTree,
 } from 'lucide-react';
-import { motion, AnimatePresence } from 'motion/react';
 import { BOOK_METADATA } from '../data/bookConfig';
 import { AUTHOR_DATA } from '../data/authorData';
 import { trackEvent } from '../utils/analytics';
-import { useTheme } from '../context/ThemeContext';
 import { BrandLogo, FloatingThemeSwitcher } from './BrandLogo';
 import { NavigationTreeModal } from './NavigationTreeModal';
 
@@ -53,13 +46,10 @@ const ROUTE_LABELS: Record<string, string> = {
 };
 
 export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [navTreeOpen, setNavTreeOpen] = useState(false);
   const location = useLocation();
-  const { theme, toggleTheme } = useTheme();
 
   useEffect(() => {
-    setMobileMenuOpen(false);
     setNavTreeOpen(false);
     if (location.hash) {
       const targetId = location.hash.replace('#', '');
@@ -138,14 +128,14 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
             ))}
           </nav>
 
-          {/* Zone 3: Creative More / Explore Sections Icon Button + Order CTA + Icon Theme Switcher + Mobile Menu */}
-          <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
-            {/* Creative More / Explore Sections Bento-Tree Icon Button */}
+          {/* Zone 3: Mobile shows ONLY the More Icon; Desktop also shows Order CTA & Theme Switcher */}
+          <div className="flex items-center gap-2 shrink-0">
+            {/* Creative More / Explore Sections Bento-Tree Icon Button (Visible on all viewports) */}
             <button
               type="button"
               onClick={() => setNavTreeOpen(true)}
-              aria-label="Explore All Sections & Sequence (⌘K)"
-              title="Explore All Sections & Sequence (⌘K)"
+              aria-label="More — Explore All Sections & Sequence (⌘K)"
+              title="More — Explore All Sections & Sequence (⌘K)"
               className="relative inline-flex items-center justify-center w-9 h-9 rounded-xl bg-[#F4F7FC] dark:bg-[#0F1D33] hover:bg-white dark:hover:bg-[#162944] border border-[#CBD5E1] dark:border-slate-400/20 text-[#091122] dark:text-[#F5F8FF] shadow-2xs transition-all cursor-pointer group"
             >
               <svg
@@ -192,102 +182,16 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
             <Link
               to="/order"
               onClick={() => trackEvent('order_cta_clicked', { source: 'top_nav' })}
-              className="px-3 sm:px-4 py-2 text-xs font-semibold text-white bg-gradient-to-r from-[#E11D48] via-[#4F46E5] to-[#1D4ED8] hover:from-[#BE123C] hover:to-[#1E40AF] rounded-xl transition-all whitespace-nowrap shrink-0 shadow-[0_4px_14px_-3px_rgba(225,29,72,0.3),0_4px_14px_-3px_rgba(29,78,216,0.32)]"
+              className="hidden lg:inline-flex items-center px-4 py-2 text-xs font-semibold text-white bg-gradient-to-r from-[#E11D48] via-[#4F46E5] to-[#1D4ED8] hover:from-[#BE123C] hover:to-[#1E40AF] rounded-xl transition-all whitespace-nowrap shrink-0 shadow-[0_4px_14px_-3px_rgba(225,29,72,0.3),0_4px_14px_-3px_rgba(29,78,216,0.32)]"
             >
-              <span className="hidden sm:inline">Order the Book</span>
-              <span className="sm:hidden">Order</span>
+              <span>Order the Book</span>
             </Link>
 
-            <FloatingThemeSwitcher />
-
-            <button
-              type="button"
-              onClick={() => setMobileMenuOpen((prev) => !prev)}
-              className="lg:hidden p-2 rounded-xl text-slate-700 dark:text-[#AAB8CC] hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-[#101F34] transition-colors"
-              aria-label="Toggle navigation menu"
-            >
-              {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
-            </button>
+            <div className="hidden lg:block">
+              <FloatingThemeSwitcher />
+            </div>
           </div>
         </div>
-
-        {/* Animated Mobile Drawer */}
-        <AnimatePresence>
-          {mobileMenuOpen && (
-            <motion.div
-              initial={{ height: 0, opacity: 0 }}
-              animate={{ height: 'auto', opacity: 1 }}
-              exit={{ height: 0, opacity: 0 }}
-              transition={{ duration: 0.2, ease: 'easeOut' }}
-              className="lg:hidden overflow-hidden bg-white/98 dark:bg-[#0A1426] border-t border-[#D5E0F0] dark:border-slate-400/15"
-            >
-              <div className="px-4 py-4 space-y-4">
-                <div className="flex items-center justify-between pb-3 border-b border-slate-200 dark:border-slate-400/15">
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setMobileMenuOpen(false);
-                      setNavTreeOpen(true);
-                    }}
-                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-gradient-to-r from-[#E11D48]/10 to-[#1D4ED8]/10 border border-[#1D4ED8]/30 text-xs font-mono font-bold text-[#1D4ED8] dark:text-[#38BDF8]"
-                  >
-                    <FolderTree className="w-3.5 h-3.5" />
-                    <span>Open Full Navigation Tree</span>
-                  </button>
-                  <button
-                    type="button"
-                    onClick={toggleTheme}
-                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-100 dark:bg-[#101F34] border border-slate-200 dark:border-slate-400/20 text-xs font-medium text-slate-800 dark:text-[#F5F8FF]"
-                  >
-                    {theme === 'light' ? (
-                      <>
-                        <Moon className="w-3.5 h-3.5 text-[#1D4ED8]" />
-                        <span>Dark Mode</span>
-                      </>
-                    ) : (
-                      <>
-                        <Sun className="w-3.5 h-3.5 text-amber-400" />
-                        <span>Light Mode</span>
-                      </>
-                    )}
-                  </button>
-                </div>
-
-                <div className="grid grid-cols-2 gap-2 text-sm font-medium">
-                  {[
-                    { to: '/', label: 'Home' },
-                    { to: '/book', label: 'The Book & Sequence' },
-                    { to: '/order', label: 'Order the Book', highlight: true },
-                    { to: '/chapters', label: 'Sequence Atlas' },
-                    { to: '/assessment', label: 'AI Readiness Test', highlight: true },
-                    { to: '/framework', label: 'Security Framework' },
-                    { to: '/resources', label: 'Toolkit & Resources' },
-                    { to: '/blogs', label: 'Author Blogs (30+)' },
-                    { to: '/excerpt', label: 'Sample Sequence 01' },
-                    { to: '/author', label: 'About Harsh Verma' },
-                    { to: '/reviews', label: 'Reviews' },
-                    { to: '/educators', label: 'Educators' },
-                    { to: '/insights', label: 'Insights Hub' },
-                    { to: '/media', label: 'Press & Media' },
-                    { to: '/contact', label: 'Contact' },
-                  ].map((item) => (
-                    <Link
-                      key={item.to}
-                      to={item.to}
-                      className={`px-3 py-2 rounded-lg text-xs sm:text-sm transition-colors ${
-                        item.highlight
-                          ? 'bg-gradient-to-r from-[#E11D48]/10 to-[#1D4ED8]/10 text-[#E11D48] dark:text-[#38BDF8] font-bold border border-[#E11D48]/25 dark:border-[#38BDF8]/30'
-                          : 'text-slate-900 dark:text-[#F5F8FF] hover:bg-slate-100 dark:hover:bg-[#101F34]'
-                      }`}
-                    >
-                      {item.label}
-                    </Link>
-                  ))}
-                </div>
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
       </header>
 
       {/* Contextual Breadcrumb Strip on Subpages with Quick Tree Trigger */}
