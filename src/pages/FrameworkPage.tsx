@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, Shield, Lock, Activity } from 'lucide-react';
+import { motion } from 'framer-motion';
 import {
   TRIAD_PILLARS,
   ATTACK_SURFACE_LAYERS,
@@ -8,6 +9,7 @@ import {
   RESILIENCE_PHASES,
 } from '../data/frameworkData';
 import { CounteroffensiveHeroGraphic } from '../components/CounteroffensiveDiagram';
+import { FadeInUp, fadeInUpVariants, staggerGridVariants } from '../components/FadeInUp';
 import { usePageSEO } from '../utils/analytics';
 
 export const FrameworkPage: React.FC = () => {
@@ -27,40 +29,49 @@ export const FrameworkPage: React.FC = () => {
     FOUR_SECURITY_PATTERNS.find((p) => p.id === selectedPatternId) || FOUR_SECURITY_PATTERNS[0];
 
   return (
-    <div className="py-12 md:py-16 space-y-20">
+    <div className="py-10 sm:py-12 md:py-16 space-y-14 sm:space-y-20 w-full overflow-x-hidden">
       {/* Header & Interactive Topology */}
-      <section className="max-w-[1280px] mx-auto px-6 space-y-8">
-        <div className="max-w-3xl">
-          <div className="text-xs font-mono text-[#0284C7] dark:text-[#37D5F5] mb-2">
+      <section className="w-full max-w-[1280px] mx-auto px-4 sm:px-6 space-y-6 sm:space-y-8">
+        <FadeInUp className="max-w-3xl">
+          <div className="text-xs font-mono font-bold bg-gradient-to-r from-[#E11D48] to-[#1D4ED8] dark:from-[#FB7185] dark:to-[#38BDF8] bg-clip-text text-transparent mb-2">
             INTERACTIVE TECHNICAL ARCHITECTURE
           </div>
-          <h1 className="text-3xl sm:text-5xl font-bold font-display text-slate-900 dark:text-[#F5F8FF] text-balance">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold font-display text-slate-900 dark:text-[#F5F8FF] text-balance">
             The AI Counteroffensive Engineering Framework
           </h1>
-          <p className="mt-3 text-base text-slate-600 dark:text-[#AAB8CC] leading-relaxed">
+          <p className="mt-3 text-sm sm:text-base text-slate-600 dark:text-[#AAB8CC] leading-relaxed">
             Explore the architectural reference models introduced in <em>AI vs. AI: Engineering the Cybersecurity Counteroffensive</em>. Note: These architectures represent practitioner engineering frameworks and reference design patterns from the book, rather than formal statutory standards.
           </p>
-        </div>
+        </FadeInUp>
 
-        <CounteroffensiveHeroGraphic />
+        <FadeInUp delay={0.08}>
+          <CounteroffensiveHeroGraphic />
+        </FadeInUp>
       </section>
 
       {/* 1. AI as Weapon, Target, and Shield */}
-      <section className="max-w-[1280px] mx-auto px-6 pt-8 border-t border-slate-200 dark:border-slate-400/15">
-        <div className="mb-8">
-          <div className="text-xs font-mono text-[#0284C7] dark:text-[#37D5F5] mb-1">
+      <section className="w-full max-w-[1280px] mx-auto px-4 sm:px-6 pt-8 border-t border-slate-200 dark:border-slate-400/15">
+        <FadeInUp className="mb-6 sm:mb-8">
+          <div className="text-xs font-mono font-bold text-[#E11D48] dark:text-[#38BDF8] mb-1">
             01. FOUNDATIONAL TRIAD
           </div>
           <h2 className="text-2xl sm:text-3xl font-bold font-display text-slate-900 dark:text-[#F5F8FF]">
             AI as Weapon, Target, and Shield
           </h2>
-        </div>
+        </FadeInUp>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <motion.div
+          variants={staggerGridVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.1 }}
+          className="grid grid-cols-1 md:grid-cols-3 gap-5 sm:gap-6"
+        >
           {TRIAD_PILLARS.map((pillar) => (
-            <div
+            <motion.div
               key={pillar.id}
-              className="rounded-xl bg-white dark:bg-[#101F34] border border-slate-200 dark:border-slate-400/15 p-6 space-y-4 shadow-xs"
+              variants={fadeInUpVariants}
+              className="rounded-xl bg-white dark:bg-[#0F1D33] border border-slate-200 dark:border-slate-400/15 p-5 sm:p-6 space-y-4 shadow-xs"
             >
               <div className="text-xs font-mono font-semibold" style={{ color: pillar.accentColor }}>
                 {pillar.label}
@@ -78,29 +89,29 @@ export const FrameworkPage: React.FC = () => {
                   </li>
                 ))}
               </ul>
-            </div>
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
       </section>
 
       {/* 2. Interactive 5-Layer AI Attack Surface */}
-      <section className="bg-slate-100/80 dark:bg-[#0B1628] py-16 border-y border-slate-200 dark:border-slate-400/15">
-        <div className="max-w-[1280px] mx-auto px-6 space-y-8">
-          <div className="max-w-3xl">
-            <div className="text-xs font-mono text-[#0284C7] dark:text-[#37D5F5] mb-1">
+      <section className="bg-slate-100/80 dark:bg-[#0A1426] py-12 sm:py-16 border-y border-slate-200 dark:border-slate-400/15">
+        <div className="w-full max-w-[1280px] mx-auto px-4 sm:px-6 space-y-6 sm:space-y-8">
+          <FadeInUp className="max-w-3xl">
+            <div className="text-xs font-mono font-bold text-[#E11D48] dark:text-[#FB7185] mb-1">
               02. LAYERED THREAT TAXONOMY (CHAPTER 3)
             </div>
             <h2 className="text-2xl sm:text-3xl font-bold font-display text-slate-900 dark:text-[#F5F8FF]">
               Interactive Five-Layer AI Attack Surface
             </h2>
-            <p className="mt-2 text-sm text-slate-600 dark:text-[#AAB8CC]">
+            <p className="mt-2 text-xs sm:text-sm text-slate-600 dark:text-[#AAB8CC]">
               Select any layer in the stack to inspect its core components, offensive threat vectors, defensive engineering controls, and human governance gate.
             </p>
-          </div>
+          </FadeInUp>
 
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 items-start">
             {/* Layer Stack Selector */}
-            <div className="lg:col-span-5 space-y-2.5">
+            <FadeInUp className="lg:col-span-5 space-y-2.5 min-w-0">
               {ATTACK_SURFACE_LAYERS.map((layer) => {
                 const isSelected = layer.id === selectedLayerId;
                 return (
@@ -108,14 +119,14 @@ export const FrameworkPage: React.FC = () => {
                     key={layer.id}
                     type="button"
                     onClick={() => setSelectedLayerId(layer.id)}
-                    className={`w-full text-left rounded-xl p-4 border transition-all ${
+                    className={`w-full text-left rounded-xl p-4 border transition-all cursor-pointer ${
                       isSelected
-                        ? 'bg-white dark:bg-[#101F34] border-[#0284C7] dark:border-[#37D5F5] shadow-md'
-                        : 'bg-slate-50 dark:bg-[#07111F] border-slate-200 dark:border-slate-400/15 hover:border-slate-300 dark:hover:border-slate-400/30'
+                        ? 'bg-white dark:bg-[#0F1D33] border-[#E11D48] dark:border-[#38BDF8] shadow-md'
+                        : 'bg-slate-50 dark:bg-[#060D1A] border-slate-200 dark:border-slate-400/15 hover:border-slate-300 dark:hover:border-slate-400/30'
                     }`}
                   >
-                    <div className="flex items-center justify-between text-xs font-mono">
-                      <span className="text-[#0284C7] dark:text-[#37D5F5] font-semibold">
+                    <div className="flex flex-wrap items-center justify-between gap-2 text-xs font-mono">
+                      <span className="text-[#E11D48] dark:text-[#38BDF8] font-bold">
                         {layer.layerNumber}
                       </span>
                       <span className="text-slate-600 dark:text-[#AAB8CC]">
@@ -131,15 +142,21 @@ export const FrameworkPage: React.FC = () => {
                   </button>
                 );
               })}
-            </div>
+            </FadeInUp>
 
             {/* Active Layer Inspector */}
-            <div className="lg:col-span-7 rounded-2xl bg-white dark:bg-[#101F34] border border-slate-200 dark:border-slate-400/20 p-6 md:p-8 space-y-6 shadow-sm">
+            <motion.div
+              key={activeLayer.id}
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.3 }}
+              className="lg:col-span-7 rounded-2xl bg-white dark:bg-[#0F1D33] border border-slate-200 dark:border-slate-400/20 p-5 sm:p-6 md:p-8 space-y-6 shadow-sm min-w-0"
+            >
               <div>
-                <div className="text-xs font-mono text-[#0284C7] dark:text-[#37D5F5]">
+                <div className="text-xs font-mono font-bold text-[#1D4ED8] dark:text-[#38BDF8]">
                   {activeLayer.layerNumber} SPECIFICATION
                 </div>
-                <h3 className="text-2xl font-bold font-display text-slate-900 dark:text-[#F5F8FF] mt-1">
+                <h3 className="text-xl sm:text-2xl font-bold font-display text-slate-900 dark:text-[#F5F8FF] mt-1">
                   {activeLayer.name}
                 </h3>
                 <p className="text-xs text-slate-600 dark:text-[#AAB8CC] mt-1">
@@ -151,7 +168,7 @@ export const FrameworkPage: React.FC = () => {
                 <div className="text-xs font-mono text-slate-500 dark:text-[#AAB8CC] mb-2">
                   ARCHITECTURAL SURFACES
                 </div>
-                <div className="flex flex-wrap gap-x-4 gap-y-1 text-xs font-mono text-slate-900 dark:text-[#F5F8FF]">
+                <div className="flex flex-wrap gap-x-3 sm:gap-x-4 gap-y-1 text-xs font-mono text-slate-900 dark:text-[#F5F8FF]">
                   {activeLayer.components.map((comp, idx) => (
                     <React.Fragment key={comp}>
                       {idx > 0 && <span className="text-slate-400 dark:text-slate-600">·</span>}
@@ -162,30 +179,30 @@ export const FrameworkPage: React.FC = () => {
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="rounded-xl bg-red-50/70 dark:bg-[#07111F] border border-red-200 dark:border-[#F05252]/35 p-4 space-y-2">
-                  <div className="text-xs font-mono text-[#DC2626] dark:text-[#F05252] font-semibold">
-                    OFFENSIVE THREAT VECTORS
+                <div className="rounded-xl bg-red-50/70 dark:bg-[#060D1A] border border-red-200 dark:border-[#FB7185]/35 p-4 space-y-2">
+                  <div className="text-xs font-mono text-[#E11D48] dark:text-[#FB7185] font-bold">
+                    RED AI THREAT VECTORS
                   </div>
                   <ul className="space-y-2 text-xs text-slate-700 dark:text-[#AAB8CC]">
                     {activeLayer.offensiveThreats.map((t) => (
-                      <li key={t}>• {t}</li>
+                      <li key={t} className="break-words">• {t}</li>
                     ))}
                   </ul>
                 </div>
 
-                <div className="rounded-xl bg-sky-50/70 dark:bg-[#07111F] border border-sky-200 dark:border-[#37D5F5]/35 p-4 space-y-2">
-                  <div className="text-xs font-mono text-[#0284C7] dark:text-[#37D5F5] font-semibold">
-                    DEFENSIVE ENGINEERING CONTROLS
+                <div className="rounded-xl bg-blue-50/70 dark:bg-[#060D1A] border border-blue-200 dark:border-[#38BDF8]/35 p-4 space-y-2">
+                  <div className="text-xs font-mono text-[#1D4ED8] dark:text-[#38BDF8] font-bold">
+                    BLUE AI ENGINEERING CONTROLS
                   </div>
                   <ul className="space-y-2 text-xs text-slate-700 dark:text-[#AAB8CC]">
                     {activeLayer.defensiveControls.map((c) => (
-                      <li key={c}>• {c}</li>
+                      <li key={c} className="break-words">• {c}</li>
                     ))}
                   </ul>
                 </div>
               </div>
 
-              <div className="rounded-xl bg-amber-50/80 dark:bg-[#0B1628] border border-amber-300 dark:border-amber-400/30 p-4 text-xs">
+              <div className="rounded-xl bg-amber-50/80 dark:bg-[#0A1426] border border-amber-300 dark:border-amber-400/30 p-4 text-xs">
                 <span className="font-mono text-amber-800 dark:text-amber-300 font-semibold block mb-1">
                   HUMAN OVERSIGHT &amp; GOVERNANCE BOUNDARY:
                 </span>
@@ -193,32 +210,32 @@ export const FrameworkPage: React.FC = () => {
                   {activeLayer.humanOversightRole}
                 </span>
               </div>
-            </div>
+            </motion.div>
           </div>
         </div>
       </section>
 
       {/* 3. AI-Native Security Design Patterns */}
-      <section id="patterns" className="max-w-[1280px] mx-auto px-6 space-y-8">
-        <div className="max-w-3xl">
-          <div className="text-xs font-mono text-[#0284C7] dark:text-[#37D5F5] mb-1">
+      <section id="patterns" className="w-full max-w-[1280px] mx-auto px-4 sm:px-6 space-y-6 sm:space-y-8">
+        <FadeInUp className="max-w-3xl">
+          <div className="text-xs font-mono font-bold text-[#1D4ED8] dark:text-[#38BDF8] mb-1">
             03. DETERMINISTIC MEDIATION PATTERNS (CHAPTER 4)
           </div>
           <h2 className="text-2xl sm:text-3xl font-bold font-display text-slate-900 dark:text-[#F5F8FF]">
             AI-Native Security Design Patterns
           </h2>
-          <p className="mt-2 text-sm text-slate-600 dark:text-[#AAB8CC]">
+          <p className="mt-2 text-xs sm:text-sm text-slate-600 dark:text-[#AAB8CC]">
             Inspect the architectural placement and execution sequence of the four patterns that wrap probabilistic models in deterministic security boundaries.
           </p>
-        </div>
+        </FadeInUp>
 
         {/* Interactive Pipeline Map */}
-        <div className="rounded-2xl bg-slate-100/80 dark:bg-[#0B1628] border border-slate-200 dark:border-slate-400/20 p-6">
+        <FadeInUp delay={0.06} className="rounded-2xl bg-slate-100/80 dark:bg-[#0A1426] border border-slate-200 dark:border-slate-400/20 p-4 sm:p-6">
           <div className="text-xs font-mono text-slate-600 dark:text-[#AAB8CC] mb-4">
             CLICK ANY PATTERN NODE BELOW TO INSPECT ITS MEDIATION SPECIFICATION:
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5 sm:gap-4 mb-6 sm:mb-8">
             {FOUR_SECURITY_PATTERNS.map((pat, i) => {
               const active = pat.id === selectedPatternId;
               return (
@@ -226,13 +243,13 @@ export const FrameworkPage: React.FC = () => {
                   key={pat.id}
                   type="button"
                   onClick={() => setSelectedPatternId(pat.id)}
-                  className={`text-left rounded-xl p-4 border transition-all ${
+                  className={`text-left rounded-xl p-4 border transition-all cursor-pointer ${
                     active
-                      ? 'bg-sky-50 dark:bg-[#3478F6]/20 border-[#0284C7] dark:border-[#37D5F5] text-slate-900 dark:text-[#F5F8FF] shadow-xs'
-                      : 'bg-white dark:bg-[#101F34] border-slate-200 dark:border-slate-400/15 text-slate-600 dark:text-[#AAB8CC] hover:text-slate-900 dark:hover:text-[#F5F8FF]'
+                      ? 'bg-white dark:bg-[#0F1D33] border-[#1D4ED8] dark:border-[#38BDF8] text-slate-900 dark:text-[#F5F8FF] shadow-md'
+                      : 'bg-white/75 dark:bg-[#060D1A] border-slate-200 dark:border-slate-400/15 text-slate-600 dark:text-[#AAB8CC] hover:text-slate-900 dark:hover:text-[#F5F8FF]'
                   }`}
                 >
-                  <div className="text-xs font-mono text-[#0284C7] dark:text-[#37D5F5]">
+                  <div className="text-xs font-mono font-bold text-[#E11D48] dark:text-[#38BDF8]">
                     Pattern 0{i + 1}
                   </div>
                   <div className="text-base font-bold font-display text-slate-900 dark:text-[#F5F8FF] mt-1">
@@ -246,15 +263,15 @@ export const FrameworkPage: React.FC = () => {
             })}
           </div>
 
-          <div className="rounded-xl bg-white dark:bg-[#101F34] border border-slate-200 dark:border-slate-400/15 p-6 md:p-8 grid grid-cols-1 lg:grid-cols-12 gap-8 shadow-xs">
-            <div className="lg:col-span-7 space-y-4">
-              <div className="text-xs font-mono text-[#0284C7] dark:text-[#37D5F5]">
+          <div className="rounded-xl bg-white dark:bg-[#0F1D33] border border-slate-200 dark:border-slate-400/15 p-5 sm:p-6 md:p-8 grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 shadow-xs">
+            <div className="lg:col-span-7 space-y-4 min-w-0">
+              <div className="text-xs font-mono font-semibold text-[#1D4ED8] dark:text-[#38BDF8]">
                 PLACEMENT: {activePattern.architecturalPlacement}
               </div>
-              <h3 className="text-2xl font-bold font-display text-slate-900 dark:text-[#F5F8FF]">
+              <h3 className="text-xl sm:text-2xl font-bold font-display text-slate-900 dark:text-[#F5F8FF]">
                 {activePattern.name}
               </h3>
-              <p className="text-sm text-slate-600 dark:text-[#AAB8CC] leading-relaxed">
+              <p className="text-xs sm:text-sm text-slate-600 dark:text-[#AAB8CC] leading-relaxed">
                 {activePattern.securityRole}
               </p>
 
@@ -262,7 +279,7 @@ export const FrameworkPage: React.FC = () => {
                 {activePattern.mechanismSteps.map((step) => (
                   <div
                     key={step}
-                    className="rounded-lg bg-slate-50 dark:bg-[#07111F] border border-slate-200 dark:border-slate-400/10 px-4 py-2.5 text-xs font-mono text-slate-900 dark:text-[#F5F8FF]"
+                    className="rounded-lg bg-slate-50 dark:bg-[#060D1A] border border-slate-200 dark:border-slate-400/10 px-3.5 sm:px-4 py-2.5 text-xs font-mono text-slate-900 dark:text-[#F5F8FF] break-words"
                   >
                     {step}
                   </div>
@@ -270,18 +287,18 @@ export const FrameworkPage: React.FC = () => {
               </div>
             </div>
 
-            <div className="lg:col-span-5 space-y-4 bg-slate-50 dark:bg-[#07111F] rounded-xl border border-slate-200 dark:border-slate-400/15 p-5">
+            <div className="lg:col-span-5 space-y-4 bg-slate-50 dark:bg-[#060D1A] rounded-xl border border-slate-200 dark:border-slate-400/15 p-5 min-w-0">
               <div>
-                <div className="text-xs font-mono text-[#DC2626] dark:text-[#F05252] font-semibold">
-                  THREAT MITIGATED
+                <div className="text-xs font-mono text-[#E11D48] dark:text-[#FB7185] font-bold">
+                  RED AI THREAT MITIGATED
                 </div>
                 <p className="text-xs text-slate-600 dark:text-[#AAB8CC] mt-1 leading-relaxed">
                   {activePattern.threatMitigated}
                 </p>
               </div>
               <div className="pt-3 border-t border-slate-200 dark:border-slate-400/10">
-                <div className="text-xs font-mono text-[#0284C7] dark:text-[#37D5F5] font-semibold">
-                  FAIL-SAFE BEHAVIOR
+                <div className="text-xs font-mono text-[#1D4ED8] dark:text-[#38BDF8] font-bold">
+                  BLUE AI FAIL-SAFE BEHAVIOR
                 </div>
                 <p className="text-xs text-slate-600 dark:text-[#AAB8CC] mt-1 leading-relaxed">
                   {activePattern.failureModeHandling}
@@ -297,25 +314,34 @@ export const FrameworkPage: React.FC = () => {
               </div>
             </div>
           </div>
-        </div>
+        </FadeInUp>
       </section>
 
       {/* 4. Resilient AI Systems & 5. Enterprise AI Security */}
-      <section className="max-w-[1280px] mx-auto px-6 pt-8 border-t border-slate-200 dark:border-slate-400/15 space-y-12">
+      <section className="w-full max-w-[1280px] mx-auto px-4 sm:px-6 pt-8 border-t border-slate-200 dark:border-slate-400/15 space-y-12">
         <div>
-          <div className="text-xs font-mono text-[#0284C7] dark:text-[#37D5F5] mb-1">
-            04. SELF-HEALING &amp; RESILIENCE LIFECYCLE (CHAPTER 6)
-          </div>
-          <h2 className="text-2xl sm:text-3xl font-bold font-display text-slate-900 dark:text-[#F5F8FF] mb-6">
-            Detection, Containment, Recovery &amp; Adaptation
-          </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+          <FadeInUp>
+            <div className="text-xs font-mono font-bold text-[#1D4ED8] dark:text-[#38BDF8] mb-1">
+              04. SELF-HEALING &amp; RESILIENCE LIFECYCLE (CHAPTER 6)
+            </div>
+            <h2 className="text-2xl sm:text-3xl font-bold font-display text-slate-900 dark:text-[#F5F8FF] mb-6">
+              Detection, Containment, Recovery &amp; Adaptation
+            </h2>
+          </FadeInUp>
+          <motion.div
+            variants={staggerGridVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.1 }}
+            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5"
+          >
             {RESILIENCE_PHASES.map((p) => (
-              <div
+              <motion.div
                 key={p.phase}
-                className="rounded-xl bg-white dark:bg-[#101F34] border border-slate-200 dark:border-slate-400/15 p-5 space-y-2 shadow-xs"
+                variants={fadeInUpVariants}
+                className="rounded-xl bg-white dark:bg-[#0F1D33] border border-slate-200 dark:border-slate-400/15 p-5 space-y-2 shadow-xs"
               >
-                <div className="text-xs font-mono text-[#0284C7] dark:text-[#37D5F5] font-semibold">
+                <div className="text-xs font-mono text-[#E11D48] dark:text-[#38BDF8] font-bold">
                   {p.phase}
                 </div>
                 <h3 className="text-base font-bold font-display text-slate-900 dark:text-[#F5F8FF]">
@@ -324,25 +350,25 @@ export const FrameworkPage: React.FC = () => {
                 <p className="text-xs text-slate-600 dark:text-[#AAB8CC] leading-relaxed">
                   {p.description}
                 </p>
-              </div>
+              </motion.div>
             ))}
-          </div>
+          </motion.div>
         </div>
 
         {/* Enterprise AI Security Pillars */}
-        <div className="rounded-2xl bg-slate-100/80 dark:bg-[#0B1628] border border-slate-200 dark:border-slate-400/20 p-6 md:p-8 space-y-6">
+        <FadeInUp className="rounded-2xl bg-slate-100/80 dark:bg-[#0A1426] border border-slate-200 dark:border-slate-400/20 p-5 sm:p-6 md:p-8 space-y-6">
           <div>
-            <div className="text-xs font-mono text-[#0284C7] dark:text-[#37D5F5]">
+            <div className="text-xs font-mono font-bold text-[#1D4ED8] dark:text-[#38BDF8]">
               05. ENTERPRISE AI SECURITY AT SCALE (CHAPTER 7)
             </div>
-            <h2 className="text-2xl font-bold font-display text-slate-900 dark:text-[#F5F8FF] mt-1">
+            <h2 className="text-xl sm:text-2xl font-bold font-display text-slate-900 dark:text-[#F5F8FF] mt-1">
               Trust Boundaries, Identity Delegation, Observability &amp; Human Oversight
             </h2>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="rounded-xl bg-white dark:bg-[#101F34] border border-slate-200 dark:border-slate-400/15 p-5 space-y-2 shadow-xs">
-              <Lock className="w-5 h-5 text-[#0284C7] dark:text-[#37D5F5]" />
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-5 sm:gap-6">
+            <div className="rounded-xl bg-white dark:bg-[#0F1D33] border border-slate-200 dark:border-slate-400/15 p-5 space-y-2 shadow-xs">
+              <Lock className="w-5 h-5 text-[#E11D48] dark:text-[#FB7185]" />
               <h3 className="text-base font-bold font-display text-slate-900 dark:text-[#F5F8FF]">
                 On-Behalf-Of (OBO) Permissions
               </h3>
@@ -350,8 +376,8 @@ export const FrameworkPage: React.FC = () => {
                 Replace static service accounts with short-lived cryptographic tokens scoped strictly to the intersection of the invoking user’s role and the approved agent task.
               </p>
             </div>
-            <div className="rounded-xl bg-white dark:bg-[#101F34] border border-slate-200 dark:border-slate-400/15 p-5 space-y-2 shadow-xs">
-              <Activity className="w-5 h-5 text-[#2563EB] dark:text-[#3478F6]" />
+            <div className="rounded-xl bg-white dark:bg-[#0F1D33] border border-slate-200 dark:border-slate-400/15 p-5 space-y-2 shadow-xs">
+              <Activity className="w-5 h-5 text-[#1D4ED8] dark:text-[#38BDF8]" />
               <h3 className="text-base font-bold font-display text-slate-900 dark:text-[#F5F8FF]">
                 Full-Stack Lineage Observability
               </h3>
@@ -359,7 +385,7 @@ export const FrameworkPage: React.FC = () => {
                 Record tamper-evident audit graphs connecting user identity, system prompt version, retrieved document chunk IDs, reasoning steps, and downstream API payloads.
               </p>
             </div>
-            <div className="rounded-xl bg-white dark:bg-[#101F34] border border-slate-200 dark:border-slate-400/15 p-5 space-y-2 shadow-xs">
+            <div className="rounded-xl bg-white dark:bg-[#0F1D33] border border-slate-200 dark:border-slate-400/15 p-5 space-y-2 shadow-xs">
               <Shield className="w-5 h-5 text-amber-500 dark:text-amber-400" />
               <h3 className="text-base font-bold font-display text-slate-900 dark:text-[#F5F8FF]">
                 Verifiable Human Approval Gates
@@ -376,13 +402,13 @@ export const FrameworkPage: React.FC = () => {
             </span>
             <Link
               to="/order"
-              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-[#2563EB] dark:bg-[#3478F6] hover:bg-[#1D4ED8] dark:hover:bg-[#2563EB] text-xs font-semibold text-white transition-colors"
+              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-lg bg-gradient-to-r from-[#E11D48] via-[#4F46E5] to-[#1D4ED8] text-xs font-semibold text-white transition-all"
             >
               <span>Order AI vs. AI</span>
               <ArrowRight className="w-3.5 h-3.5" />
             </Link>
           </div>
-        </div>
+        </FadeInUp>
       </section>
     </div>
   );

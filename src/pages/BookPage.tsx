@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, BookOpen, CheckCircle2, HelpCircle } from 'lucide-react';
+import { motion } from 'framer-motion';
 import { BOOK_METADATA, BOOK_FORMATS } from '../data/bookConfig';
 import { CHAPTERS_DATA, CHAPTER_ONE_EXCERPT } from '../data/chaptersData';
 import { FOUR_SECURITY_PATTERNS } from '../data/frameworkData';
 import { BookMockup3D } from '../components/BookMockup3D';
+import { FadeInUp, fadeInUpVariants, staggerGridVariants } from '../components/FadeInUp';
 import { usePageSEO, trackEvent } from '../utils/analytics';
 
 const AUDIENCE_PROFILES = [
@@ -98,17 +100,17 @@ export const BookPage: React.FC = () => {
     AUDIENCE_PROFILES.find((a) => a.id === selectedAudience) || AUDIENCE_PROFILES[0];
 
   return (
-    <div className="pb-20">
+    <div className="pb-16 sm:pb-20 w-full overflow-x-hidden">
       {/* 1–6. Product Hero & Extended Overview */}
-      <section className="pt-12 pb-16 md:pt-16 md:pb-20 border-b border-slate-200 dark:border-slate-400/15 bg-slate-100/70 dark:bg-[#0B1628]">
-        <div className="max-w-[1280px] mx-auto px-6">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
-            <div className="lg:col-span-5 lg:sticky lg:top-24">
+      <section className="pt-8 pb-12 sm:pt-12 sm:pb-16 md:pt-16 md:pb-20 border-b border-slate-200 dark:border-slate-400/15 bg-slate-100/70 dark:bg-[#0A1426]">
+        <div className="w-full max-w-[1280px] mx-auto px-4 sm:px-6">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 sm:gap-12 items-start">
+            <FadeInUp className="lg:col-span-5 lg:sticky lg:top-24 min-w-0">
               <BookMockup3D showAudioTeaser={true} />
-            </div>
+            </FadeInUp>
 
-            <div className="lg:col-span-7 space-y-6">
-              <div className="flex flex-wrap items-center gap-2 text-xs font-mono font-semibold text-[#0284C7] dark:text-[#37D5F5]">
+            <FadeInUp delay={0.1} className="lg:col-span-7 space-y-5 sm:space-y-6 min-w-0">
+              <div className="flex flex-wrap items-center gap-2 text-xs font-mono font-bold bg-gradient-to-r from-[#E11D48] to-[#1D4ED8] dark:from-[#FB7185] dark:to-[#38BDF8] bg-clip-text text-transparent">
                 <span>OFFICIAL BOOK MONOGRAPH</span>
                 <span aria-hidden="true">·</span>
                 <span>11 CHAPTERS</span>
@@ -117,33 +119,39 @@ export const BookPage: React.FC = () => {
               </div>
 
               <div>
-                <h1 className="text-3xl sm:text-5xl font-bold font-display text-slate-900 dark:text-[#F5F8FF] tracking-tight">
+                <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold font-display text-slate-900 dark:text-[#F5F8FF] tracking-tight text-balance">
                   {BOOK_METADATA.title}
                 </h1>
-                <h2 className="mt-2 text-xl sm:text-2xl font-semibold font-display text-[#0284C7] dark:text-[#37D5F5]">
+                <h2 className="mt-2 text-lg sm:text-xl md:text-2xl font-semibold font-display bg-gradient-to-r from-[#1D4ED8] to-[#E11D48] dark:from-[#38BDF8] dark:to-[#FB7185] bg-clip-text text-transparent">
                   {BOOK_METADATA.subtitle}
                 </h2>
-                <p className="mt-1.5 text-sm font-mono text-slate-600 dark:text-[#AAB8CC]">
+                <p className="mt-1.5 text-xs sm:text-sm font-mono text-slate-600 dark:text-[#AAB8CC] break-words">
                   Supporting Tagline: “{BOOK_METADATA.supportingTagline}”
                 </p>
               </div>
 
-              <div className="text-sm text-slate-900 dark:text-[#F5F8FF]">
-                Author:{' '}
-                <Link to="/author" className="font-semibold text-[#0284C7] dark:text-[#37D5F5] hover:underline">
+              <div className="flex flex-wrap items-center gap-x-2 gap-y-1 text-xs sm:text-sm text-slate-900 dark:text-[#F5F8FF]">
+                <span>Author:</span>
+                <Link to="/author" className="font-semibold text-[#1D4ED8] dark:text-[#38BDF8] hover:underline">
                   {BOOK_METADATA.author}
-                </Link>{' '}
+                </Link>
                 <span className="text-slate-600 dark:text-[#AAB8CC]">({BOOK_METADATA.authorRole})</span>
               </div>
 
-              <div className="space-y-4 text-sm sm:text-base text-slate-600 dark:text-[#AAB8CC] leading-relaxed">
+              <div className="space-y-4 text-sm sm:text-base text-slate-600 dark:text-[#AAB8CC] leading-relaxed break-words">
                 <p className="text-slate-900 dark:text-[#F5F8FF] font-medium">{BOOK_METADATA.shortDescription}</p>
                 <p>{BOOK_METADATA.extendedOverview}</p>
               </div>
 
-              {/* 7 & 8. Why the Book Matters & What Readers Will Learn */}
-              <div className="rounded-xl bg-white dark:bg-[#101F34] border border-slate-200 dark:border-slate-400/15 p-6 space-y-4 shadow-xs dark:shadow-none">
-                <h3 className="text-lg font-bold font-display text-slate-900 dark:text-[#F5F8FF]">
+              {/* 7 & 8. Why the Book Matters & What Readers Will Learn (Book Features Grid) */}
+              <motion.div
+                variants={staggerGridVariants}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true, amount: 0.15 }}
+                className="rounded-xl bg-white dark:bg-[#0F1D33] border border-slate-200 dark:border-slate-400/15 p-5 sm:p-6 space-y-4 shadow-xs dark:shadow-none"
+              >
+                <h3 className="text-base sm:text-lg font-bold font-display text-slate-900 dark:text-[#F5F8FF]">
                   What You Will Learn to Engineer
                 </h3>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs text-slate-600 dark:text-[#AAB8CC]">
@@ -155,64 +163,72 @@ export const BookPage: React.FC = () => {
                     'Engineer resilient state rollback, semantic honeytokens, and tiered autonomy fallbacks',
                     'Execute a phased 30/60/90-day counteroffensive roadmap across enterprise environments',
                   ].map((item) => (
-                    <div key={item} className="flex items-start gap-2">
-                      <CheckCircle2 className="w-4 h-4 text-[#0284C7] dark:text-[#37D5F5] shrink-0 mt-0.5" />
-                      <span>{item}</span>
-                    </div>
+                    <motion.div key={item} variants={fadeInUpVariants} className="flex items-start gap-2">
+                      <CheckCircle2 className="w-4 h-4 text-[#1D4ED8] dark:text-[#38BDF8] shrink-0 mt-0.5" />
+                      <span className="break-words">{item}</span>
+                    </motion.div>
                   ))}
                 </div>
-              </div>
+              </motion.div>
 
-              <div className="pt-2 flex flex-wrap items-center gap-4">
+              <div className="pt-2 flex flex-col sm:flex-row flex-wrap items-stretch sm:items-center gap-3.5">
                 <Link
                   to="/order"
                   onClick={() => trackEvent('order_cta_clicked', { source: 'book_page_top' })}
-                  className="inline-flex items-center gap-2 px-6 py-3.5 rounded-lg bg-[#2563EB] dark:bg-[#3478F6] hover:bg-[#1D4ED8] text-sm font-semibold text-white transition-colors shadow-xs"
+                  className="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl bg-gradient-to-r from-[#E11D48] via-[#4F46E5] to-[#1D4ED8] hover:opacity-95 text-xs sm:text-sm font-bold text-white transition-all shadow-md"
                 >
                   <span>Order the Book</span>
                   <ArrowRight className="w-4 h-4" />
                 </Link>
                 <a
                   href="#chapter-1-preview"
-                  className="inline-flex items-center gap-2 px-5 py-3.5 rounded-lg bg-white dark:bg-[#101F34] hover:bg-slate-100 dark:hover:bg-[#162944] border border-slate-300 dark:border-slate-400/20 text-sm font-semibold text-slate-900 dark:text-[#F5F8FF] transition-colors"
+                  className="inline-flex items-center justify-center gap-2 px-5 py-3.5 rounded-xl bg-white dark:bg-[#0F1D33] hover:bg-slate-100 dark:hover:bg-[#162944] border border-slate-300 dark:border-slate-400/20 text-xs sm:text-sm font-semibold text-slate-900 dark:text-[#F5F8FF] transition-colors"
                 >
-                  <BookOpen className="w-4 h-4 text-[#0284C7] dark:text-[#37D5F5]" />
+                  <BookOpen className="w-4 h-4 text-[#1D4ED8] dark:text-[#38BDF8]" />
                   <span>Jump to Chapter 1 Preview</span>
                 </a>
               </div>
-            </div>
+            </FadeInUp>
           </div>
         </div>
       </section>
 
       {/* 9. Intended Audience Interactive Matcher */}
-      <section className="py-16 border-b border-slate-200 dark:border-slate-400/15">
-        <div className="max-w-[1280px] mx-auto px-6">
-          <div className="max-w-3xl mb-8">
-            <div className="text-xs font-mono font-semibold text-[#0284C7] dark:text-[#37D5F5] mb-2">WHO THIS BOOK IS FOR</div>
+      <section className="py-12 sm:py-16 border-b border-slate-200 dark:border-slate-400/15">
+        <div className="w-full max-w-[1280px] mx-auto px-4 sm:px-6">
+          <FadeInUp className="max-w-3xl mb-6 sm:mb-8">
+            <div className="text-xs font-mono font-bold bg-gradient-to-r from-[#E11D48] to-[#1D4ED8] dark:from-[#FB7185] dark:to-[#38BDF8] bg-clip-text text-transparent mb-2">
+              WHO THIS BOOK IS FOR
+            </div>
             <h2 className="text-2xl sm:text-3xl font-bold font-display text-slate-900 dark:text-[#F5F8FF]">
               Tailored Engineering Takeaways by Role
             </h2>
-          </div>
+          </FadeInUp>
 
-          <div className="flex flex-wrap gap-2 p-1.5 rounded-xl bg-slate-100 dark:bg-[#0B1628] border border-slate-200 dark:border-slate-400/15 mb-6">
+          <FadeInUp delay={0.05} className="flex flex-wrap gap-2 p-1.5 rounded-xl bg-slate-100 dark:bg-[#0A1426] border border-slate-200 dark:border-slate-400/15 mb-6">
             {AUDIENCE_PROFILES.map((aud) => (
               <button
                 key={aud.id}
                 type="button"
                 onClick={() => setSelectedAudience(aud.id)}
-                className={`px-4 py-2 rounded-lg text-xs font-semibold transition-colors whitespace-nowrap shrink-0 ${
+                className={`flex-1 sm:flex-initial px-3.5 sm:px-4 py-2 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
                   selectedAudience === aud.id
-                    ? 'bg-[#2563EB] dark:bg-[#3478F6] text-white shadow-xs'
+                    ? 'bg-gradient-to-r from-[#E11D48] to-[#1D4ED8] text-white shadow-xs'
                     : 'text-slate-600 dark:text-[#AAB8CC] hover:text-slate-900 dark:hover:text-[#F5F8FF]'
                 }`}
               >
                 {aud.label}
               </button>
             ))}
-          </div>
+          </FadeInUp>
 
-          <div className="rounded-xl bg-white dark:bg-[#101F34] border border-slate-200 dark:border-slate-400/15 p-6 shadow-2xs dark:shadow-none">
+          <motion.div
+            key={currentAudience.id}
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.3 }}
+            className="rounded-xl bg-white dark:bg-[#0F1D33] border border-slate-200 dark:border-slate-400/15 p-5 sm:p-6 shadow-2xs dark:shadow-none"
+          >
             <h3 className="text-base font-bold font-display text-slate-900 dark:text-[#F5F8FF] mb-4">
               Key Outcomes for {currentAudience.label}:
             </h3>
@@ -220,90 +236,106 @@ export const BookPage: React.FC = () => {
               {currentAudience.takeaways.map((takeaway, i) => (
                 <div
                   key={takeaway}
-                  className="rounded-lg bg-slate-50 dark:bg-[#0B1628] border border-slate-200 dark:border-slate-400/10 p-4 text-xs text-slate-600 dark:text-[#AAB8CC] leading-relaxed"
+                  className="rounded-lg bg-slate-50 dark:bg-[#0A1426] border border-slate-200 dark:border-slate-400/10 p-4 text-xs text-slate-600 dark:text-[#AAB8CC] leading-relaxed"
                 >
-                  <div className="font-mono text-[#0284C7] dark:text-[#37D5F5] font-semibold mb-1.5">
+                  <div className="font-mono text-[#E11D48] dark:text-[#38BDF8] font-semibold mb-1.5">
                     0{i + 1}. Priority Outcome
                   </div>
                   {takeaway}
                 </div>
               ))}
             </div>
-          </div>
+          </motion.div>
         </div>
       </section>
 
-      {/* 10 & 11. 11-Chapter Overview & Technical Highlights */}
-      <section className="py-16 border-b border-slate-200 dark:border-slate-400/15 bg-slate-100/80 dark:bg-[#0B1628]">
-        <div className="max-w-[1280px] mx-auto px-6">
-          <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-10">
+      {/* 10 & 11. 11-Chapter Overview & Technical Highlights (Staggered Fade-In-Up) */}
+      <section className="py-12 sm:py-16 border-b border-slate-200 dark:border-slate-400/15 bg-slate-100/80 dark:bg-[#0A1426]">
+        <div className="w-full max-w-[1280px] mx-auto px-4 sm:px-6">
+          <FadeInUp className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8 sm:mb-10">
             <div>
-              <div className="text-xs font-mono font-semibold text-[#0284C7] dark:text-[#37D5F5] mb-2">COMPLETE MANUSCRIPT STRUCTURE</div>
+              <div className="text-xs font-mono font-bold bg-gradient-to-r from-[#E11D48] to-[#1D4ED8] dark:from-[#FB7185] dark:to-[#38BDF8] bg-clip-text text-transparent mb-2">
+                COMPLETE MANUSCRIPT STRUCTURE
+              </div>
               <h2 className="text-2xl sm:text-3xl font-bold font-display text-slate-900 dark:text-[#F5F8FF]">
                 11 Chapters &amp; Core Architectural Patterns
               </h2>
             </div>
             <Link
               to="/chapters"
-              className="text-xs font-semibold text-[#0284C7] dark:text-[#37D5F5] hover:underline inline-flex items-center gap-1"
+              className="text-xs font-semibold text-[#1D4ED8] dark:text-[#38BDF8] hover:underline inline-flex items-center gap-1"
             >
               <span>Explore Detailed Chapter Syllabus</span>
               <ArrowRight className="w-3.5 h-3.5" />
             </Link>
-          </div>
+          </FadeInUp>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-12">
+          <motion.div
+            variants={staggerGridVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.08 }}
+            className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-10 sm:mb-12"
+          >
             {CHAPTERS_DATA.map((ch) => (
-              <Link
-                key={ch.slug}
-                to={`/chapters/${ch.slug}`}
-                className="rounded-xl bg-white dark:bg-[#101F34] border border-slate-200 dark:border-slate-400/15 hover:border-[#0284C7] dark:hover:border-[#37D5F5]/40 p-5 flex items-start justify-between gap-4 transition-colors shadow-2xs dark:shadow-none"
-              >
-                <div>
-                  <div className="text-xs font-mono font-semibold text-[#0284C7] dark:text-[#37D5F5]">
-                    Chapter {String(ch.number).padStart(2, '0')} · {ch.partLabel}
+              <motion.div key={ch.slug} variants={fadeInUpVariants} className="min-w-0">
+                <Link
+                  to={`/chapters/${ch.slug}`}
+                  className="h-full rounded-xl bg-white dark:bg-[#0F1D33] border border-slate-200 dark:border-slate-400/15 hover:border-[#1D4ED8] dark:hover:border-[#38BDF8]/40 p-4 sm:p-5 flex items-start justify-between gap-4 transition-all hover:-translate-y-0.5 shadow-2xs dark:shadow-none"
+                >
+                  <div className="min-w-0">
+                    <div className="text-xs font-mono font-semibold text-[#E11D48] dark:text-[#38BDF8]">
+                      Chapter {String(ch.number).padStart(2, '0')} · {ch.partLabel}
+                    </div>
+                    <h3 className="text-base font-bold font-display text-slate-900 dark:text-[#F5F8FF] mt-1">
+                      {ch.title}
+                    </h3>
+                    <p className="text-xs text-slate-600 dark:text-[#AAB8CC] mt-1.5 line-clamp-2">{ch.summary}</p>
                   </div>
-                  <h3 className="text-base font-bold font-display text-slate-900 dark:text-[#F5F8FF] mt-1">
-                    {ch.title}
-                  </h3>
-                  <p className="text-xs text-slate-600 dark:text-[#AAB8CC] mt-1.5 line-clamp-2">{ch.summary}</p>
-                </div>
-                <ArrowRight className="w-4 h-4 text-slate-400 dark:text-[#AAB8CC] shrink-0 mt-1" />
-              </Link>
+                  <ArrowRight className="w-4 h-4 text-slate-400 dark:text-[#AAB8CC] shrink-0 mt-1" />
+                </Link>
+              </motion.div>
             ))}
-          </div>
+          </motion.div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          <motion.div
+            variants={staggerGridVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.1 }}
+            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4"
+          >
             {FOUR_SECURITY_PATTERNS.map((pat) => (
-              <div
+              <motion.div
                 key={pat.id}
-                className="rounded-xl bg-white dark:bg-[#07111F] border border-slate-200 dark:border-slate-400/15 p-5 shadow-2xs dark:shadow-none"
+                variants={fadeInUpVariants}
+                className="rounded-xl bg-white dark:bg-[#060D1A] border border-slate-200 dark:border-slate-400/15 p-5 shadow-2xs dark:shadow-none"
               >
-                <div className="text-xs font-mono font-semibold text-[#0284C7] dark:text-[#37D5F5]">Design Pattern</div>
+                <div className="text-xs font-mono font-semibold text-[#1D4ED8] dark:text-[#38BDF8]">Design Pattern</div>
                 <h4 className="text-base font-bold font-display text-slate-900 dark:text-[#F5F8FF] mt-1">
                   {pat.name}
                 </h4>
                 <p className="text-xs text-slate-600 dark:text-[#AAB8CC] mt-2 leading-relaxed">
                   {pat.securityRole}
                 </p>
-              </div>
+              </motion.div>
             ))}
-          </div>
+          </motion.div>
         </div>
       </section>
 
       {/* 12. Embedded Sample Chapter Reading Preview */}
-      <section id="chapter-1-preview" className="py-16 border-b border-slate-200 dark:border-slate-400/15">
-        <div className="max-w-[1000px] mx-auto px-6">
-          <div className="flex flex-wrap items-center justify-between gap-4 mb-6">
+      <section id="chapter-1-preview" className="py-12 sm:py-16 border-b border-slate-200 dark:border-slate-400/15">
+        <div className="w-full max-w-[1000px] mx-auto px-4 sm:px-6">
+          <FadeInUp className="flex flex-wrap items-center justify-between gap-4 mb-6">
             <div>
-              <div className="text-xs font-mono font-semibold text-[#0284C7] dark:text-[#37D5F5]">EMBEDDED READING PREVIEW</div>
-              <h2 className="text-2xl sm:text-3xl font-bold font-display text-slate-900 dark:text-[#F5F8FF]">
+              <div className="text-xs font-mono font-bold text-[#E11D48] dark:text-[#38BDF8]">EMBEDDED READING PREVIEW</div>
+              <h2 className="text-xl sm:text-3xl font-bold font-display text-slate-900 dark:text-[#F5F8FF]">
                 {CHAPTER_ONE_EXCERPT.title}
               </h2>
             </div>
 
-            <div className="flex items-center gap-2">
+            <div className="flex flex-wrap items-center gap-2">
               <span className="text-xs text-slate-600 dark:text-[#AAB8CC] mr-1">Text Size:</span>
               {(['sm', 'base', 'lg'] as const).map((sz) => (
                 <button
@@ -312,8 +344,8 @@ export const BookPage: React.FC = () => {
                   onClick={() => setPreviewFontSize(sz)}
                   className={`px-2.5 py-1 rounded text-xs font-mono border transition-colors ${
                     previewFontSize === sz
-                      ? 'bg-[#2563EB] dark:bg-[#3478F6] text-white border-[#2563EB] dark:border-[#3478F6]'
-                      : 'bg-white dark:bg-[#101F34] text-slate-700 dark:text-[#AAB8CC] border-slate-300 dark:border-slate-400/20'
+                      ? 'bg-[#1D4ED8] dark:bg-[#3478F6] text-white border-[#1D4ED8] dark:border-[#3478F6]'
+                      : 'bg-white dark:bg-[#0F1D33] text-slate-700 dark:text-[#AAB8CC] border-slate-300 dark:border-slate-400/20'
                   }`}
                 >
                   {sz.toUpperCase()}
@@ -321,41 +353,41 @@ export const BookPage: React.FC = () => {
               ))}
               <Link
                 to="/excerpt"
-                className="ml-2 px-3 py-1.5 rounded-lg bg-white dark:bg-[#101F34] border border-slate-300 dark:border-slate-400/20 text-xs font-semibold text-[#0284C7] dark:text-[#37D5F5] hover:text-slate-900 dark:hover:text-white transition-colors"
+                className="px-3 py-1.5 rounded-lg bg-white dark:bg-[#0F1D33] border border-slate-300 dark:border-slate-400/20 text-xs font-semibold text-[#1D4ED8] dark:text-[#38BDF8] hover:text-slate-900 dark:hover:text-white transition-colors"
               >
                 Full Reader Mode →
               </Link>
             </div>
-          </div>
+          </FadeInUp>
 
-          <div className="rounded-2xl bg-white dark:bg-[#101F34] border border-slate-200 dark:border-slate-400/20 p-6 md:p-10 space-y-6 shadow-sm dark:shadow-none">
+          <FadeInUp delay={0.08} className="rounded-2xl bg-white dark:bg-[#0F1D33] border border-slate-200 dark:border-slate-400/20 p-5 sm:p-8 md:p-10 space-y-6 shadow-sm dark:shadow-none">
             <div className="text-xs font-mono text-slate-500 dark:text-[#AAB8CC] pb-4 border-b border-slate-200 dark:border-slate-400/10">
               {CHAPTER_ONE_EXCERPT.notice}
             </div>
 
             {CHAPTER_ONE_EXCERPT.sections.slice(0, 2).map((sec) => (
               <div key={sec.heading} className="space-y-4">
-                <h3 className="text-xl font-bold font-display text-slate-900 dark:text-[#F5F8FF]">{sec.heading}</h3>
+                <h3 className="text-lg sm:text-xl font-bold font-display text-slate-900 dark:text-[#F5F8FF]">{sec.heading}</h3>
                 {sec.paragraphs.map((p, idx) => (
                   <p
                     key={idx}
-                    className={`text-slate-700 dark:text-[#AAB8CC] leading-relaxed ${
+                    className={`text-slate-700 dark:text-[#AAB8CC] leading-relaxed break-words ${
                       previewFontSize === 'sm'
                         ? 'text-sm'
                         : previewFontSize === 'lg'
-                        ? 'text-lg'
-                        : 'text-base'
+                        ? 'text-base sm:text-lg'
+                        : 'text-sm sm:text-base'
                     }`}
                   >
                     {p}
                   </p>
                 ))}
                 {sec.callout && (
-                  <div className="rounded-xl bg-sky-50 dark:bg-[#0B1628] border border-sky-200 dark:border-[#37D5F5]/30 p-5 my-4">
-                    <div className="text-xs font-mono font-semibold text-[#0284C7] dark:text-[#37D5F5] mb-1">
+                  <div className="rounded-xl bg-sky-50 dark:bg-[#0A1426] border border-sky-200 dark:border-[#38BDF8]/30 p-4 sm:p-5 my-4">
+                    <div className="text-xs font-mono font-semibold text-[#1D4ED8] dark:text-[#38BDF8] mb-1">
                       {sec.callout.title}
                     </div>
-                    <p className="text-sm text-slate-900 dark:text-[#F5F8FF] italic leading-relaxed">
+                    <p className="text-xs sm:text-sm text-slate-900 dark:text-[#F5F8FF] italic leading-relaxed">
                       “{sec.callout.quote}”
                     </p>
                   </div>
@@ -366,41 +398,50 @@ export const BookPage: React.FC = () => {
             <div className="pt-6 border-t border-slate-200 dark:border-slate-400/15 flex flex-wrap items-center justify-between gap-4">
               <Link
                 to="/excerpt"
-                className="inline-flex items-center gap-2 text-sm font-semibold text-[#0284C7] dark:text-[#37D5F5] hover:underline"
+                className="inline-flex items-center gap-2 text-xs sm:text-sm font-semibold text-[#1D4ED8] dark:text-[#38BDF8] hover:underline"
               >
-                <BookOpen className="w-4 h-4" />
+                <BookOpen className="w-4 h-4 shrink-0" />
                 <span>Continue Reading Full Chapter 1 Excerpt in Reader View</span>
               </Link>
               <Link
                 to="/order"
-                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-[#2563EB] dark:bg-[#3478F6] hover:bg-[#1D4ED8] text-xs font-semibold text-white transition-colors"
+                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-lg bg-gradient-to-r from-[#E11D48] to-[#1D4ED8] text-xs font-semibold text-white transition-all"
               >
                 <span>Order Full 11-Chapter Book</span>
                 <ArrowRight className="w-3.5 h-3.5" />
               </Link>
             </div>
-          </div>
+          </FadeInUp>
         </div>
       </section>
 
       {/* 16 & 17. Book Formats & Ordering Options */}
-      <section className="py-16 border-b border-slate-200 dark:border-slate-400/15 bg-slate-100/80 dark:bg-[#0B1628]">
-        <div className="max-w-[1280px] mx-auto px-6">
-          <div className="max-w-3xl mb-10">
-            <div className="text-xs font-mono font-semibold text-[#0284C7] dark:text-[#37D5F5] mb-2">EDITIONS &amp; ORDERING</div>
+      <section className="py-12 sm:py-16 border-b border-slate-200 dark:border-slate-400/15 bg-slate-100/80 dark:bg-[#0A1426]">
+        <div className="w-full max-w-[1280px] mx-auto px-4 sm:px-6">
+          <FadeInUp className="max-w-3xl mb-8 sm:mb-10">
+            <div className="text-xs font-mono font-bold bg-gradient-to-r from-[#E11D48] to-[#1D4ED8] dark:from-[#FB7185] dark:to-[#38BDF8] bg-clip-text text-transparent mb-2">
+              EDITIONS &amp; ORDERING
+            </div>
             <h2 className="text-2xl sm:text-3xl font-bold font-display text-slate-900 dark:text-[#F5F8FF]">
               Available Formats &amp; Ordering Pathways
             </h2>
-          </div>
+          </FadeInUp>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <motion.div
+            variants={staggerGridVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.1 }}
+            className="grid grid-cols-1 md:grid-cols-3 gap-5 sm:gap-6"
+          >
             {BOOK_FORMATS.map((fmt) => (
-              <div
+              <motion.div
                 key={fmt.id}
-                className="rounded-xl bg-white dark:bg-[#101F34] border border-slate-200 dark:border-slate-400/15 p-6 flex flex-col justify-between shadow-2xs dark:shadow-none"
+                variants={fadeInUpVariants}
+                className="rounded-xl bg-white dark:bg-[#0F1D33] border border-slate-200 dark:border-slate-400/15 p-5 sm:p-6 flex flex-col justify-between shadow-2xs dark:shadow-none"
               >
                 <div>
-                  <div className="text-xs font-mono font-semibold text-[#0284C7] dark:text-[#37D5F5] mb-2">{fmt.status}</div>
+                  <div className="text-xs font-mono font-semibold text-[#E11D48] dark:text-[#38BDF8] mb-2">{fmt.status}</div>
                   <h3 className="text-xl font-bold font-display text-slate-900 dark:text-[#F5F8FF]">{fmt.name}</h3>
                   <p className="text-xs text-slate-500 dark:text-[#AAB8CC] mt-1">{fmt.editionNote}</p>
                   <p className="text-xs text-slate-600 dark:text-[#AAB8CC] mt-3 leading-relaxed">
@@ -409,7 +450,7 @@ export const BookPage: React.FC = () => {
                   <ul className="mt-4 space-y-2 text-xs text-slate-600 dark:text-[#AAB8CC]">
                     {fmt.features.map((f) => (
                       <li key={f} className="flex items-start gap-2">
-                        <CheckCircle2 className="w-3.5 h-3.5 text-[#0284C7] dark:text-[#37D5F5] shrink-0 mt-0.5" />
+                        <CheckCircle2 className="w-3.5 h-3.5 text-[#1D4ED8] dark:text-[#38BDF8] shrink-0 mt-0.5" />
                         <span>{f}</span>
                       </li>
                     ))}
@@ -420,44 +461,51 @@ export const BookPage: React.FC = () => {
                   <div className="text-xs font-mono font-semibold text-slate-900 dark:text-[#F5F8FF] mb-3">{fmt.priceDisplay}</div>
                   <Link
                     to="/order"
-                    className="w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg bg-[#2563EB] dark:bg-[#3478F6] hover:bg-[#1D4ED8] text-xs font-semibold text-white transition-colors"
+                    className="w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg bg-gradient-to-r from-[#E11D48] via-[#4F46E5] to-[#1D4ED8] hover:opacity-95 text-xs font-semibold text-white transition-all"
                   >
                     <span>Select Format on Order Page</span>
                     <ArrowRight className="w-3.5 h-3.5" />
                   </Link>
                 </div>
-              </div>
+              </motion.div>
             ))}
-          </div>
+          </motion.div>
         </div>
       </section>
 
-      {/* 18 & 19. Frequently Asked Questions & Final CTA */}
-      <section className="pt-16">
-        <div className="max-w-[1000px] mx-auto px-6">
-          <div className="mb-10">
-            <div className="text-xs font-mono font-semibold text-[#0284C7] dark:text-[#37D5F5] mb-2">FREQUENTLY ASKED QUESTIONS</div>
+      {/* 18 & 19. Frequently Asked Questions */}
+      <section className="pt-12 sm:pt-16">
+        <div className="w-full max-w-[1000px] mx-auto px-4 sm:px-6">
+          <FadeInUp className="mb-8 sm:mb-10">
+            <div className="text-xs font-mono font-bold text-[#1D4ED8] dark:text-[#38BDF8] mb-2">FREQUENTLY ASKED QUESTIONS</div>
             <h2 className="text-2xl sm:text-3xl font-bold font-display text-slate-900 dark:text-[#F5F8FF]">
               Questions About AI vs. AI
             </h2>
-          </div>
+          </FadeInUp>
 
-          <div className="space-y-4">
+          <motion.div
+            variants={staggerGridVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.1 }}
+            className="space-y-4"
+          >
             {BOOK_FAQS.map((faq) => (
-              <div
+              <motion.div
                 key={faq.q}
-                className="rounded-xl bg-white dark:bg-[#101F34] border border-slate-200 dark:border-slate-400/15 p-6 shadow-2xs dark:shadow-none"
+                variants={fadeInUpVariants}
+                className="rounded-xl bg-white dark:bg-[#0F1D33] border border-slate-200 dark:border-slate-400/15 p-5 sm:p-6 shadow-2xs dark:shadow-none"
               >
-                <h3 className="text-base font-bold font-display text-slate-900 dark:text-[#F5F8FF] flex items-start gap-2.5">
-                  <HelpCircle className="w-4 h-4 text-[#0284C7] dark:text-[#37D5F5] shrink-0 mt-1" />
+                <h3 className="text-sm sm:text-base font-bold font-display text-slate-900 dark:text-[#F5F8FF] flex items-start gap-2.5">
+                  <HelpCircle className="w-4 h-4 text-[#E11D48] dark:text-[#38BDF8] shrink-0 mt-1" />
                   <span>{faq.q}</span>
                 </h3>
-                <p className="mt-2.5 text-sm text-slate-600 dark:text-[#AAB8CC] leading-relaxed pl-6">
+                <p className="mt-2.5 text-xs sm:text-sm text-slate-600 dark:text-[#AAB8CC] leading-relaxed pl-6">
                   {faq.a}
                 </p>
-              </div>
+              </motion.div>
             ))}
-          </div>
+          </motion.div>
         </div>
       </section>
     </div>

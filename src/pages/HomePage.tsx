@@ -11,7 +11,7 @@ import {
   ShieldCheck,
   Zap,
 } from 'lucide-react';
-import { motion } from 'motion/react';
+import { motion } from 'framer-motion';
 import { BOOK_METADATA, BOOK_FORMATS } from '../data/bookConfig';
 import { CHAPTERS_DATA } from '../data/chaptersData';
 import { TRIAD_PILLARS, FOUR_SECURITY_PATTERNS } from '../data/frameworkData';
@@ -23,6 +23,7 @@ import {
   PillarTechnicalIllustration,
 } from '../components/CounteroffensiveDiagram';
 import { LeadCaptureModule } from '../components/LeadCaptureModule';
+import { FadeInUp, fadeInUpVariants, staggerGridVariants } from '../components/FadeInUp';
 import { usePageSEO, trackEvent } from '../utils/analytics';
 
 export const HomePage: React.FC = () => {
@@ -40,9 +41,9 @@ export const HomePage: React.FC = () => {
     FOUR_SECURITY_PATTERNS.find((p) => p.id === selectedPatternId) || FOUR_SECURITY_PATTERNS[0];
 
   return (
-    <div>
+    <div className="w-full overflow-x-hidden">
       {/* 6.1 HERO SECTION — Powerful Red (Offensive AI) vs. Blue (Defensive AI) Counteroffensive Stage */}
-      <section className="relative pt-8 pb-14 md:pt-16 md:pb-24 border-b border-[#D5E0F0] dark:border-slate-400/15 overflow-hidden">
+      <section className="relative pt-8 pb-12 sm:pt-12 sm:pb-16 md:pt-16 md:pb-24 border-b border-[#D5E0F0] dark:border-slate-400/15 overflow-hidden">
         {/* Opposing Red vs. Blue Radial Clash Spotlights */}
         <div
           className="absolute inset-0 pointer-events-none opacity-90 dark:opacity-55"
@@ -52,26 +53,26 @@ export const HomePage: React.FC = () => {
           }}
         />
 
-        <div className="max-w-[1280px] mx-auto px-4 sm:px-6 relative">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-center">
+        <div className="w-full max-w-[1280px] mx-auto px-4 sm:px-6 relative">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 sm:gap-10 lg:gap-12 items-center">
             {/* Hero Copy Column */}
             <motion.div
-              initial={{ opacity: 0, y: 18 }}
+              initial={{ opacity: 0, y: 24 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, ease: 'easeOut' }}
-              className="lg:col-span-7 space-y-5 sm:space-y-6"
+              transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
+              className="lg:col-span-7 space-y-4 sm:space-y-6 min-w-0"
             >
               {/* Live Red vs. Blue AI Clash Telemetry Badge */}
-              <div className="inline-flex flex-wrap items-center gap-2 px-3 py-1.5 rounded-full bg-white/90 dark:bg-[#0F1D33]/90 border border-[#D5E0F0] dark:border-slate-400/20 shadow-2xs text-[11px] sm:text-xs font-mono">
+              <div className="inline-flex flex-wrap items-center gap-1.5 sm:gap-2 px-3 py-1.5 rounded-full bg-white/90 dark:bg-[#0F1D33]/90 border border-[#D5E0F0] dark:border-slate-400/20 shadow-2xs text-[11px] sm:text-xs font-mono max-w-full">
                 <span className="inline-flex items-center gap-1 font-bold text-[#E11D48] dark:text-[#FB7185]">
-                  <ShieldAlert className="w-3.5 h-3.5" />
+                  <ShieldAlert className="w-3.5 h-3.5 shrink-0" />
                   <span>OFFENSIVE AI</span>
                 </span>
                 <span className="px-1.5 py-0.5 rounded bg-slate-900 dark:bg-white text-white dark:text-slate-900 font-extrabold text-[10px]">
                   VS.
                 </span>
                 <span className="inline-flex items-center gap-1 font-bold text-[#1D4ED8] dark:text-[#38BDF8]">
-                  <ShieldCheck className="w-3.5 h-3.5" />
+                  <ShieldCheck className="w-3.5 h-3.5 shrink-0" />
                   <span>DEFENSIVE AI</span>
                 </span>
                 <span className="hidden sm:inline text-slate-400">·</span>
@@ -82,10 +83,7 @@ export const HomePage: React.FC = () => {
 
               {/* Powerful Split Red-vs-Blue Title */}
               <div>
-                <h1
-                  className="font-extrabold font-display tracking-tight text-balance"
-                  style={{ fontSize: 'clamp(2.4rem, 5vw, 4.25rem)', lineHeight: 1.04 }}
-                >
+                <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold font-display tracking-tight text-balance leading-[1.06]">
                   <span className="bg-gradient-to-r from-[#E11D48] to-[#BE123C] dark:from-[#FB7185] dark:to-[#E11D48] bg-clip-text text-transparent">
                     AI
                   </span>{' '}
@@ -96,83 +94,83 @@ export const HomePage: React.FC = () => {
                     AI
                   </span>
                 </h1>
-                <h2 className="mt-2.5 text-xl sm:text-2xl md:text-3xl font-bold font-display bg-gradient-to-r from-[#091122] via-[#1D4ED8] to-[#E11D48] dark:from-[#F5F8FF] dark:via-[#38BDF8] dark:to-[#FB7185] bg-clip-text text-transparent text-balance">
+                <h2 className="mt-2 sm:mt-2.5 text-lg sm:text-2xl md:text-3xl font-bold font-display bg-gradient-to-r from-[#091122] via-[#1D4ED8] to-[#E11D48] dark:from-[#F5F8FF] dark:via-[#38BDF8] dark:to-[#FB7185] bg-clip-text text-transparent text-balance leading-snug">
                   {BOOK_METADATA.subtitle}
                 </h2>
               </div>
 
-              <p className="text-sm sm:text-base md:text-lg text-[#334155] dark:text-[#AAB8CC] leading-relaxed max-w-2xl">
+              <p className="text-sm sm:text-base md:text-lg text-[#334155] dark:text-[#AAB8CC] leading-relaxed max-w-2xl break-words">
                 {BOOK_METADATA.shortDescription}
               </p>
 
-              <div className="pt-0.5 text-xs sm:text-sm text-[#091122] dark:text-[#F5F8FF]">
-                <span className="text-slate-600 dark:text-[#AAB8CC]">By </span>
+              <div className="pt-0.5 flex flex-wrap items-center gap-x-2 gap-y-1 text-xs sm:text-sm text-[#091122] dark:text-[#F5F8FF]">
+                <span className="text-slate-600 dark:text-[#AAB8CC]">By</span>
                 <Link
                   to="/author"
                   className="font-bold text-[#1D4ED8] dark:text-[#38BDF8] hover:text-[#E11D48] dark:hover:text-[#FB7185] underline underline-offset-4 transition-colors"
                 >
                   {BOOK_METADATA.author}
                 </Link>
-                <span className="mx-2 text-slate-400 dark:text-slate-600">·</span>
+                <span className="text-slate-400 dark:text-slate-600">·</span>
                 <span className="text-slate-600 dark:text-[#AAB8CC]">
                   {BOOK_METADATA.authorRole}
                 </span>
               </div>
 
-              {/* Mobile-Optimized CTAs with Red-to-Blue Clash Power */}
-              <div className="pt-2 flex flex-col sm:flex-row sm:flex-wrap items-stretch sm:items-center gap-3">
+              {/* Mobile-Optimized CTAs with flex-wrap */}
+              <div className="pt-2 flex flex-col sm:flex-row flex-wrap items-stretch sm:items-center gap-3">
                 <Link
                   to="/order"
                   onClick={() => trackEvent('order_cta_clicked', { source: 'hero_primary' })}
-                  className="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl bg-gradient-to-r from-[#E11D48] via-[#4F46E5] to-[#1D4ED8] hover:from-[#BE123C] hover:to-[#1E40AF] text-sm font-bold text-white shadow-[0_10px_28px_-6px_rgba(225,29,72,0.4),0_10px_28px_-6px_rgba(29,78,216,0.45)] transition-all whitespace-nowrap shrink-0"
+                  className="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl bg-gradient-to-r from-[#E11D48] via-[#4F46E5] to-[#1D4ED8] hover:from-[#BE123C] hover:to-[#1E40AF] text-xs sm:text-sm font-bold text-white shadow-[0_10px_28px_-6px_rgba(225,29,72,0.4),0_10px_28px_-6px_rgba(29,78,216,0.45)] transition-all"
                 >
                   <span>ORDER THE BOOK</span>
-                  <ArrowRight className="w-4 h-4" />
+                  <ArrowRight className="w-4 h-4 shrink-0" />
                 </Link>
                 <Link
                   to="/book"
-                  className="inline-flex items-center justify-center gap-2 px-5 py-3.5 rounded-xl bg-white/95 dark:bg-[#0F1D33] hover:bg-white dark:hover:bg-[#162944] border border-[#CBD5E1] dark:border-slate-400/20 text-sm font-semibold text-[#091122] dark:text-[#F5F8FF] shadow-xs transition-all whitespace-nowrap shrink-0"
+                  className="inline-flex items-center justify-center gap-2 px-5 py-3.5 rounded-xl bg-white/95 dark:bg-[#0F1D33] hover:bg-white dark:hover:bg-[#162944] border border-[#CBD5E1] dark:border-slate-400/20 text-xs sm:text-sm font-semibold text-[#091122] dark:text-[#F5F8FF] shadow-xs transition-all"
                 >
                   <span>EXPLORE THE BOOK</span>
                 </Link>
                 <Link
                   to="/excerpt"
                   onClick={() => trackEvent('sample_chapter_opened', { source: 'hero_cta' })}
-                  className="inline-flex items-center justify-center gap-2 px-4 py-3 rounded-xl text-sm font-semibold text-[#1D4ED8] dark:text-[#38BDF8] hover:text-[#E11D48] dark:hover:text-[#FB7185] transition-colors whitespace-nowrap shrink-0"
+                  className="inline-flex items-center justify-center gap-2 px-4 py-3 rounded-xl text-xs sm:text-sm font-semibold text-[#1D4ED8] dark:text-[#38BDF8] hover:text-[#E11D48] dark:hover:text-[#FB7185] transition-colors"
                 >
-                  <BookOpen className="w-4 h-4" />
+                  <BookOpen className="w-4 h-4 shrink-0" />
                   <span>READ CHAPTER 1</span>
                 </Link>
               </div>
 
               {/* Opposing AI Systems Visual Architecture Module */}
-              <div className="pt-3">
+              <div className="pt-2 sm:pt-3 min-w-0">
                 <CounteroffensiveHeroGraphic />
               </div>
             </motion.div>
 
             {/* 3D Book Showcase Column */}
-            <div className="lg:col-span-5 flex flex-col items-center">
+            <FadeInUp delay={0.12} className="lg:col-span-5 flex flex-col items-center min-w-0">
               <BookMockup3D showAudioTeaser={true} />
-            </div>
+            </FadeInUp>
           </div>
         </div>
       </section>
 
       {/* 6.2 COMPACT RED-VS-BLUE EDITION STRIP */}
       <section className="bg-gradient-to-r from-[#E11D48]/[0.06] via-[#EAF0F8]/90 to-[#1D4ED8]/[0.08] dark:from-[#E11D48]/[0.09] dark:via-[#0A1426] dark:to-[#1D4ED8]/[0.12] border-b border-[#D5E0F0] dark:border-slate-400/15 py-5 sm:py-6">
-        <div className="max-w-[1280px] mx-auto px-4 sm:px-6">
-          <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 sm:gap-6">
-            <div>
+        <div className="w-full max-w-[1280px] mx-auto px-4 sm:px-6">
+          <FadeInUp className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 sm:gap-6">
+            <div className="min-w-0">
               <div className="text-xs font-mono font-bold bg-gradient-to-r from-[#E11D48] to-[#1D4ED8] dark:from-[#FB7185] dark:to-[#38BDF8] bg-clip-text text-transparent">
                 AVAILABLE EDITION FORMATS &amp; DIRECT AUTHOR ALLOCATION
               </div>
-              <div className="text-xs sm:text-sm font-semibold text-[#091122] dark:text-[#F5F8FF] mt-1">
+              <div className="text-xs sm:text-sm font-semibold text-[#091122] dark:text-[#F5F8FF] mt-1 break-words">
                 {BOOK_METADATA.coreMessage}
               </div>
             </div>
 
-            <div className="flex flex-wrap items-center gap-3 sm:gap-6 text-xs text-slate-600 dark:text-[#AAB8CC]">
+            <div className="flex flex-wrap items-center gap-3 sm:gap-5 text-xs text-slate-600 dark:text-[#AAB8CC]">
               {BOOK_FORMATS.map((fmt, index) => (
                 <React.Fragment key={fmt.id}>
                   {index > 0 && (
@@ -188,21 +186,21 @@ export const HomePage: React.FC = () => {
               ))}
               <Link
                 to="/order"
-                className="w-full sm:w-auto text-center px-4 py-2 rounded-lg bg-white dark:bg-[#0F1D33] hover:bg-[#1D4ED8] hover:text-white dark:hover:bg-[#3478F6] text-[#091122] dark:text-[#F5F8FF] border border-[#CBD5E1] dark:border-slate-400/20 font-semibold transition-colors whitespace-nowrap shrink-0 shadow-2xs"
+                className="w-full sm:w-auto text-center px-4 py-2 rounded-lg bg-white dark:bg-[#0F1D33] hover:bg-[#1D4ED8] hover:text-white dark:hover:bg-[#3478F6] text-[#091122] dark:text-[#F5F8FF] border border-[#CBD5E1] dark:border-slate-400/20 font-semibold transition-colors shadow-2xs"
               >
                 Configure Order / Bulk Enquiry →
               </Link>
             </div>
-          </div>
+          </FadeInUp>
         </div>
       </section>
 
-      {/* 6.3 THREE CENTRAL PILLARS (RED WEAPON · PURPLE/CYAN TARGET · BLUE SHIELD) */}
-      <section className="py-14 md:py-24 border-b border-[#D5E0F0] dark:border-slate-400/15">
-        <div className="max-w-[1280px] mx-auto px-4 sm:px-6">
-          <div className="max-w-3xl mb-10 sm:mb-12">
+      {/* 6.3 THREE CENTRAL PILLARS — BOOK FEATURES WITH SCROLL FADE-IN-UP */}
+      <section className="py-12 sm:py-16 md:py-24 border-b border-[#D5E0F0] dark:border-slate-400/15">
+        <div className="w-full max-w-[1280px] mx-auto px-4 sm:px-6">
+          <FadeInUp className="max-w-3xl mb-8 sm:mb-12">
             <div className="inline-flex items-center gap-1.5 text-xs font-mono font-bold bg-gradient-to-r from-[#E11D48] to-[#1D4ED8] dark:from-[#FB7185] dark:to-[#38BDF8] bg-clip-text text-transparent mb-2">
-              <Zap className="w-3.5 h-3.5 text-[#E11D48]" />
+              <Zap className="w-3.5 h-3.5 text-[#E11D48] shrink-0" />
               <span>THE CENTRAL PROPOSITION</span>
             </div>
             <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold font-display text-[#091122] dark:text-[#F5F8FF] text-balance">
@@ -213,9 +211,15 @@ export const HomePage: React.FC = () => {
             <p className="mt-3 text-sm sm:text-base text-[#334155] dark:text-[#AAB8CC] leading-relaxed">
               Artificial intelligence is changing the capabilities available to both attackers and defenders—while introducing a complex new attack surface across models, prompts, retrieval systems, agents, APIs, and connected tools.
             </p>
-          </div>
+          </FadeInUp>
 
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-stretch">
+          <motion.div
+            variants={staggerGridVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.1 }}
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6 items-stretch"
+          >
             {TRIAD_PILLARS.map((pillar, idx) => {
               const isWeapon = pillar.id === 'weapon';
               const isShield = pillar.id === 'shield';
@@ -228,17 +232,14 @@ export const HomePage: React.FC = () => {
               return (
                 <motion.div
                   key={pillar.id}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, margin: '-40px' }}
-                  transition={{ duration: 0.4, delay: idx * 0.08 }}
+                  variants={fadeInUpVariants}
                   whileHover={{ y: -5 }}
-                  className="rounded-2xl bg-white dark:bg-[#0F1D33] border border-[#D5E0F0] dark:border-slate-400/15 overflow-hidden flex flex-col justify-between transition-all shadow-sm hover:shadow-xl"
+                  className="rounded-2xl bg-white dark:bg-[#0F1D33] border border-[#D5E0F0] dark:border-slate-400/15 overflow-hidden flex flex-col justify-between transition-all shadow-sm hover:shadow-xl min-w-0"
                 >
                   <div className={`h-1.5 w-full bg-gradient-to-r ${topBarClass}`} />
                   <div className="p-5 sm:p-6 flex-1 flex flex-col justify-between">
                     <div>
-                      <div className="flex items-center justify-between text-xs font-mono font-bold mb-3">
+                      <div className="flex flex-wrap items-center justify-between gap-2 text-xs font-mono font-bold mb-3">
                         <span
                           className={
                             isWeapon
@@ -254,7 +255,7 @@ export const HomePage: React.FC = () => {
                           0{idx + 1} / 03
                         </span>
                       </div>
-                      <h3 className="text-xl font-bold font-display text-[#091122] dark:text-[#F5F8FF] mb-2.5">
+                      <h3 className="text-lg sm:text-xl font-bold font-display text-[#091122] dark:text-[#F5F8FF] mb-2.5">
                         {pillar.title}
                       </h3>
                       <p className="text-xs sm:text-sm text-[#334155] dark:text-[#AAB8CC] leading-relaxed mb-5">
@@ -274,7 +275,7 @@ export const HomePage: React.FC = () => {
                               className="w-1.5 h-1.5 rounded-full mt-1.5 shrink-0"
                               style={{ backgroundColor: pillar.accentColor }}
                             />
-                            <span className="text-[#334155] dark:text-[#AAB8CC]">{cap}</span>
+                            <span className="text-[#334155] dark:text-[#AAB8CC] break-words">{cap}</span>
                           </li>
                         ))}
                       </ul>
@@ -290,14 +291,14 @@ export const HomePage: React.FC = () => {
                 </motion.div>
               );
             })}
-          </div>
+          </motion.div>
         </div>
       </section>
 
       {/* 6.4 THE CHANGING CYBER BATTLEFIELD — RED EXPOSURE VS. BLUE COUNTEROFFENSIVE */}
-      <section className="py-14 md:py-24 bg-[#EAF0F8]/75 dark:bg-[#0A1426] border-b border-[#D5E0F0] dark:border-slate-400/15">
-        <div className="max-w-[1280px] mx-auto px-4 sm:px-6">
-          <div className="max-w-3xl mb-10 sm:mb-12">
+      <section className="py-12 sm:py-16 md:py-24 bg-[#EAF0F8]/75 dark:bg-[#0A1426] border-b border-[#D5E0F0] dark:border-slate-400/15">
+        <div className="w-full max-w-[1280px] mx-auto px-4 sm:px-6">
+          <FadeInUp className="max-w-3xl mb-8 sm:mb-12">
             <div className="text-xs font-mono font-bold bg-gradient-to-r from-[#E11D48] to-[#1D4ED8] dark:from-[#FB7185] dark:to-[#38BDF8] bg-clip-text text-transparent mb-2">
               ARCHITECTURAL SHIFT · RED VS. BLUE MATRIX
             </div>
@@ -307,103 +308,103 @@ export const HomePage: React.FC = () => {
             <p className="mt-3 text-sm sm:text-base text-[#334155] dark:text-[#AAB8CC] leading-relaxed">
               Traditional security controls remain essential foundations, yet autonomous agents, natural-language instruction streams, RAG pipelines, and delegated tool calling require dedicated AI-native controls.
             </p>
-          </div>
+          </FadeInUp>
 
-          <div className="overflow-x-auto rounded-2xl border border-[#D5E0F0] dark:border-slate-400/15 bg-white dark:bg-[#0F1D33] shadow-sm">
-            <table className="w-full min-w-[680px] text-left border-collapse text-sm">
+          <FadeInUp delay={0.08} className="overflow-x-auto rounded-2xl border border-[#D5E0F0] dark:border-slate-400/15 bg-white dark:bg-[#0F1D33] shadow-sm">
+            <table className="w-full min-w-[640px] text-left border-collapse text-xs sm:text-sm">
               <thead>
                 <tr className="border-b border-[#D5E0F0] dark:border-slate-400/15 bg-[#F4F7FC] dark:bg-[#060D1A]/80 text-xs font-mono text-slate-600 dark:text-[#AAB8CC]">
-                  <th className="py-4 px-5">Architectural Dimension</th>
-                  <th className="py-4 px-5">Conventional Deterministic Software</th>
-                  <th className="py-4 px-5 text-[#E11D48] dark:text-[#FB7185] bg-red-500/[0.04]">
+                  <th className="py-3.5 px-4 sm:px-5">Architectural Dimension</th>
+                  <th className="py-3.5 px-4 sm:px-5">Conventional Deterministic Software</th>
+                  <th className="py-3.5 px-4 sm:px-5 text-[#E11D48] dark:text-[#FB7185] bg-red-500/[0.04]">
                     Red AI Exposure (Attack Surface)
                   </th>
-                  <th className="py-4 px-5 text-[#1D4ED8] dark:text-[#38BDF8] bg-blue-500/[0.04]">
+                  <th className="py-3.5 px-4 sm:px-5 text-[#1D4ED8] dark:text-[#38BDF8] bg-blue-500/[0.04]">
                     Blue AI Counteroffensive Control
                   </th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-200 dark:divide-slate-400/10 text-xs sm:text-sm">
                 <tr>
-                  <td className="py-4 px-5 font-semibold text-[#091122] dark:text-[#F5F8FF]">
+                  <td className="py-3.5 px-4 sm:px-5 font-semibold text-[#091122] dark:text-[#F5F8FF]">
                     Instruction vs. Data Boundary
                   </td>
-                  <td className="py-4 px-5 text-[#334155] dark:text-[#AAB8CC]">
+                  <td className="py-3.5 px-4 sm:px-5 text-[#334155] dark:text-[#AAB8CC]">
                     Strict separation (compiled code vs. parameterized SQL/JSON inputs)
                   </td>
-                  <td className="py-4 px-5 text-[#334155] dark:text-[#AAB8CC] bg-red-500/[0.02]">
+                  <td className="py-3.5 px-4 sm:px-5 text-[#334155] dark:text-[#AAB8CC] bg-red-500/[0.02]">
                     Shared token stream; untrusted documents can inject instructions
                   </td>
-                  <td className="py-4 px-5 text-[#091122] dark:text-[#F5F8FF] font-medium bg-blue-500/[0.02]">
+                  <td className="py-3.5 px-4 sm:px-5 text-[#091122] dark:text-[#F5F8FF] font-medium bg-blue-500/[0.02]">
                     Retrieval Gatekeeper + spotlighted provenance delimiters
                   </td>
                 </tr>
                 <tr>
-                  <td className="py-4 px-5 font-semibold text-[#091122] dark:text-[#F5F8FF]">
+                  <td className="py-3.5 px-4 sm:px-5 font-semibold text-[#091122] dark:text-[#F5F8FF]">
                     Knowledge Retrieval (RAG)
                   </td>
-                  <td className="py-4 px-5 text-[#334155] dark:text-[#AAB8CC]">
+                  <td className="py-3.5 px-4 sm:px-5 text-[#334155] dark:text-[#AAB8CC]">
                     Deterministic row-level SQL queries with explicit schema joins
                   </td>
-                  <td className="py-4 px-5 text-[#334155] dark:text-[#AAB8CC] bg-red-500/[0.02]">
+                  <td className="py-3.5 px-4 sm:px-5 text-[#334155] dark:text-[#AAB8CC] bg-red-500/[0.02]">
                     Vector similarity search across multi-source embeddings
                   </td>
-                  <td className="py-4 px-5 text-[#091122] dark:text-[#F5F8FF] font-medium bg-blue-500/[0.02]">
+                  <td className="py-3.5 px-4 sm:px-5 text-[#091122] dark:text-[#F5F8FF] font-medium bg-blue-500/[0.02]">
                     Pre-retrieval ACL enforcement &amp; chunk poisoning scanners
                   </td>
                 </tr>
                 <tr>
-                  <td className="py-4 px-5 font-semibold text-[#091122] dark:text-[#F5F8FF]">
+                  <td className="py-3.5 px-4 sm:px-5 font-semibold text-[#091122] dark:text-[#F5F8FF]">
                     Tool &amp; API Execution
                   </td>
-                  <td className="py-4 px-5 text-[#334155] dark:text-[#AAB8CC]">
+                  <td className="py-3.5 px-4 sm:px-5 text-[#334155] dark:text-[#AAB8CC]">
                     Hard-coded service logic invoking fixed downstream endpoints
                   </td>
-                  <td className="py-4 px-5 text-[#334155] dark:text-[#AAB8CC] bg-red-500/[0.02]">
+                  <td className="py-3.5 px-4 sm:px-5 text-[#334155] dark:text-[#AAB8CC] bg-red-500/[0.02]">
                     Dynamic model-selected function calls &amp; confused deputy risk
                   </td>
-                  <td className="py-4 px-5 text-[#091122] dark:text-[#F5F8FF] font-medium bg-blue-500/[0.02]">
+                  <td className="py-3.5 px-4 sm:px-5 text-[#091122] dark:text-[#F5F8FF] font-medium bg-blue-500/[0.02]">
                     Sandboxed Tool Broker + short-lived On-Behalf-Of (OBO) tokens
                   </td>
                 </tr>
                 <tr>
-                  <td className="py-4 px-5 font-semibold text-[#091122] dark:text-[#F5F8FF]">
+                  <td className="py-3.5 px-4 sm:px-5 font-semibold text-[#091122] dark:text-[#F5F8FF]">
                     Multi-Step Delegation
                   </td>
-                  <td className="py-4 px-5 text-[#334155] dark:text-[#AAB8CC]">
+                  <td className="py-3.5 px-4 sm:px-5 text-[#334155] dark:text-[#AAB8CC]">
                     Predictable DAG workflows and finite state machines
                   </td>
-                  <td className="py-4 px-5 text-[#334155] dark:text-[#AAB8CC] bg-red-500/[0.02]">
+                  <td className="py-3.5 px-4 sm:px-5 text-[#334155] dark:text-[#AAB8CC] bg-red-500/[0.02]">
                     Autonomous multi-agent planning &amp; recursive reasoning loops
                   </td>
-                  <td className="py-4 px-5 text-[#091122] dark:text-[#F5F8FF] font-medium bg-blue-500/[0.02]">
+                  <td className="py-3.5 px-4 sm:px-5 text-[#091122] dark:text-[#F5F8FF] font-medium bg-blue-500/[0.02]">
                     Inline Circuit Breaker + out-of-band Shadow Evaluator
                   </td>
                 </tr>
                 <tr>
-                  <td className="py-4 px-5 font-semibold text-[#091122] dark:text-[#F5F8FF]">
+                  <td className="py-3.5 px-4 sm:px-5 font-semibold text-[#091122] dark:text-[#F5F8FF]">
                     Incident Recovery
                   </td>
-                  <td className="py-4 px-5 text-[#334155] dark:text-[#AAB8CC]">
+                  <td className="py-3.5 px-4 sm:px-5 text-[#334155] dark:text-[#AAB8CC]">
                     Container restart, patch deployment, and firewall blocklists
                   </td>
-                  <td className="py-4 px-5 text-[#334155] dark:text-[#AAB8CC] bg-red-500/[0.02]">
+                  <td className="py-3.5 px-4 sm:px-5 text-[#334155] dark:text-[#AAB8CC] bg-red-500/[0.02]">
                     Poisoned episodic memory and contaminated retrieval context
                   </td>
-                  <td className="py-4 px-5 text-[#091122] dark:text-[#F5F8FF] font-medium bg-blue-500/[0.02]">
+                  <td className="py-3.5 px-4 sm:px-5 text-[#091122] dark:text-[#F5F8FF] font-medium bg-blue-500/[0.02]">
                     Episodic state rollback, semantic honeytokens &amp; human gates
                   </td>
                 </tr>
               </tbody>
             </table>
-          </div>
+          </FadeInUp>
         </div>
       </section>
 
-      {/* 6.5 EXPLORE THE BOOK — ALL 11 CHAPTERS */}
-      <section className="py-14 md:py-24 border-b border-[#D5E0F0] dark:border-slate-400/15">
-        <div className="max-w-[1280px] mx-auto px-4 sm:px-6">
-          <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 sm:gap-6 mb-10 sm:mb-12">
+      {/* 6.5 EXPLORE THE BOOK — ALL 11 CHAPTERS GRID WITH STAGGERED FADE-IN-UP */}
+      <section className="py-12 sm:py-16 md:py-24 border-b border-[#D5E0F0] dark:border-slate-400/15">
+        <div className="w-full max-w-[1280px] mx-auto px-4 sm:px-6">
+          <FadeInUp className="flex flex-col md:flex-row md:items-end justify-between gap-4 sm:gap-6 mb-8 sm:mb-12">
             <div>
               <div className="text-xs font-mono font-bold bg-gradient-to-r from-[#E11D48] to-[#1D4ED8] dark:from-[#FB7185] dark:to-[#38BDF8] bg-clip-text text-transparent mb-2">
                 APPROVED 11-CHAPTER MANUSCRIPT ARCHITECTURE
@@ -417,24 +418,24 @@ export const HomePage: React.FC = () => {
             </div>
             <Link
               to="/chapters"
-              className="inline-flex items-center gap-2 text-sm font-semibold text-[#1D4ED8] dark:text-[#38BDF8] hover:text-[#E11D48] hover:underline whitespace-nowrap shrink-0"
+              className="inline-flex items-center gap-2 text-xs sm:text-sm font-semibold text-[#1D4ED8] dark:text-[#38BDF8] hover:text-[#E11D48] hover:underline whitespace-nowrap shrink-0"
             >
               <span>View Full Syllabus &amp; Outcomes</span>
               <ArrowRight className="w-4 h-4" />
             </Link>
-          </div>
+          </FadeInUp>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6">
-            {CHAPTERS_DATA.map((ch, i) => {
+          <motion.div
+            variants={staggerGridVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.08 }}
+            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6"
+          >
+            {CHAPTERS_DATA.map((ch) => {
               const isRedChapter = ch.number <= 3;
               return (
-                <motion.div
-                  key={ch.slug}
-                  initial={{ opacity: 0, y: 14 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, margin: '-30px' }}
-                  transition={{ duration: 0.3, delay: (i % 3) * 0.06 }}
-                >
+                <motion.div key={ch.slug} variants={fadeInUpVariants} className="min-w-0">
                   <Link
                     to={`/chapters/${ch.slug}`}
                     className={`group h-full rounded-2xl bg-white dark:bg-[#0F1D33] border border-[#D5E0F0] dark:border-slate-400/15 ${
@@ -444,7 +445,7 @@ export const HomePage: React.FC = () => {
                     } p-5 sm:p-6 flex flex-col justify-between transition-all duration-200 hover:-translate-y-1 shadow-2xs hover:shadow-lg`}
                   >
                     <div>
-                      <div className="flex items-center gap-2 text-xs font-mono text-slate-500 dark:text-[#AAB8CC] mb-2.5">
+                      <div className="flex flex-wrap items-center gap-1.5 text-xs font-mono text-slate-500 dark:text-[#AAB8CC] mb-2.5">
                         <span
                           className={`font-bold ${
                             isRedChapter
@@ -457,7 +458,7 @@ export const HomePage: React.FC = () => {
                         <span aria-hidden="true">·</span>
                         <span className="truncate">{ch.partLabel}</span>
                       </div>
-                      <h3 className="text-lg font-bold font-display text-[#091122] dark:text-[#F5F8FF] group-hover:text-[#1D4ED8] dark:group-hover:text-[#38BDF8] transition-colors">
+                      <h3 className="text-base sm:text-lg font-bold font-display text-[#091122] dark:text-[#F5F8FF] group-hover:text-[#1D4ED8] dark:group-hover:text-[#38BDF8] transition-colors">
                         {ch.title}
                       </h3>
                       <p className="mt-2 text-xs text-[#334155] dark:text-[#AAB8CC] leading-relaxed line-clamp-3">
@@ -465,8 +466,8 @@ export const HomePage: React.FC = () => {
                       </p>
                     </div>
 
-                    <div className="mt-5 pt-3 border-t border-slate-200 dark:border-slate-400/10 flex items-center justify-between text-xs">
-                      <span className="text-slate-600 dark:text-[#AAB8CC] font-mono truncate max-w-[190px]">
+                    <div className="mt-5 pt-3 border-t border-slate-200 dark:border-slate-400/10 flex items-center justify-between gap-2 text-xs">
+                      <span className="text-slate-600 dark:text-[#AAB8CC] font-mono truncate">
                         {ch.technicalConcepts[0]?.name}
                       </span>
                       <span className="text-[#1D4ED8] dark:text-[#38BDF8] font-semibold inline-flex items-center gap-1 shrink-0 group-hover:translate-x-0.5 transition-transform">
@@ -478,14 +479,14 @@ export const HomePage: React.FC = () => {
                 </motion.div>
               );
             })}
-          </div>
+          </motion.div>
         </div>
       </section>
 
       {/* 6.6 TECHNICAL ENGINEERING HIGHLIGHTS — 4 DESIGN PATTERNS */}
-      <section className="py-14 md:py-24 bg-[#EAF0F8]/75 dark:bg-[#0A1426] border-b border-[#D5E0F0] dark:border-slate-400/15">
-        <div className="max-w-[1280px] mx-auto px-4 sm:px-6">
-          <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 sm:gap-6 mb-8 sm:mb-10">
+      <section className="py-12 sm:py-16 md:py-24 bg-[#EAF0F8]/75 dark:bg-[#0A1426] border-b border-[#D5E0F0] dark:border-slate-400/15">
+        <div className="w-full max-w-[1280px] mx-auto px-4 sm:px-6">
+          <FadeInUp className="flex flex-col md:flex-row md:items-end justify-between gap-4 sm:gap-6 mb-8 sm:mb-10">
             <div>
               <div className="text-xs font-mono font-bold bg-gradient-to-r from-[#E11D48] to-[#1D4ED8] dark:from-[#FB7185] dark:to-[#38BDF8] bg-clip-text text-transparent mb-2">
                 CHAPTER 4 ARCHITECTURAL CORE
@@ -499,21 +500,21 @@ export const HomePage: React.FC = () => {
             </div>
             <Link
               to="/framework"
-              className="inline-flex items-center gap-2 text-sm font-semibold text-[#1D4ED8] dark:text-[#38BDF8] hover:underline whitespace-nowrap shrink-0"
+              className="inline-flex items-center gap-2 text-xs sm:text-sm font-semibold text-[#1D4ED8] dark:text-[#38BDF8] hover:underline whitespace-nowrap shrink-0"
             >
               <span>Open Full Interactive Framework</span>
               <ArrowRight className="w-4 h-4" />
             </Link>
-          </div>
+          </FadeInUp>
 
-          {/* Interactive Pattern Selector Tabs */}
-          <div className="flex items-center gap-2 p-1.5 rounded-xl bg-white dark:bg-[#060D1A] border border-[#D5E0F0] dark:border-slate-400/15 mb-6 sm:mb-8 overflow-x-auto no-scrollbar">
+          {/* Interactive Pattern Selector Tabs with flex-wrap on mobile/tablet */}
+          <FadeInUp delay={0.05} className="flex flex-wrap items-center gap-2 p-1.5 rounded-xl bg-white dark:bg-[#060D1A] border border-[#D5E0F0] dark:border-slate-400/15 mb-6 sm:mb-8">
             {FOUR_SECURITY_PATTERNS.map((pat, index) => (
               <button
                 key={pat.id}
                 type="button"
                 onClick={() => setSelectedPatternId(pat.id)}
-                className={`px-3.5 sm:px-4 py-2.5 rounded-lg text-xs sm:text-sm font-semibold transition-all whitespace-nowrap shrink-0 cursor-pointer ${
+                className={`flex-1 sm:flex-initial px-3.5 sm:px-4 py-2.5 rounded-lg text-xs sm:text-sm font-semibold transition-all cursor-pointer ${
                   selectedPatternId === pat.id
                     ? 'bg-gradient-to-r from-[#E11D48] via-[#4F46E5] to-[#1D4ED8] text-white shadow-xs'
                     : 'text-slate-600 dark:text-[#AAB8CC] hover:text-[#091122] dark:hover:text-[#F5F8FF]'
@@ -522,22 +523,22 @@ export const HomePage: React.FC = () => {
                 0{index + 1}. {pat.name}
               </button>
             ))}
-          </div>
+          </FadeInUp>
 
           {/* Selected Pattern Deep-Dive Panel */}
           <motion.div
             key={activePattern.id}
-            initial={{ opacity: 0, y: 8 }}
+            initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.25 }}
+            transition={{ duration: 0.3 }}
             className="rounded-2xl bg-white dark:bg-[#0F1D33] border border-[#D5E0F0] dark:border-slate-400/15 p-5 sm:p-8 shadow-sm"
           >
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8">
-              <div className="lg:col-span-7 space-y-4">
+              <div className="lg:col-span-7 space-y-4 min-w-0">
                 <div className="text-xs font-mono font-semibold text-[#1D4ED8] dark:text-[#38BDF8]">
                   {activePattern.architecturalPlacement}
                 </div>
-                <h3 className="text-xl sm:text-2xl font-bold font-display text-[#091122] dark:text-[#F5F8FF]">
+                <h3 className="text-lg sm:text-2xl font-bold font-display text-[#091122] dark:text-[#F5F8FF]">
                   {activePattern.name} — {activePattern.tagline}
                 </h3>
                 <p className="text-xs sm:text-sm text-[#334155] dark:text-[#AAB8CC] leading-relaxed">
@@ -552,7 +553,7 @@ export const HomePage: React.FC = () => {
                     {activePattern.mechanismSteps.map((step) => (
                       <li
                         key={step}
-                        className="bg-[#F4F7FC] dark:bg-[#0A1426] border border-[#D5E0F0] dark:border-slate-400/10 rounded-lg px-3.5 py-2.5 font-mono text-[#091122] dark:text-[#F5F8FF]"
+                        className="bg-[#F4F7FC] dark:bg-[#0A1426] border border-[#D5E0F0] dark:border-slate-400/10 rounded-lg px-3.5 py-2.5 font-mono text-[#091122] dark:text-[#F5F8FF] break-words"
                       >
                         {step}
                       </li>
@@ -561,7 +562,7 @@ export const HomePage: React.FC = () => {
                 </div>
               </div>
 
-              <div className="lg:col-span-5 flex flex-col justify-between bg-[#F4F7FC] dark:bg-[#0A1426] rounded-xl border border-[#D5E0F0] dark:border-slate-400/15 p-5 space-y-4">
+              <div className="lg:col-span-5 flex flex-col justify-between bg-[#F4F7FC] dark:bg-[#0A1426] rounded-xl border border-[#D5E0F0] dark:border-slate-400/15 p-5 space-y-4 min-w-0">
                 <div>
                   <div className="text-xs font-mono font-bold text-[#E11D48] dark:text-[#FB7185] mb-1">
                     RED AI THREAT MITIGATED
@@ -575,7 +576,7 @@ export const HomePage: React.FC = () => {
                   <div className="text-xs font-mono font-bold text-[#1D4ED8] dark:text-[#38BDF8] mb-1">
                     BLUE AI RUNTIME PROFILE
                   </div>
-                  <p className="text-xs text-slate-600 dark:text-[#AAB8CC] font-mono">
+                  <p className="text-xs text-slate-600 dark:text-[#AAB8CC] font-mono break-words">
                     {activePattern.latencyProfile}
                   </p>
                 </div>
@@ -605,9 +606,9 @@ export const HomePage: React.FC = () => {
       </section>
 
       {/* 6.7 BOOK RESOURCES */}
-      <section className="py-14 md:py-24 border-b border-[#D5E0F0] dark:border-slate-400/15">
-        <div className="max-w-[1280px] mx-auto px-4 sm:px-6">
-          <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 sm:gap-6 mb-10 sm:mb-12">
+      <section className="py-12 sm:py-16 md:py-24 border-b border-[#D5E0F0] dark:border-slate-400/15">
+        <div className="w-full max-w-[1280px] mx-auto px-4 sm:px-6">
+          <FadeInUp className="flex flex-col md:flex-row md:items-end justify-between gap-4 sm:gap-6 mb-8 sm:mb-12">
             <div>
               <div className="text-xs font-mono font-bold bg-gradient-to-r from-[#E11D48] to-[#1D4ED8] dark:from-[#FB7185] dark:to-[#38BDF8] bg-clip-text text-transparent mb-2">
                 PRACTITIONER TOOLKIT &amp; COMPANION LIBRARY
@@ -621,46 +622,53 @@ export const HomePage: React.FC = () => {
             </div>
             <Link
               to="/resources"
-              className="inline-flex items-center gap-2 text-sm font-semibold text-[#1D4ED8] dark:text-[#38BDF8] hover:underline whitespace-nowrap shrink-0"
+              className="inline-flex items-center gap-2 text-xs sm:text-sm font-semibold text-[#1D4ED8] dark:text-[#38BDF8] hover:underline whitespace-nowrap shrink-0"
             >
               <span>Browse Searchable Resource Library</span>
               <ArrowRight className="w-4 h-4" />
             </Link>
-          </div>
+          </FadeInUp>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+          <motion.div
+            variants={staggerGridVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.1 }}
+            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5"
+          >
             {RESOURCES_DATA.map((res) => (
-              <Link
-                key={res.id}
-                to="/resources"
-                className="group rounded-2xl bg-white dark:bg-[#0F1D33] border border-[#D5E0F0] dark:border-slate-400/15 hover:border-[#1D4ED8] dark:hover:border-[#38BDF8]/50 p-5 flex flex-col justify-between transition-all hover:-translate-y-1 shadow-2xs hover:shadow-md"
-              >
-                <div>
-                  <div className="text-xs font-mono font-semibold text-[#E11D48] dark:text-[#FB7185] mb-2">
-                    {res.type} · {res.chapterReference}
+              <motion.div key={res.id} variants={fadeInUpVariants} className="min-w-0">
+                <Link
+                  to="/resources"
+                  className="group h-full rounded-2xl bg-white dark:bg-[#0F1D33] border border-[#D5E0F0] dark:border-slate-400/15 hover:border-[#1D4ED8] dark:hover:border-[#38BDF8]/50 p-5 flex flex-col justify-between transition-all hover:-translate-y-1 shadow-2xs hover:shadow-md"
+                >
+                  <div>
+                    <div className="text-xs font-mono font-semibold text-[#E11D48] dark:text-[#FB7185] mb-2">
+                      {res.type} · {res.chapterReference}
+                    </div>
+                    <h3 className="text-base font-bold font-display text-[#091122] dark:text-[#F5F8FF] group-hover:text-[#1D4ED8] dark:group-hover:text-[#38BDF8] transition-colors">
+                      {res.title}
+                    </h3>
+                    <p className="mt-2 text-xs text-[#334155] dark:text-[#AAB8CC] leading-relaxed">
+                      {res.shortDescription}
+                    </p>
                   </div>
-                  <h3 className="text-base font-bold font-display text-[#091122] dark:text-[#F5F8FF] group-hover:text-[#1D4ED8] dark:group-hover:text-[#38BDF8] transition-colors">
-                    {res.title}
-                  </h3>
-                  <p className="mt-2 text-xs text-[#334155] dark:text-[#AAB8CC] leading-relaxed">
-                    {res.shortDescription}
-                  </p>
-                </div>
-                <div className="mt-4 pt-3 border-t border-slate-200 dark:border-slate-400/10 flex items-center justify-between text-xs text-slate-600 dark:text-[#AAB8CC]">
-                  <span>{res.availability}</span>
-                  <span className="text-[#1D4ED8] dark:text-[#38BDF8] font-semibold">Inspect →</span>
-                </div>
-              </Link>
+                  <div className="mt-4 pt-3 border-t border-slate-200 dark:border-slate-400/10 flex items-center justify-between text-xs text-slate-600 dark:text-[#AAB8CC]">
+                    <span>{res.availability}</span>
+                    <span className="text-[#1D4ED8] dark:text-[#38BDF8] font-semibold">Inspect →</span>
+                  </div>
+                </Link>
+              </motion.div>
             ))}
-          </div>
+          </motion.div>
         </div>
       </section>
 
       {/* 6.8 AUTHOR SECTION */}
-      <section className="py-14 md:py-24 bg-[#EAF0F8]/75 dark:bg-[#0A1426] border-b border-[#D5E0F0] dark:border-slate-400/15">
-        <div className="max-w-[1280px] mx-auto px-4 sm:px-6">
+      <section className="py-12 sm:py-16 md:py-24 bg-[#EAF0F8]/75 dark:bg-[#0A1426] border-b border-[#D5E0F0] dark:border-slate-400/15">
+        <div className="w-full max-w-[1280px] mx-auto px-4 sm:px-6">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-center">
-            <div className="lg:col-span-4">
+            <FadeInUp className="lg:col-span-4">
               <div className="rounded-2xl overflow-hidden p-[1.5px] bg-gradient-to-br from-[#E11D48] via-[#6366F1] to-[#1D4ED8] shadow-xl max-w-xs sm:max-w-sm mx-auto">
                 <div className="rounded-[14.5px] overflow-hidden bg-white dark:bg-[#0F1D33]">
                   <img
@@ -679,9 +687,9 @@ export const HomePage: React.FC = () => {
                   </div>
                 </div>
               </div>
-            </div>
+            </FadeInUp>
 
-            <div className="lg:col-span-8 space-y-4 sm:space-y-5">
+            <FadeInUp delay={0.1} className="lg:col-span-8 space-y-4 sm:space-y-5 min-w-0">
               <div className="text-xs font-mono font-bold bg-gradient-to-r from-[#E11D48] to-[#1D4ED8] dark:from-[#FB7185] dark:to-[#38BDF8] bg-clip-text text-transparent">
                 THE ENGINEER BEHIND THE COUNTEROFFENSIVE
               </div>
@@ -740,15 +748,15 @@ export const HomePage: React.FC = () => {
                   <ExternalLink className="w-3.5 h-3.5" />
                 </a>
               </div>
-            </div>
+            </FadeInUp>
           </div>
         </div>
       </section>
 
       {/* 6.9 REVIEWS AND CREDIBILITY */}
-      <section className="py-14 md:py-24 border-b border-[#D5E0F0] dark:border-slate-400/15">
-        <div className="max-w-[1280px] mx-auto px-4 sm:px-6">
-          <div className="max-w-3xl mb-10">
+      <section className="py-12 sm:py-16 md:py-24 border-b border-[#D5E0F0] dark:border-slate-400/15">
+        <div className="w-full max-w-[1280px] mx-auto px-4 sm:px-6">
+          <FadeInUp className="max-w-3xl mb-8 sm:mb-10">
             <div className="text-xs font-mono font-bold bg-gradient-to-r from-[#E11D48] to-[#1D4ED8] dark:from-[#FB7185] dark:to-[#38BDF8] bg-clip-text text-transparent mb-2">
               EDITORIAL INTEGRITY &amp; PEER CREDIBILITY
             </div>
@@ -758,10 +766,16 @@ export const HomePage: React.FC = () => {
             <p className="mt-3 text-sm sm:text-base text-[#334155] dark:text-[#AAB8CC] leading-relaxed">
               We maintain strict editorial transparency: early technical manuscript evaluations are distinguished from post-publication reader reviews, and no unverified or fabricated ratings ever appear on this platform.
             </p>
-          </div>
+          </FadeInUp>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="rounded-2xl bg-white dark:bg-[#0F1D33] border border-[#D5E0F0] dark:border-slate-400/15 p-6">
+          <motion.div
+            variants={staggerGridVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.1 }}
+            className="grid grid-cols-1 md:grid-cols-3 gap-5 sm:gap-6"
+          >
+            <motion.div variants={fadeInUpVariants} className="rounded-2xl bg-white dark:bg-[#0F1D33] border border-[#D5E0F0] dark:border-slate-400/15 p-5 sm:p-6">
               <Shield className="w-5 h-5 text-[#E11D48] dark:text-[#FB7185] mb-3" />
               <h3 className="text-lg font-bold font-display text-[#091122] dark:text-[#F5F8FF]">
                 Peer-Reviewed Research Foundation
@@ -769,9 +783,9 @@ export const HomePage: React.FC = () => {
               <p className="mt-2 text-xs text-[#334155] dark:text-[#AAB8CC] leading-relaxed">
                 Grounded in the author’s 27+ published papers across IEEE, Springer, and the 2026 Raptors Conference proceedings on <em>Trusted AI in the Age of Autonomous Agents</em>, plus six patent filings.
               </p>
-            </div>
+            </motion.div>
 
-            <div className="rounded-2xl bg-white dark:bg-[#0F1D33] border border-[#D5E0F0] dark:border-slate-400/15 p-6">
+            <motion.div variants={fadeInUpVariants} className="rounded-2xl bg-white dark:bg-[#0F1D33] border border-[#D5E0F0] dark:border-slate-400/15 p-5 sm:p-6">
               <Layers className="w-5 h-5 text-[#1D4ED8] dark:text-[#38BDF8] mb-3" />
               <h3 className="text-lg font-bold font-display text-[#091122] dark:text-[#F5F8FF]">
                 Independent Manuscript Review Policy
@@ -779,9 +793,9 @@ export const HomePage: React.FC = () => {
               <p className="mt-2 text-xs text-[#334155] dark:text-[#AAB8CC] leading-relaxed">
                 The manuscript has undergone technical review for architectural rigor. Individual reviewer quotations and institutional affiliations are published only with explicit written permission.
               </p>
-            </div>
+            </motion.div>
 
-            <div className="rounded-2xl bg-white dark:bg-[#0F1D33] border border-[#D5E0F0] dark:border-slate-400/15 p-6 flex flex-col justify-between">
+            <motion.div variants={fadeInUpVariants} className="rounded-2xl bg-white dark:bg-[#0F1D33] border border-[#D5E0F0] dark:border-slate-400/15 p-5 sm:p-6 flex flex-col justify-between">
               <div>
                 <CheckCircle2 className="w-5 h-5 text-[#1D4ED8] dark:text-[#38BDF8] mb-3" />
                 <h3 className="text-lg font-bold font-display text-[#091122] dark:text-[#F5F8FF]">
@@ -800,15 +814,15 @@ export const HomePage: React.FC = () => {
                   <ArrowRight className="w-3.5 h-3.5" />
                 </Link>
               </div>
-            </div>
-          </div>
+            </motion.div>
+          </motion.div>
         </div>
       </section>
 
       {/* 6.10 FINAL CONVERSION SECTION & LEAD CAPTURE */}
-      <section className="py-14 md:py-24 bg-[#EAF0F8]/75 dark:bg-[#0A1426]">
-        <div className="max-w-[1280px] mx-auto px-4 sm:px-6 space-y-10 sm:space-y-12">
-          <div className="relative rounded-2xl p-[1.5px] bg-gradient-to-r from-[#E11D48] via-[#6366F1] to-[#1D4ED8] max-w-4xl mx-auto shadow-xl">
+      <section className="py-12 sm:py-16 md:py-24 bg-[#EAF0F8]/75 dark:bg-[#0A1426]">
+        <div className="w-full max-w-[1280px] mx-auto px-4 sm:px-6 space-y-10 sm:space-y-12">
+          <FadeInUp className="relative rounded-2xl p-[1.5px] bg-gradient-to-r from-[#E11D48] via-[#6366F1] to-[#1D4ED8] max-w-4xl mx-auto shadow-xl">
             <div className="rounded-[14.5px] bg-white dark:bg-gradient-to-br dark:from-[#0F1D33] dark:to-[#060D1A] p-6 sm:p-10 md:p-12 text-center">
               <div className="text-xs font-mono font-bold bg-gradient-to-r from-[#E11D48] to-[#1D4ED8] dark:from-[#FB7185] dark:to-[#38BDF8] bg-clip-text text-transparent mb-3">
                 {BOOK_METADATA.signatureMessage}
@@ -819,11 +833,11 @@ export const HomePage: React.FC = () => {
               <p className="mt-3 sm:mt-4 text-sm sm:text-base md:text-lg text-[#334155] dark:text-[#AAB8CC] max-w-2xl mx-auto leading-relaxed">
                 Explore the ideas, architectures, and engineering principles shaping the future of AI security.
               </p>
-              <div className="mt-6 sm:mt-8 flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-3.5">
+              <div className="mt-6 sm:mt-8 flex flex-col sm:flex-row flex-wrap items-stretch sm:items-center justify-center gap-3.5">
                 <Link
                   to="/order"
                   onClick={() => trackEvent('order_cta_clicked', { source: 'home_footer_cta' })}
-                  className="inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-xl bg-gradient-to-r from-[#E11D48] via-[#4F46E5] to-[#1D4ED8] hover:opacity-95 text-sm font-bold text-white shadow-md transition-all"
+                  className="inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-xl bg-gradient-to-r from-[#E11D48] via-[#4F46E5] to-[#1D4ED8] hover:opacity-95 text-xs sm:text-sm font-bold text-white shadow-md transition-all"
                 >
                   <span>ORDER AI vs. AI</span>
                   <ArrowRight className="w-4 h-4" />
@@ -831,16 +845,18 @@ export const HomePage: React.FC = () => {
                 <Link
                   to="/excerpt"
                   onClick={() => trackEvent('sample_chapter_opened', { source: 'home_footer_cta' })}
-                  className="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl bg-[#F4F7FC] dark:bg-[#0F1D33] hover:bg-slate-200/80 dark:hover:bg-[#162944] border border-[#CBD5E1] dark:border-slate-400/20 text-sm font-semibold text-[#091122] dark:text-[#F5F8FF] transition-colors"
+                  className="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl bg-[#F4F7FC] dark:bg-[#0F1D33] hover:bg-slate-200/80 dark:hover:bg-[#162944] border border-[#CBD5E1] dark:border-slate-400/20 text-xs sm:text-sm font-semibold text-[#091122] dark:text-[#F5F8FF] transition-colors"
                 >
                   <BookOpen className="w-4 h-4 text-[#1D4ED8] dark:text-[#38BDF8]" />
                   <span>GET THE FIRST CHAPTER</span>
                 </Link>
               </div>
             </div>
-          </div>
+          </FadeInUp>
 
-          <LeadCaptureModule />
+          <FadeInUp delay={0.1}>
+            <LeadCaptureModule />
+          </FadeInUp>
         </div>
       </section>
     </div>
