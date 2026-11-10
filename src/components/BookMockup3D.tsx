@@ -87,40 +87,84 @@ export const BookMockup3D: React.FC<BookMockup3DProps> = ({
         </button>
       </div>
 
-      {/* Main Artwork Stage with Subtle Refined Aura */}
+      {/* Main Artwork Stage with Dynamic 3D Floating & Red-vs-Blue Cyber Pulse Animation */}
       <motion.div
-        initial={{ opacity: 0, y: 16 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.55, ease: 'easeOut' }}
-        className="relative group w-full flex justify-center"
+        initial={{ opacity: 0, y: 20, scale: 0.96 }}
+        animate={{ opacity: 1, y: 0, scale: 1 }}
+        transition={{ duration: 0.65, ease: [0.22, 1, 0.36, 1] }}
+        className="relative group w-full flex justify-center py-2"
+        style={{ perspective: '1200px' }}
       >
-        {/* Subtle Ambient Halo (Reduced Shadow Outside Book) */}
-        <div
-          className="absolute -inset-2 sm:-inset-3 rounded-3xl opacity-15 dark:opacity-20 blur-xl pointer-events-none transition-opacity duration-300 group-hover:opacity-25"
+        {/* Animated Red-vs-Blue Breathing Halo */}
+        <motion.div
+          animate={{
+            scale: [1, 1.06, 1],
+            opacity: [0.16, 0.28, 0.16],
+          }}
+          transition={{
+            duration: 4.5,
+            repeat: Infinity,
+            ease: 'easeInOut',
+          }}
+          className="absolute -inset-2 sm:-inset-3 rounded-3xl blur-xl pointer-events-none"
           style={{
             background:
-              'linear-gradient(125deg, rgba(225, 29, 72, 0.22) 0%, rgba(124, 58, 237, 0.12) 50%, rgba(29, 78, 216, 0.24) 100%)',
+              'linear-gradient(125deg, rgba(225, 29, 72, 0.28) 0%, rgba(124, 58, 237, 0.16) 50%, rgba(29, 78, 216, 0.30) 100%)',
           }}
+        />
+
+        {/* Animated Orbital Cyber-Telemetry Ring */}
+        <motion.div
+          animate={{ rotate: 360 }}
+          transition={{ duration: 26, repeat: Infinity, ease: 'linear' }}
+          className="pointer-events-none absolute inset-0 m-auto w-[280px] h-[280px] sm:w-[350px] sm:h-[350px] rounded-full border border-dashed border-[#E11D48]/20 dark:border-[#38BDF8]/20 opacity-75"
         />
 
         {viewMode === 'hardcover' ? (
           <motion.button
             type="button"
-            whileHover={{ y: -5, scale: 1.01 }}
-            transition={{ type: 'spring', stiffness: 260, damping: 20 }}
+            animate={{
+              y: [0, -9, 0],
+              rotateY: [-2.2, 2.2, -2.2],
+              rotateX: [1.2, -1.2, 1.2],
+            }}
+            transition={{
+              duration: 5.5,
+              repeat: Infinity,
+              ease: 'easeInOut',
+            }}
+            whileHover={{
+              y: -12,
+              scale: 1.025,
+              rotateY: 0,
+              rotateX: 0,
+              transition: { type: 'spring', stiffness: 260, damping: 20 },
+            }}
             onClick={() => setLightboxOpen(true)}
-            className={`relative block overflow-hidden rounded-2xl p-[1.5px] bg-gradient-to-br from-[#E11D48]/80 via-[#6366F1]/70 to-[#1D4ED8]/80 shadow-[0_8px_20px_-8px_rgba(9,17,34,0.12)] hover:shadow-[0_12px_26px_-8px_rgba(29,78,216,0.16)] cursor-pointer animate-float-slow ${
+            className={`relative block overflow-hidden rounded-2xl p-[2px] bg-gradient-to-br from-[#E11D48] via-[#6366F1] to-[#1D4ED8] shadow-[0_10px_24px_-8px_rgba(9,17,34,0.14)] hover:shadow-[0_16px_32px_-8px_rgba(29,78,216,0.22)] cursor-pointer ${
               compact ? 'max-w-[260px] sm:max-w-[290px]' : 'max-w-[290px] sm:max-w-[370px]'
             } w-full`}
           >
-            <div className="rounded-[14.5px] overflow-hidden bg-white dark:bg-[#0F1D33]">
+            <div className="relative rounded-[14px] overflow-hidden bg-white dark:bg-[#0F1D33]">
+              {/* Animated Diagonal Light Sweep Across Book Cover */}
+              <motion.div
+                animate={{ x: ['-140%', '220%'] }}
+                transition={{
+                  duration: 3.8,
+                  repeat: Infinity,
+                  repeatDelay: 2.4,
+                  ease: 'easeInOut',
+                }}
+                className="pointer-events-none absolute inset-y-0 w-1/2 -skew-x-12 bg-gradient-to-r from-transparent via-white/30 dark:via-white/15 to-transparent z-10"
+              />
+
               {!imgError ? (
                 <img
                   src={BOOK_METADATA.coverImage}
                   alt="AI vs. AI: Engineering the Cybersecurity Counteroffensive 3D Hardcover by Harsh Verma"
                   referrerPolicy="no-referrer"
                   onError={() => setImgError(true)}
-                  className="w-full h-auto object-cover"
+                  className="w-full h-auto object-cover transition-transform duration-500 group-hover:scale-[1.015]"
                 />
               ) : (
                 <div className="aspect-[3/4] w-full flex flex-col justify-between p-8 bg-slate-100 dark:bg-[#0B1628] text-left">
@@ -135,7 +179,10 @@ export const BookMockup3D: React.FC<BookMockup3DProps> = ({
                 </div>
               )}
               <div className="px-3.5 py-2.5 bg-white dark:bg-[#0A1426] border-t border-slate-200 dark:border-slate-400/15 flex items-center justify-between text-[11px] sm:text-xs text-slate-600 dark:text-[#AAB8CC]">
-                <span className="font-medium text-[#091122] dark:text-[#F5F8FF]">3D Hardcover Edition</span>
+                <span className="font-medium text-[#091122] dark:text-[#F5F8FF] inline-flex items-center gap-1.5">
+                  <span className="w-2 h-2 rounded-full bg-[#E11D48] animate-ping" />
+                  <span>3D Hardcover Edition</span>
+                </span>
                 <span className="bg-gradient-to-r from-[#E11D48] to-[#1D4ED8] dark:from-[#FB7185] dark:to-[#38BDF8] bg-clip-text text-transparent font-mono font-bold">
                   Tap to Inspect →
                 </span>
@@ -145,11 +192,13 @@ export const BookMockup3D: React.FC<BookMockup3DProps> = ({
         ) : (
           <motion.button
             type="button"
-            whileHover={{ y: -4 }}
+            animate={{ y: [0, -6, 0] }}
+            transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut' }}
+            whileHover={{ y: -10, scale: 1.015 }}
             onClick={() => setLightboxOpen(true)}
-            className="relative block w-full max-w-[520px] overflow-hidden rounded-2xl p-[1.5px] bg-gradient-to-r from-[#E11D48]/80 via-[#6366F1]/70 to-[#1D4ED8]/80 shadow-md hover:shadow-lg cursor-pointer"
+            className="relative block w-full max-w-[520px] overflow-hidden rounded-2xl p-[2px] bg-gradient-to-r from-[#E11D48] via-[#6366F1] to-[#1D4ED8] shadow-md hover:shadow-lg cursor-pointer"
           >
-            <div className="rounded-[14.5px] overflow-hidden bg-white dark:bg-[#0F1D33]">
+            <div className="relative rounded-[14px] overflow-hidden bg-white dark:bg-[#0F1D33]">
               <img
                 src={BOOK_METADATA.fullJacketImage}
                 alt="AI vs. AI Full Panoramic Dust Jacket Wrap (Back Cover, Spine, and Front Cover)"

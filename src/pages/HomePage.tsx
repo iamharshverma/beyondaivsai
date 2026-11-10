@@ -688,29 +688,6 @@ export const HomePage: React.FC = () => {
                 {AUTHOR_DATA.executiveBio}
               </p>
 
-              {/* 4 Key Impact Metric Cards */}
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
-                {AUTHOR_DATA.keyMetrics.map((metric, idx) => (
-                  <div
-                    key={metric.label}
-                    className="rounded-xl bg-white dark:bg-[#0F1D33] border border-[#D5E0F0] dark:border-slate-400/15 p-3.5 sm:p-4 shadow-2xs"
-                  >
-                    <div
-                      className={`text-base sm:text-lg font-extrabold font-mono tabular-nums ${
-                        idx % 2 === 0
-                          ? 'text-[#E11D48] dark:text-[#FB7185]'
-                          : 'text-[#1D4ED8] dark:text-[#38BDF8]'
-                      }`}
-                    >
-                      {metric.value}
-                    </div>
-                    <div className="text-[11px] sm:text-xs font-medium text-slate-600 dark:text-[#AAB8CC] mt-1">
-                      {metric.label}
-                    </div>
-                  </div>
-                ))}
-              </div>
-
               {/* Executive Domain Pillars (Enterprise Track Record & Research Authority) */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 sm:gap-4">
                 <div className="rounded-xl bg-white dark:bg-[#0F1D33] border border-[#D5E0F0] dark:border-slate-400/15 p-4">
