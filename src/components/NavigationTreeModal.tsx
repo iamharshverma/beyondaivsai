@@ -23,9 +23,10 @@ import {
   Moon,
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { CHAPTERS_DATA } from '../data/chaptersData';
+import { CHAPTERS_DATA, MASTER_BLUEPRINT_INFOGRAPHIC } from '../data/chaptersData';
 import { BOOK_METADATA } from '../data/bookConfig';
 import { useTheme } from '../context/ThemeContext';
+import { SequenceMinimalIcon } from './SequenceMinimalIcons';
 
 interface NavTreeItem {
   to: string;
@@ -510,17 +511,17 @@ export const NavigationTreeModal: React.FC<NavigationTreeModalProps> = ({ isOpen
               </div>
             )}
 
-            {/* VIEW 2: Complete 11-Part Sequence & Infographic Tree */}
+            {/* VIEW 2: Complete 11-Part Sequence + 12th Multi-Agent Module & Master Blueprint Tree */}
             {(activeTab === 'sequence' || isSearching) && filteredChapterParts.length > 0 && (
               <div className="rounded-2xl bg-[#F8FAFE] dark:bg-[#0B172A] border border-[#DCE5F4] dark:border-slate-400/15 p-4 sm:p-6 space-y-5">
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-3 border-b border-slate-200 dark:border-slate-400/15">
                   <div className="flex items-center gap-2.5">
                     <span className="px-2 py-0.5 rounded-md bg-gradient-to-r from-[#E11D48] to-[#1D4ED8] text-[10px] font-mono font-bold text-white">
-                      SEQUENCE 01–11
+                      MASTER BLUEPRINT &amp; SEQUENCE 01–12
                     </span>
                     <div>
                       <h3 className="text-base sm:text-lg font-bold font-display text-[#091122] dark:text-[#F5F8FF]">
-                        11-Sequence Manuscript &amp; Infographic Tree
+                        Sequence Manuscript &amp; Visual Icon Tree
                       </h3>
                     </div>
                   </div>
@@ -533,6 +534,37 @@ export const NavigationTreeModal: React.FC<NavigationTreeModalProps> = ({ isOpen
                     <ArrowRight className="w-3.5 h-3.5" />
                   </Link>
                 </div>
+
+                {/* Master Blueprint Visual Anchor Card */}
+                <Link
+                  to="/chapters"
+                  onClick={onClose}
+                  className="group flex flex-col sm:flex-row sm:items-center justify-between gap-3 rounded-xl bg-gradient-to-r from-[#E11D48]/[0.06] via-white to-[#1D4ED8]/[0.08] dark:from-[#E11D48]/[0.14] dark:via-[#0F1E36] dark:to-[#1D4ED8]/[0.16] border border-[#1D4ED8]/30 dark:border-[#38BDF8]/30 p-3.5 hover:shadow-md transition-all"
+                >
+                  <div className="flex items-center gap-3 min-w-0">
+                    <div className="w-10 h-10 rounded-xl bg-white dark:bg-[#081222] border border-[#D5E0F0] dark:border-slate-700 flex items-center justify-center shrink-0 shadow-2xs">
+                      <SequenceMinimalIcon id="master-blueprint" size="md" />
+                    </div>
+                    <img
+                      src={MASTER_BLUEPRINT_INFOGRAPHIC.imageUrl}
+                      alt={MASTER_BLUEPRINT_INFOGRAPHIC.title}
+                      loading="lazy"
+                      className="w-14 h-10 rounded-lg object-cover object-top border border-slate-200 dark:border-slate-700 shrink-0 hidden xs:block"
+                    />
+                    <div className="min-w-0">
+                      <div className="text-[10px] font-mono font-bold text-[#E11D48] dark:text-[#FB7185]">
+                        MASTER BLUEPRINT · ALL 11 SEQUENCES + MULTI-AGENT COMPANION
+                      </div>
+                      <div className="text-xs sm:text-sm font-bold font-display text-[#091122] dark:text-[#F5F8FF] group-hover:text-[#1D4ED8] dark:group-hover:text-[#38BDF8] truncate">
+                        {MASTER_BLUEPRINT_INFOGRAPHIC.title}
+                      </div>
+                    </div>
+                  </div>
+                  <span className="inline-flex items-center gap-1 text-xs font-mono font-semibold text-[#1D4ED8] dark:text-[#38BDF8] shrink-0">
+                    <span>Inspect Atlas</span>
+                    <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
+                  </span>
+                </Link>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-5">
                   {filteredChapterParts.map((part) => (
@@ -563,6 +595,9 @@ export const NavigationTreeModal: React.FC<NavigationTreeModalProps> = ({ isOpen
                             >
                               <span className="absolute -left-[15px] top-1/2 -translate-y-1/2 w-3 h-[2px] bg-slate-300 dark:bg-slate-600 group-hover:bg-[#1D4ED8]" />
                               <div className="flex items-center gap-2.5 min-w-0">
+                                <div className="w-8 h-8 rounded-lg bg-white dark:bg-[#0F1E36] border border-slate-200/80 dark:border-slate-700 flex items-center justify-center shrink-0">
+                                  <SequenceMinimalIcon id={ch.number} size="sm" />
+                                </div>
                                 <img
                                   src={ch.infographicUrl}
                                   alt={`Seq ${ch.number}`}
@@ -582,6 +617,37 @@ export const NavigationTreeModal: React.FC<NavigationTreeModalProps> = ({ isOpen
                             </Link>
                           );
                         })}
+
+                        {/* Include the 12th Multi-Agent Swarm Infographic Anchor under Part III */}
+                        {part.id === 'part-3' && (
+                          <Link
+                            to="/chapters/enterprise-ai-and-secure-deployment-at-scale"
+                            onClick={onClose}
+                            className="group relative flex items-center justify-between gap-3 rounded-lg p-2.5 transition-all border bg-[#F8FAFE] dark:bg-[#091426] border-slate-200/70 dark:border-slate-400/10 hover:border-[#1D4ED8] dark:hover:border-[#38BDF8]/40"
+                          >
+                            <span className="absolute -left-[15px] top-1/2 -translate-y-1/2 w-3 h-[2px] bg-slate-300 dark:bg-slate-600 group-hover:bg-[#1D4ED8]" />
+                            <div className="flex items-center gap-2.5 min-w-0">
+                              <div className="w-8 h-8 rounded-lg bg-white dark:bg-[#0F1E36] border border-slate-200/80 dark:border-slate-700 flex items-center justify-center shrink-0">
+                                <SequenceMinimalIcon id={12} size="sm" />
+                              </div>
+                              <img
+                                src="/assets/aistudio/Securing_Multi-Agent_AI_Infographic_6cde3f65.png"
+                                alt="Seq 12 Multi-Agent AI"
+                                loading="lazy"
+                                className="w-11 h-8 rounded object-cover object-top border border-slate-200 dark:border-slate-700 shrink-0"
+                              />
+                              <div className="min-w-0">
+                                <div className="text-[10px] font-mono font-bold text-[#E11D48] dark:text-[#38BDF8]">
+                                  SEQUENCE 12 · MULTI-AGENT ARCHITECTURE
+                                </div>
+                                <div className="text-xs font-bold font-display text-[#091122] dark:text-[#F5F8FF] group-hover:text-[#1D4ED8] dark:group-hover:text-[#38BDF8] truncate">
+                                  Securing Multi-Agent AI Ecosystems
+                                </div>
+                              </div>
+                            </div>
+                            <ArrowRight className="w-3.5 h-3.5 text-slate-400 group-hover:text-[#1D4ED8] dark:group-hover:text-[#38BDF8] group-hover:translate-x-0.5 transition-all shrink-0" />
+                          </Link>
+                        )}
                       </div>
                     </div>
                   ))}

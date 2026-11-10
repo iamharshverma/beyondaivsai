@@ -10,6 +10,7 @@ import {
   ChapterDetailInfographicShowcase,
   InfographicLightboxModal,
 } from '../components/ChapterInfographicAtlas';
+import { SequenceMinimalIcon } from '../components/SequenceMinimalIcons';
 import { usePageSEO, trackEvent } from '../utils/analytics';
 
 export const ChaptersPage: React.FC = () => {
@@ -26,23 +27,30 @@ export const ChaptersPage: React.FC = () => {
     <div className="py-10 sm:py-12 md:py-16 w-full overflow-x-hidden">
       <div className="w-full max-w-[1280px] mx-auto px-4 sm:px-6 space-y-10 sm:space-y-12">
         <FadeInUp className="max-w-3xl">
-          <div className="text-xs font-mono font-bold bg-gradient-to-r from-[#E11D48] to-[#1D4ED8] dark:from-[#FB7185] dark:to-[#38BDF8] bg-clip-text text-transparent mb-2">
-            OFFICIAL 11-CHAPTER MANUSCRIPT SYLLABUS
+          <div className="inline-flex items-center gap-2 text-xs font-mono font-bold bg-gradient-to-r from-[#E11D48] to-[#1D4ED8] dark:from-[#FB7185] dark:to-[#38BDF8] bg-clip-text text-transparent mb-2">
+            <SequenceMinimalIcon id="master-blueprint" size="sm" />
+            <span>OFFICIAL MANUSCRIPT SEQUENCE &amp; INFOGRAPHIC ATLAS</span>
           </div>
           <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold font-display text-slate-900 dark:text-[#F5F8FF] text-balance">
-            Architecture of the Book: All 11 Chapters
+            Architecture of the Book: Complete Sequence
           </h1>
           <p className="mt-3 sm:mt-4 text-sm sm:text-base text-slate-600 dark:text-[#AAB8CC] leading-relaxed">
-            Every chapter in <em>{BOOK_METADATA.fullTitle}</em> is structured around concrete engineering questions, threat models, architectural patterns, and actionable learning outcomes. Select any chapter below to inspect its themes, technical concepts, and architectural diagram.
+            Every sequence in <em>{BOOK_METADATA.fullTitle}</em> is structured around concrete engineering questions, threat models, architectural patterns, and actionable learning outcomes. Select any sequence below to inspect its minimalist icon anchor, themes, technical concepts, and high-resolution infographic.
           </p>
         </FadeInUp>
 
-        {/* Interactive Master Blueprint & Chapter Infographic Explorer */}
-        <FadeInUp delay={0.04} className="space-y-4">
+        {/* Interactive Master Blueprint & Sequence Infographic Explorer with Staggered Scroll Entrance */}
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.08 }}
+          transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+          className="space-y-4"
+        >
           <div className="flex flex-wrap items-center justify-between gap-2">
             <div className="inline-flex items-center gap-1.5 text-xs font-mono font-bold text-[#E11D48] dark:text-[#38BDF8]">
               <Sparkles className="w-3.5 h-3.5" />
-              <span>INTERACTIVE VISUAL ATLAS · MASTER BLUEPRINT &amp; CHAPTER INFOGRAPHICS</span>
+              <span>INTERACTIVE VISUAL ATLAS · MASTER BLUEPRINT &amp; 12 SEQUENCE INFOGRAPHICS</span>
             </div>
             <button
               type="button"
@@ -50,11 +58,11 @@ export const ChaptersPage: React.FC = () => {
               className="inline-flex items-center gap-1.5 text-xs font-mono font-semibold text-[#1D4ED8] dark:text-[#38BDF8] hover:underline cursor-pointer"
             >
               <Maximize2 className="w-3.5 h-3.5" />
-              <span>Open Full-Screen Lightbox (All 12 Infographics)</span>
+              <span>Open Full-Screen Lightbox (All 13 Visuals)</span>
             </button>
           </div>
           <ChapterInfographicAtlas />
-        </FadeInUp>
+        </motion.div>
 
         <motion.div
           variants={staggerGridVariants}
@@ -76,22 +84,27 @@ export const ChaptersPage: React.FC = () => {
                 } p-5 sm:p-6 md:p-8 transition-all shadow-2xs hover:shadow-md`}
               >
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 sm:gap-6 items-start">
-                  {/* Left 5 cols: Chapter Overview & Concepts */}
+                  {/* Left 5 cols: Sequence Overview & Minimalist Icon Anchor */}
                   <div className="lg:col-span-5 space-y-3 min-w-0">
-                    <div className="flex flex-wrap items-center gap-2 text-xs font-mono text-slate-500 dark:text-[#AAB8CC]">
-                      <span
-                        className={`font-bold ${
-                          isRedChapter
-                            ? 'text-[#E11D48] dark:text-[#FB7185]'
-                            : 'text-[#1D4ED8] dark:text-[#38BDF8]'
-                        }`}
-                      >
-                        Chapter {String(ch.number).padStart(2, '0')}
-                      </span>
-                      <span aria-hidden="true">·</span>
-                      <span>{ch.partLabel}</span>
-                      <span aria-hidden="true">·</span>
-                      <span>{ch.readingTime}</span>
+                    <div className="flex items-center gap-2.5">
+                      <div className="w-9 h-9 rounded-xl bg-[#F4F7FC] dark:bg-[#0A1426] border border-[#D5E0F0] dark:border-slate-400/20 flex items-center justify-center shrink-0">
+                        <SequenceMinimalIcon id={ch.number} size="md" />
+                      </div>
+                      <div className="flex flex-wrap items-center gap-1.5 text-xs font-mono text-slate-500 dark:text-[#AAB8CC]">
+                        <span
+                          className={`font-bold ${
+                            isRedChapter
+                              ? 'text-[#E11D48] dark:text-[#FB7185]'
+                              : 'text-[#1D4ED8] dark:text-[#38BDF8]'
+                          }`}
+                        >
+                          Sequence {String(ch.number).padStart(2, '0')}
+                        </span>
+                        <span aria-hidden="true">·</span>
+                        <span>{ch.partLabel}</span>
+                        <span aria-hidden="true">·</span>
+                        <span>{ch.readingTime}</span>
+                      </div>
                     </div>
 
                     <h2 className="text-xl sm:text-2xl font-bold font-display text-slate-900 dark:text-[#F5F8FF]">
@@ -213,28 +226,61 @@ export const ChapterDetailPage: React.FC = () => {
   return (
     <div className="py-10 sm:py-12 md:py-16 w-full overflow-x-hidden">
       <div className="w-full max-w-[1100px] mx-auto px-4 sm:px-6 space-y-10 sm:space-y-12">
-        {/* Top Back Link */}
-        <div className="flex flex-wrap items-center justify-between gap-2">
-          <Link
-            to="/chapters"
-            className="inline-flex items-center gap-2 text-xs font-mono text-slate-600 dark:text-[#AAB8CC] hover:text-slate-900 dark:hover:text-[#F5F8FF]"
-          >
-            <ArrowLeft className="w-3.5 h-3.5" />
-            <span>Back to All 11 Chapters</span>
-          </Link>
-          <span className="text-xs font-mono font-semibold text-[#E11D48] dark:text-[#38BDF8]">
-            Chapter {String(chapter.number).padStart(2, '0')} of 11 · {chapter.partLabel}
-          </span>
+        {/* Top Back Link & Quick Sequence Icon Switcher Bar */}
+        <div className="space-y-4">
+          <div className="flex flex-wrap items-center justify-between gap-2">
+            <Link
+              to="/chapters"
+              className="inline-flex items-center gap-2 text-xs font-mono text-slate-600 dark:text-[#AAB8CC] hover:text-slate-900 dark:hover:text-[#F5F8FF]"
+            >
+              <ArrowLeft className="w-3.5 h-3.5" />
+              <span>Back to All Sequences</span>
+            </Link>
+            <span className="inline-flex items-center gap-1.5 text-xs font-mono font-semibold text-[#E11D48] dark:text-[#38BDF8]">
+              <SequenceMinimalIcon id={chapter.number} size="xs" />
+              <span>
+                Sequence {String(chapter.number).padStart(2, '0')} of 11 · {chapter.partLabel}
+              </span>
+            </span>
+          </div>
+
+          {/* Horizontal Sequence Icon Bar on Detail Pages */}
+          <div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar pb-1">
+            {CHAPTERS_DATA.map((seqItem) => {
+              const isCurrent = seqItem.number === chapter.number;
+              return (
+                <Link
+                  key={seqItem.slug}
+                  to={`/chapters/${seqItem.slug}`}
+                  className={`inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl text-[11px] font-mono font-semibold whitespace-nowrap shrink-0 border transition-all ${
+                    isCurrent
+                      ? 'bg-gradient-to-r from-[#E11D48] to-[#1D4ED8] text-white border-transparent shadow-xs'
+                      : 'bg-white dark:bg-[#0F1D33] text-slate-600 dark:text-[#AAB8CC] border-[#D5E0F0] dark:border-slate-400/15 hover:border-[#1D4ED8] dark:hover:text-white'
+                  }`}
+                >
+                  <SequenceMinimalIcon id={seqItem.number} size="xs" />
+                  <span>Seq {String(seqItem.number).padStart(2, '0')}</span>
+                </Link>
+              );
+            })}
+          </div>
         </div>
 
-        {/* Chapter Header & Introduction */}
+        {/* Sequence Header & Minimalist Icon Badge */}
         <FadeInUp className="space-y-4 border-b border-slate-200 dark:border-slate-400/15 pb-8 sm:pb-10">
-          <h1 className="text-2xl sm:text-4xl md:text-5xl font-bold font-display text-slate-900 dark:text-[#F5F8FF] text-balance">
-            Chapter {chapter.number}: {chapter.title}
-          </h1>
-          <p className="text-base sm:text-xl font-medium font-display text-[#1D4ED8] dark:text-[#38BDF8]">
-            {chapter.subtitle}
-          </p>
+          <div className="flex items-start gap-4">
+            <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-gradient-to-br from-[#E11D48]/[0.08] to-[#1D4ED8]/[0.12] dark:from-[#E11D48]/20 dark:to-[#1D4ED8]/25 border border-[#D5E0F0] dark:border-slate-400/20 flex items-center justify-center shrink-0 mt-1 shadow-xs">
+              <SequenceMinimalIcon id={chapter.number} size="lg" />
+            </div>
+            <div>
+              <h1 className="text-2xl sm:text-4xl md:text-5xl font-bold font-display text-slate-900 dark:text-[#F5F8FF] text-balance">
+                Sequence {String(chapter.number).padStart(2, '0')}: {chapter.title}
+              </h1>
+              <p className="mt-2 text-base sm:text-xl font-medium font-display text-[#1D4ED8] dark:text-[#38BDF8]">
+                {chapter.subtitle}
+              </p>
+            </div>
+          </div>
           <p className="text-sm sm:text-base text-slate-900 dark:text-[#F5F8FF] leading-relaxed pt-2">
             {chapter.introduction}
           </p>
@@ -388,23 +434,28 @@ export const ChapterDetailPage: React.FC = () => {
           </FadeInUp>
         </div>
 
-        {/* Related Chapters */}
+        {/* Related Sequences with Minimalist Visual Icons */}
         <FadeInUp className="pt-6 border-t border-slate-200 dark:border-slate-400/15">
           <h3 className="text-xs sm:text-sm font-mono font-semibold text-slate-600 dark:text-[#AAB8CC] mb-4">
-            RELATED CHAPTERS IN THE COUNTEROFFENSIVE ARCHITECTURE
+            RELATED SEQUENCES IN THE COUNTEROFFENSIVE ARCHITECTURE
           </h3>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             {relatedChapterObjs.map((rel) => (
               <Link
                 key={rel.slug}
                 to={`/chapters/${rel.slug}`}
-                className="rounded-xl bg-white dark:bg-[#0A1426] border border-slate-200 dark:border-slate-400/15 hover:border-[#1D4ED8] dark:hover:border-[#38BDF8]/40 p-4 transition-colors shadow-2xs dark:shadow-none"
+                className="group rounded-xl bg-white dark:bg-[#0A1426] border border-slate-200 dark:border-slate-400/15 hover:border-[#1D4ED8] dark:hover:border-[#38BDF8]/40 p-4 transition-all shadow-2xs dark:shadow-none flex items-start gap-3"
               >
-                <div className="text-xs font-mono font-semibold text-[#E11D48] dark:text-[#38BDF8]">
-                  Chapter {rel.number}
+                <div className="w-9 h-9 rounded-lg bg-[#F4F7FC] dark:bg-[#0F1D33] border border-slate-200/80 dark:border-slate-700 flex items-center justify-center shrink-0 mt-0.5">
+                  <SequenceMinimalIcon id={rel.number} size="sm" />
                 </div>
-                <div className="text-sm font-bold font-display text-slate-900 dark:text-[#F5F8FF] mt-1">
-                  {rel.title}
+                <div>
+                  <div className="text-xs font-mono font-semibold text-[#E11D48] dark:text-[#38BDF8]">
+                    Sequence {String(rel.number).padStart(2, '0')}
+                  </div>
+                  <div className="text-sm font-bold font-display text-slate-900 dark:text-[#F5F8FF] group-hover:text-[#1D4ED8] dark:group-hover:text-[#38BDF8] mt-0.5">
+                    {rel.title}
+                  </div>
                 </div>
               </Link>
             ))}
@@ -419,8 +470,9 @@ export const ChapterDetailPage: React.FC = () => {
               className="inline-flex items-center gap-2 text-xs font-semibold text-slate-600 dark:text-[#AAB8CC] hover:text-[#1D4ED8] dark:hover:text-[#38BDF8]"
             >
               <ArrowLeft className="w-4 h-4 shrink-0" />
+              <SequenceMinimalIcon id={prevChapter.number} size="xs" />
               <span>
-                Ch {prevChapter.number}: {prevChapter.title}
+                Seq {String(prevChapter.number).padStart(2, '0')}: {prevChapter.title}
               </span>
             </Link>
           ) : (
@@ -431,8 +483,9 @@ export const ChapterDetailPage: React.FC = () => {
               to={`/chapters/${nextChapter.slug}`}
               className="inline-flex items-center gap-2 text-xs font-semibold text-[#1D4ED8] dark:text-[#38BDF8] hover:underline"
             >
+              <SequenceMinimalIcon id={nextChapter.number} size="xs" />
               <span>
-                Ch {nextChapter.number}: {nextChapter.title}
+                Seq {String(nextChapter.number).padStart(2, '0')}: {nextChapter.title}
               </span>
               <ArrowRight className="w-4 h-4 shrink-0" />
             </Link>

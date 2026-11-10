@@ -14,17 +14,21 @@ import {
   Sparkles,
   CheckCircle2,
   Eye,
+  LayoutGrid,
 } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, Variants } from 'framer-motion';
 import {
   CHAPTERS_DATA,
   MASTER_BLUEPRINT_INFOGRAPHIC,
   ChapterDetail,
 } from '../data/chaptersData';
+import { SequenceMinimalIcon, SequenceIconKey } from './SequenceMinimalIcons';
 
 export interface LightboxSlide {
   id: string;
+  iconKey: SequenceIconKey;
   badge: string;
+  shortLabel: string;
   title: string;
   subtitle: string;
   imageUrl: string;
@@ -38,10 +42,36 @@ export interface LightboxSlide {
   highlights?: string[];
 }
 
+const galleryContainerVariants: Variants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.065,
+      delayChildren: 0.04,
+    },
+  },
+};
+
+const galleryItemVariants: Variants = {
+  hidden: { opacity: 0, y: 24, scale: 0.97 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    scale: 1,
+    transition: {
+      duration: 0.45,
+      ease: [0.22, 1, 0.36, 1],
+    },
+  },
+};
+
 export function buildAllInfographicSlides(): LightboxSlide[] {
   const masterSlide: LightboxSlide = {
     id: MASTER_BLUEPRINT_INFOGRAPHIC.id,
-    badge: 'MASTER BLUEPRINT · ALL 11 CHAPTERS',
+    iconKey: 'master-blueprint',
+    badge: 'MASTER BLUEPRINT · COMPLETE 11-SEQUENCE ARCHITECTURE',
+    shortLabel: 'Master Blueprint',
     title: MASTER_BLUEPRINT_INFOGRAPHIC.title,
     subtitle: MASTER_BLUEPRINT_INFOGRAPHIC.subtitle,
     imageUrl: MASTER_BLUEPRINT_INFOGRAPHIC.imageUrl,
@@ -51,8 +81,10 @@ export function buildAllInfographicSlides(): LightboxSlide[] {
 
   const chapterSlides: LightboxSlide[] = CHAPTERS_DATA.map((ch) => ({
     id: `ch-${ch.number}`,
-    badge: `CHAPTER ${String(ch.number).padStart(2, '0')} · ${ch.partLabel.toUpperCase()}`,
-    title: `Chapter ${ch.number}: ${ch.title}`,
+    iconKey: ch.number as SequenceIconKey,
+    badge: `SEQUENCE ${String(ch.number).padStart(2, '0')} · ${ch.partLabel.toUpperCase()}`,
+    shortLabel: `Seq ${String(ch.number).padStart(2, '0')}`,
+    title: `Sequence ${String(ch.number).padStart(2, '0')}: ${ch.title}`,
     subtitle: ch.subtitle,
     imageUrl: ch.infographicUrl,
     secondaryImageUrl: ch.secondaryInfographicUrl,
@@ -65,7 +97,30 @@ export function buildAllInfographicSlides(): LightboxSlide[] {
     highlights: ch.learningOutcomes,
   }));
 
-  return [masterSlide, ...chapterSlides];
+  // 12th Dedicated Infographic Module: Multi-Agent AI Swarm Architecture (Companion to Sequence 07/09)
+  const multiAgentCompanionSlide: LightboxSlide = {
+    id: 'ch-12',
+    iconKey: 12,
+    badge: 'SEQUENCE 12 · MULTI-AGENT SWARM ARCHITECTURE',
+    shortLabel: 'Seq 12 · Multi-Agent',
+    title: 'Sequence 12: Securing Multi-Agent AI Ecosystems',
+    subtitle: 'Orchestrator Trust Boundaries, Sub-Agent Attestation & Swarm Blast-Radius Containment',
+    imageUrl: '/assets/aistudio/Securing_Multi-Agent_AI_Infographic_6cde3f65.png',
+    keyTakeaway:
+      'Multi-agent ecosystems require cryptographic inter-agent message signing, capability attenuation across delegation hops, and swarm-level circuit breakers.',
+    chapterSlug: 'enterprise-ai-and-secure-deployment-at-scale',
+    chapterNumber: 7,
+    offensiveVector: 'Compromised sub-agent injecting malicious instructions into peer agents across the swarm',
+    defensiveCountermeasure: 'Signed inter-agent envelopes, progressive privilege attenuation & isolated execution sandboxes',
+    humanOversightGate: 'Human-in-the-loop step-up approval before cross-domain swarm actuation',
+    highlights: [
+      'Enforce zero-trust attestation between orchestrator and sub-agents',
+      'Attenuate token scopes at every delegation hop',
+      'Isolate sub-agent memory stores to prevent lateral context poisoning',
+    ],
+  };
+
+  return [masterSlide, ...chapterSlides, multiAgentCompanionSlide];
 }
 
 interface InfographicLightboxModalProps {
@@ -137,19 +192,24 @@ export const InfographicLightboxModal: React.FC<InfographicLightboxModalProps> =
       >
         {/* Top Modal Control Bar */}
         <div className="w-full max-w-[1440px] mx-auto bg-white dark:bg-[#0B1628] border border-slate-200 dark:border-slate-400/20 rounded-t-2xl px-3.5 sm:px-6 py-3 flex flex-wrap items-center justify-between gap-3 shadow-lg">
-          <div className="min-w-0 flex-1">
-            <div className="text-[10px] sm:text-xs font-mono font-bold bg-gradient-to-r from-[#E11D48] to-[#1D4ED8] dark:from-[#FB7185] dark:to-[#38BDF8] bg-clip-text text-transparent truncate">
-              {activeSlide.badge}
+          <div className="min-w-0 flex-1 flex items-center gap-3">
+            <div className="w-9 h-9 rounded-xl bg-[#F4F7FC] dark:bg-[#101F34] border border-[#D5E0F0] dark:border-slate-400/20 flex items-center justify-center shrink-0">
+              <SequenceMinimalIcon id={activeSlide.iconKey} size="md" />
             </div>
-            <div className="text-sm sm:text-base font-bold font-display text-slate-900 dark:text-[#F5F8FF] truncate">
-              {activeSlide.title}
+            <div className="min-w-0">
+              <div className="text-[10px] sm:text-xs font-mono font-bold bg-gradient-to-r from-[#E11D48] to-[#1D4ED8] dark:from-[#FB7185] dark:to-[#38BDF8] bg-clip-text text-transparent truncate">
+                {activeSlide.badge}
+              </div>
+              <div className="text-sm sm:text-base font-bold font-display text-slate-900 dark:text-[#F5F8FF] truncate">
+                {activeSlide.title}
+              </div>
             </div>
           </div>
 
-          {/* Chapter Quick-Selector Dropdown + Zoom + Prev/Next + Close */}
+          {/* Sequence Quick-Selector Dropdown + Zoom + Prev/Next + Close */}
           <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
             <select
-              aria-label="Select Chapter Infographic"
+              aria-label="Select Sequence Infographic"
               value={activeSlide.id}
               onChange={(e) => {
                 const idx = slides.findIndex((s) => s.id === e.target.value);
@@ -163,7 +223,7 @@ export const InfographicLightboxModal: React.FC<InfographicLightboxModalProps> =
             >
               {slides.map((s) => (
                 <option key={s.id} value={s.id}>
-                  {s.chapterNumber ? `Ch ${s.chapterNumber}: ${s.title.replace(/^Chapter \d+:\s*/, '')}` : 'Master Blueprint (All 11 Chapters)'}
+                  {s.shortLabel}: {s.title.replace(/^Sequence \d+:\s*/, '')}
                 </option>
               ))}
             </select>
@@ -294,7 +354,7 @@ export const InfographicLightboxModal: React.FC<InfographicLightboxModalProps> =
               {activeSlide.highlights && activeSlide.highlights.length > 0 && (
                 <div>
                   <div className="text-[11px] font-mono font-bold text-slate-700 dark:text-[#AAB8CC] mb-2">
-                    {activeSlide.chapterNumber ? 'CHAPTER LEARNING OUTCOMES' : 'BLUEPRINT PILLARS'}
+                    {activeSlide.chapterNumber ? 'SEQUENCE LEARNING OUTCOMES' : 'BLUEPRINT PILLARS'}
                   </div>
                   <ul className="space-y-2 text-xs text-slate-600 dark:text-[#AAB8CC]">
                     {activeSlide.highlights.map((item) => (
@@ -315,7 +375,7 @@ export const InfographicLightboxModal: React.FC<InfographicLightboxModalProps> =
                   onClick={onClose}
                   className="w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-gradient-to-r from-[#E11D48] via-[#4F46E5] to-[#1D4ED8] text-xs font-semibold text-white shadow-sm hover:opacity-95 transition-all"
                 >
-                  <span>Open Chapter {activeSlide.chapterNumber} Full Blueprint</span>
+                  <span>Open Sequence {String(activeSlide.chapterNumber).padStart(2, '0')} Full Blueprint</span>
                   <ArrowRight className="w-3.5 h-3.5" />
                 </Link>
               ) : (
@@ -324,7 +384,7 @@ export const InfographicLightboxModal: React.FC<InfographicLightboxModalProps> =
                   onClick={onClose}
                   className="w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-gradient-to-r from-[#E11D48] via-[#4F46E5] to-[#1D4ED8] text-xs font-semibold text-white shadow-sm hover:opacity-95 transition-all"
                 >
-                  <span>Explore All 11 Chapter Blueprints</span>
+                  <span>Explore All Sequence Blueprints</span>
                   <ArrowRight className="w-3.5 h-3.5" />
                 </Link>
               )}
@@ -332,7 +392,7 @@ export const InfographicLightboxModal: React.FC<InfographicLightboxModalProps> =
           </div>
         </div>
 
-        {/* Bottom Thumbnail Filmstrip Switcher */}
+        {/* Bottom Thumbnail Filmstrip Switcher with Minimalist Icons */}
         <div className="w-full max-w-[1440px] mx-auto bg-white dark:bg-[#0B1628] border border-slate-200 dark:border-slate-400/20 rounded-b-2xl px-3 sm:px-5 py-2.5 flex items-center gap-2 overflow-x-auto no-scrollbar">
           {slides.map((s, idx) => {
             const active = idx === currentIndex;
@@ -345,13 +405,14 @@ export const InfographicLightboxModal: React.FC<InfographicLightboxModalProps> =
                   setZoomLevel(1);
                   setUseSecondaryVariant(false);
                 }}
-                className={`px-3 py-1.5 rounded-lg text-xs font-mono font-semibold whitespace-nowrap shrink-0 transition-all cursor-pointer ${
+                className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-mono font-semibold whitespace-nowrap shrink-0 transition-all cursor-pointer ${
                   active
                     ? 'bg-gradient-to-r from-[#E11D48] to-[#1D4ED8] text-white shadow-xs'
                     : 'bg-slate-100 dark:bg-[#101F34] text-slate-600 dark:text-[#AAB8CC] hover:text-slate-900 dark:hover:text-white'
                 }`}
               >
-                {s.chapterNumber ? `Ch ${String(s.chapterNumber).padStart(2, '0')}` : 'Master Blueprint'}
+                <SequenceMinimalIcon id={s.iconKey} size="xs" />
+                <span>{s.shortLabel}</span>
               </button>
             );
           })}
@@ -372,6 +433,7 @@ export const ChapterInfographicAtlas: React.FC<ChapterInfographicAtlasProps> = (
   const [selectedSlideId, setSelectedSlideId] = useState<string>('master-blueprint');
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [useSecondary, setUseSecondary] = useState(false);
+  const [showGalleryGrid, setShowGalleryGrid] = useState(true);
 
   const activeSlide = slides.find((s) => s.id === selectedSlideId) || slides[0];
   const currentImg =
@@ -380,21 +442,31 @@ export const ChapterInfographicAtlas: React.FC<ChapterInfographicAtlasProps> = (
       : activeSlide.imageUrl;
 
   return (
-    <div className="space-y-6">
-      {/* Interactive Chapter & Master Blueprint Pill Bar */}
-      <div className="flex items-center gap-1.5 sm:gap-2 overflow-x-auto no-scrollbar pb-1">
+    <motion.div
+      variants={galleryContainerVariants}
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true, amount: 0.08 }}
+      className="space-y-6"
+    >
+      {/* Staggered Interactive Sequence & Master Blueprint Pill Bar with Minimalist Icons */}
+      <motion.div
+        variants={galleryContainerVariants}
+        className="flex items-center gap-1.5 sm:gap-2 overflow-x-auto no-scrollbar pb-1.5"
+      >
         {slides.map((slide) => {
           const isSelected = slide.id === selectedSlideId;
           const isMaster = slide.id === 'master-blueprint';
           return (
-            <button
+            <motion.button
               key={slide.id}
+              variants={galleryItemVariants}
               type="button"
               onClick={() => {
                 setSelectedSlideId(slide.id);
                 setUseSecondary(false);
               }}
-              className={`px-3 sm:px-3.5 py-2 rounded-xl text-xs font-mono font-semibold whitespace-nowrap shrink-0 transition-all cursor-pointer border ${
+              className={`inline-flex items-center gap-2 px-3 sm:px-3.5 py-2 rounded-xl text-xs font-mono font-semibold whitespace-nowrap shrink-0 transition-all cursor-pointer border ${
                 isSelected
                   ? 'bg-gradient-to-r from-[#E11D48] via-[#4F46E5] to-[#1D4ED8] text-white border-transparent shadow-sm'
                   : isMaster
@@ -402,24 +474,25 @@ export const ChapterInfographicAtlas: React.FC<ChapterInfographicAtlasProps> = (
                   : 'bg-white dark:bg-[#0F1D33] text-slate-700 dark:text-[#AAB8CC] border-[#D5E0F0] dark:border-slate-400/15 hover:border-[#1D4ED8] dark:hover:text-white'
               }`}
             >
-              {isMaster
-                ? '★ Complete Book Blueprint (Ch 1–11)'
-                : `Ch ${String(slide.chapterNumber).padStart(2, '0')}: ${slide.title
-                    .replace(/^Chapter \d+:\s*/, '')
-                    .split(' ')
-                    .slice(0, 3)
-                    .join(' ')}…`}
-            </button>
+              <SequenceMinimalIcon id={slide.iconKey} size="sm" />
+              <span>
+                {isMaster
+                  ? 'Master Blueprint (Seq 01–11)'
+                  : `${slide.shortLabel}: ${slide.title
+                      .replace(/^Sequence \d+:\s*/, '')
+                      .split(' ')
+                      .slice(0, 3)
+                      .join(' ')}…`}
+              </span>
+            </motion.button>
           );
         })}
-      </div>
+      </motion.div>
 
-      {/* Main Interactive Infographic Showcase Card */}
+      {/* Main Interactive Infographic Showcase Stage */}
       <motion.div
         key={activeSlide.id}
-        initial={{ opacity: 0, y: 12 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.35 }}
+        variants={galleryItemVariants}
         className="rounded-2xl bg-white dark:bg-[#0F1D33] border border-[#D5E0F0] dark:border-slate-400/15 p-4 sm:p-6 md:p-7 shadow-sm"
       >
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 items-start">
@@ -463,32 +536,45 @@ export const ChapterInfographicAtlas: React.FC<ChapterInfographicAtlasProps> = (
             </div>
 
             <div className="flex flex-wrap items-center justify-between gap-2 text-xs text-slate-500 dark:text-[#AAB8CC] px-1">
-              <span className="font-mono font-semibold text-[#091122] dark:text-[#F5F8FF]">
-                {activeSlide.badge}
+              <span className="inline-flex items-center gap-1.5 font-mono font-semibold text-[#091122] dark:text-[#F5F8FF]">
+                <SequenceMinimalIcon id={activeSlide.iconKey} size="xs" />
+                <span>{activeSlide.badge}</span>
               </span>
-              <span>Click image to open interactive zoom &amp; chapter switcher</span>
+              <button
+                type="button"
+                onClick={() => setShowGalleryGrid((prev) => !prev)}
+                className="inline-flex items-center gap-1 text-xs font-mono font-semibold text-[#1D4ED8] dark:text-[#38BDF8] hover:underline cursor-pointer"
+              >
+                <LayoutGrid className="w-3.5 h-3.5" />
+                <span>{showGalleryGrid ? 'Hide Visual Thumbnail Grid' : 'Show All 13 Visual Thumbnails'}</span>
+              </button>
             </div>
           </div>
 
-          {/* Right Column: Chapter Takeaway & Red/Blue Breakdown */}
+          {/* Right Column: Sequence Takeaway & Red/Blue Breakdown */}
           <div className="lg:col-span-4 flex flex-col justify-between space-y-4">
             <div className="space-y-4">
-              <div>
-                <div className="inline-flex items-center gap-1.5 text-xs font-mono font-bold text-[#E11D48] dark:text-[#38BDF8] mb-1">
-                  <Sparkles className="w-3.5 h-3.5" />
-                  <span>VISUAL ARCHITECTURE OVERVIEW</span>
+              <div className="flex items-start gap-3">
+                <div className="w-10 h-10 rounded-xl bg-[#F4F7FC] dark:bg-[#0A1426] border border-[#D5E0F0] dark:border-slate-400/20 flex items-center justify-center shrink-0 mt-0.5">
+                  <SequenceMinimalIcon id={activeSlide.iconKey} size="md" />
                 </div>
-                <h3 className="text-lg sm:text-xl font-bold font-display text-[#091122] dark:text-[#F5F8FF]">
-                  {activeSlide.title}
-                </h3>
-                <p className="text-xs text-slate-600 dark:text-[#AAB8CC] mt-1">
-                  {activeSlide.subtitle}
-                </p>
+                <div>
+                  <div className="inline-flex items-center gap-1.5 text-xs font-mono font-bold text-[#E11D48] dark:text-[#38BDF8] mb-0.5">
+                    <Sparkles className="w-3.5 h-3.5" />
+                    <span>VISUAL ARCHITECTURE OVERVIEW</span>
+                  </div>
+                  <h3 className="text-lg sm:text-xl font-bold font-display text-[#091122] dark:text-[#F5F8FF]">
+                    {activeSlide.title}
+                  </h3>
+                  <p className="text-xs text-slate-600 dark:text-[#AAB8CC] mt-1">
+                    {activeSlide.subtitle}
+                  </p>
+                </div>
               </div>
 
               <div className="rounded-xl bg-[#F4F7FC] dark:bg-[#0A1426] border border-[#D5E0F0] dark:border-slate-400/15 p-4">
                 <div className="text-[11px] font-mono font-bold bg-gradient-to-r from-[#E11D48] to-[#1D4ED8] dark:from-[#FB7185] dark:to-[#38BDF8] bg-clip-text text-transparent mb-1.5">
-                  KEY CHAPTER TAKEAWAY
+                  KEY SEQUENCE TAKEAWAY
                 </div>
                 <p className="text-xs sm:text-sm text-[#091122] dark:text-[#F5F8FF] font-medium leading-relaxed">
                   {activeSlide.keyTakeaway}
@@ -544,7 +630,7 @@ export const ChapterInfographicAtlas: React.FC<ChapterInfographicAtlasProps> = (
                   to={`/chapters/${activeSlide.chapterSlug}`}
                   className="w-full inline-flex items-center justify-center gap-1.5 px-4 py-2.5 rounded-xl bg-[#F4F7FC] dark:bg-[#0A1426] hover:bg-slate-200/70 dark:hover:bg-[#162944] border border-[#D5E0F0] dark:border-slate-400/20 text-xs font-semibold text-[#091122] dark:text-[#F5F8FF] transition-colors"
                 >
-                  <span>Read Chapter {activeSlide.chapterNumber} Deep-Dive</span>
+                  <span>Read Sequence {String(activeSlide.chapterNumber).padStart(2, '0')} Deep-Dive</span>
                   <ArrowRight className="w-3.5 h-3.5" />
                 </Link>
               )}
@@ -553,12 +639,66 @@ export const ChapterInfographicAtlas: React.FC<ChapterInfographicAtlasProps> = (
         </div>
       </motion.div>
 
+      {/* Staggered Scroll-Triggered Infographic Gallery Grid (Master Blueprint + 12 Sequence Visuals) */}
+      {showGalleryGrid && (
+        <motion.div
+          variants={galleryContainerVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.08 }}
+          className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 sm:gap-4"
+        >
+          {slides.map((slide) => {
+            const isSelected = slide.id === selectedSlideId;
+            return (
+              <motion.button
+                key={slide.id}
+                variants={galleryItemVariants}
+                whileHover={{ y: -4, scale: 1.015 }}
+                type="button"
+                onClick={() => {
+                  setSelectedSlideId(slide.id);
+                  setUseSecondary(false);
+                }}
+                onDoubleClick={() => {
+                  setSelectedSlideId(slide.id);
+                  setLightboxOpen(true);
+                }}
+                className={`group text-left rounded-xl overflow-hidden border transition-all cursor-pointer flex flex-col justify-between ${
+                  isSelected
+                    ? 'bg-gradient-to-br from-[#E11D48]/[0.08] to-[#1D4ED8]/[0.10] border-[#1D4ED8] dark:border-[#38BDF8] ring-1 ring-[#1D4ED8]/30 shadow-md'
+                    : 'bg-white dark:bg-[#0F1D33] border-[#D5E0F0] dark:border-slate-400/15 hover:border-[#1D4ED8]/60 dark:hover:border-[#38BDF8]/50 shadow-2xs'
+                }`}
+              >
+                <div className="relative h-24 sm:h-28 w-full overflow-hidden bg-[#F4F7FC] dark:bg-[#07111F] border-b border-slate-200/70 dark:border-slate-400/10">
+                  <img
+                    src={slide.imageUrl}
+                    alt={slide.title}
+                    loading="lazy"
+                    className="w-full h-full object-cover object-top transition-transform duration-300 group-hover:scale-105"
+                  />
+                  <span className="absolute top-1.5 left-1.5 inline-flex items-center gap-1 px-1.5 py-0.5 rounded-md bg-white/92 dark:bg-[#091426]/90 border border-slate-200/80 dark:border-slate-700 text-[10px] font-mono font-bold text-[#091122] dark:text-[#F5F8FF] shadow-2xs">
+                    <SequenceMinimalIcon id={slide.iconKey} size="xs" />
+                    <span>{slide.shortLabel}</span>
+                  </span>
+                </div>
+                <div className="p-2.5">
+                  <div className="text-[11px] font-bold font-display text-[#091122] dark:text-[#F5F8FF] group-hover:text-[#1D4ED8] dark:group-hover:text-[#38BDF8] line-clamp-1">
+                    {slide.title.replace(/^Sequence \d+:\s*/, '')}
+                  </div>
+                </div>
+              </motion.button>
+            );
+          })}
+        </motion.div>
+      )}
+
       <InfographicLightboxModal
         isOpen={lightboxOpen}
         initialSlideId={activeSlide.id}
         onClose={() => setLightboxOpen(false)}
       />
-    </div>
+    </motion.div>
   );
 };
 
@@ -574,15 +714,26 @@ export const ChapterDetailInfographicShowcase: React.FC<{ chapter: ChapterDetail
       : chapter.infographicUrl;
 
   return (
-    <div className="rounded-2xl bg-white dark:bg-[#0F1D33] border border-[#D5E0F0] dark:border-slate-400/20 p-4 sm:p-6 md:p-8 shadow-sm space-y-5">
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.12 }}
+      transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
+      className="rounded-2xl bg-white dark:bg-[#0F1D33] border border-[#D5E0F0] dark:border-slate-400/20 p-4 sm:p-6 md:p-8 shadow-sm space-y-5"
+    >
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <div>
-          <div className="text-xs font-mono font-bold bg-gradient-to-r from-[#E11D48] to-[#1D4ED8] dark:from-[#FB7185] dark:to-[#38BDF8] bg-clip-text text-transparent">
-            OFFICIAL CHAPTER {chapter.number} VISUAL INFOGRAPHIC
+        <div className="flex items-center gap-3">
+          <div className="w-11 h-11 rounded-xl bg-[#F4F7FC] dark:bg-[#0A1426] border border-[#D5E0F0] dark:border-slate-400/20 flex items-center justify-center shrink-0">
+            <SequenceMinimalIcon id={chapter.number} size="lg" />
           </div>
-          <h2 className="text-lg sm:text-2xl font-bold font-display text-[#091122] dark:text-[#F5F8FF] mt-0.5">
-            {chapter.infographicTitle}
-          </h2>
+          <div>
+            <div className="text-xs font-mono font-bold bg-gradient-to-r from-[#E11D48] to-[#1D4ED8] dark:from-[#FB7185] dark:to-[#38BDF8] bg-clip-text text-transparent">
+              OFFICIAL SEQUENCE {String(chapter.number).padStart(2, '0')} VISUAL INFOGRAPHIC
+            </div>
+            <h2 className="text-lg sm:text-2xl font-bold font-display text-[#091122] dark:text-[#F5F8FF] mt-0.5">
+              {chapter.infographicTitle}
+            </h2>
+          </div>
         </div>
 
         <div className="flex flex-wrap items-center gap-2">
@@ -597,7 +748,7 @@ export const ChapterDetailInfographicShowcase: React.FC<{ chapter: ChapterDetail
                     : 'text-slate-600 dark:text-[#AAB8CC]'
                 }`}
               >
-                {chapter.number === 7 ? 'Agentic Topology View' : 'Chapter 11 Infographic'}
+                {chapter.number === 7 ? 'Agentic Topology View' : 'Sequence 11 Infographic'}
               </button>
               <button
                 type="button"
@@ -608,7 +759,7 @@ export const ChapterDetailInfographicShowcase: React.FC<{ chapter: ChapterDetail
                     : 'text-slate-600 dark:text-[#AAB8CC]'
                 }`}
               >
-                {chapter.number === 7 ? 'Governance Architecture View' : 'Full Book Master Blueprint'}
+                {chapter.number === 7 ? 'Multi-Agent Swarm View' : 'Full Book Master Blueprint'}
               </button>
             </div>
           )}
@@ -619,7 +770,7 @@ export const ChapterDetailInfographicShowcase: React.FC<{ chapter: ChapterDetail
             className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-gradient-to-r from-[#E11D48] via-[#4F46E5] to-[#1D4ED8] text-xs font-semibold text-white shadow-xs hover:opacity-95 transition-all cursor-pointer"
           >
             <Eye className="w-3.5 h-3.5" />
-            <span>Zoom &amp; Switch Chapters</span>
+            <span>Zoom &amp; Switch Sequence</span>
           </button>
         </div>
       </div>
@@ -644,7 +795,7 @@ export const ChapterDetailInfographicShowcase: React.FC<{ chapter: ChapterDetail
       <div className="rounded-xl bg-gradient-to-r from-[#E11D48]/[0.05] via-[#F4F7FC] to-[#1D4ED8]/[0.07] dark:from-[#E11D48]/10 dark:via-[#0A1426] dark:to-[#1D4ED8]/15 border border-[#D5E0F0] dark:border-slate-400/15 p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div className="space-y-1">
           <div className="text-[11px] font-mono font-bold text-[#1D4ED8] dark:text-[#38BDF8]">
-            KEY CHAPTER TAKEAWAY
+            KEY SEQUENCE TAKEAWAY
           </div>
           <p className="text-xs sm:text-sm font-medium text-[#091122] dark:text-[#F5F8FF] leading-relaxed">
             {chapter.infographicKeyTakeaway}
@@ -665,6 +816,6 @@ export const ChapterDetailInfographicShowcase: React.FC<{ chapter: ChapterDetail
         initialSlideId={`ch-${chapter.number}`}
         onClose={() => setLightboxOpen(false)}
       />
-    </div>
+    </motion.div>
   );
 };

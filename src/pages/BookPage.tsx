@@ -11,6 +11,7 @@ import {
   InfographicLightboxModal,
 } from '../components/ChapterInfographicAtlas';
 import { FadeInUp, fadeInUpVariants, staggerGridVariants } from '../components/FadeInUp';
+import { SequenceMinimalIcon } from '../components/SequenceMinimalIcons';
 import { usePageSEO, trackEvent } from '../utils/analytics';
 
 const AUDIENCE_PROFILES = [
@@ -310,11 +311,14 @@ export const BookPage: React.FC = () => {
 
                   <div className="min-w-0 flex-1 flex flex-col justify-between h-full">
                     <div>
-                      <div className="text-xs font-mono font-semibold text-[#E11D48] dark:text-[#38BDF8]">
-                        Chapter {String(ch.number).padStart(2, '0')} · {ch.partLabel}
+                      <div className="flex items-center gap-2">
+                        <SequenceMinimalIcon id={ch.number} size="xs" />
+                        <div className="text-xs font-mono font-semibold text-[#E11D48] dark:text-[#38BDF8]">
+                          Sequence {String(ch.number).padStart(2, '0')} · {ch.partLabel}
+                        </div>
                       </div>
-                      <Link to={`/chapters/${ch.slug}`} className="block group">
-                        <h3 className="text-base font-bold font-display text-slate-900 dark:text-[#F5F8FF] group-hover:text-[#1D4ED8] dark:group-hover:text-[#38BDF8] mt-0.5 transition-colors">
+                      <Link to={`/chapters/${ch.slug}`} className="block group mt-1">
+                        <h3 className="text-base font-bold font-display text-slate-900 dark:text-[#F5F8FF] group-hover:text-[#1D4ED8] dark:group-hover:text-[#38BDF8] transition-colors">
                           {ch.title}
                         </h3>
                         <p className="text-xs text-slate-600 dark:text-[#AAB8CC] mt-1 line-clamp-2">
