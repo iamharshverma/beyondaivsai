@@ -10,11 +10,9 @@ import {
   ShieldAlert,
   ShieldCheck,
   Zap,
-  Maximize2,
 } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { BOOK_METADATA, BOOK_FORMATS } from '../data/bookConfig';
-import { CHAPTERS_DATA } from '../data/chaptersData';
 import { TRIAD_PILLARS, FOUR_SECURITY_PATTERNS } from '../data/frameworkData';
 import { RESOURCES_DATA } from '../data/resourcesData';
 import { AUTHOR_DATA } from '../data/authorData';
@@ -23,17 +21,13 @@ import {
   CounteroffensiveHeroGraphic,
   PillarTechnicalIllustration,
 } from '../components/CounteroffensiveDiagram';
-import {
-  ChapterInfographicAtlas,
-  InfographicLightboxModal,
-} from '../components/ChapterInfographicAtlas';
+import { ChapterInfographicAtlas } from '../components/ChapterInfographicAtlas';
 import { LeadCaptureModule } from '../components/LeadCaptureModule';
 import { FadeInUp, fadeInUpVariants, staggerGridVariants } from '../components/FadeInUp';
 import { usePageSEO, trackEvent } from '../utils/analytics';
 
 export const HomePage: React.FC = () => {
   const [selectedPatternId, setSelectedPatternId] = useState(FOUR_SECURITY_PATTERNS[0].id);
-  const [lightboxSlideId, setLightboxSlideId] = useState<string | null>(null);
 
   usePageSEO({
     title: 'AI vs. AI: Engineering the Cybersecurity Counteroffensive | Harsh Verma',
@@ -407,125 +401,44 @@ export const HomePage: React.FC = () => {
         </div>
       </section>
 
-      {/* 6.5 EXPLORE THE BOOK — INTERACTIVE INFOGRAPHIC ATLAS & ALL 11 CHAPTERS GRID */}
+      {/* 6.5 EXPLORE THE BOOK — INTERACTIVE INFOGRAPHIC ATLAS */}
       <section className="py-12 sm:py-16 md:py-24 border-b border-[#D5E0F0] dark:border-slate-400/15">
-        <div className="w-full max-w-[1280px] mx-auto px-4 sm:px-6 space-y-12">
+        <div className="w-full max-w-[1280px] mx-auto px-4 sm:px-6 space-y-8">
           <FadeInUp className="flex flex-col md:flex-row md:items-end justify-between gap-4 sm:gap-6">
             <div>
               <div className="text-xs font-mono font-bold bg-gradient-to-r from-[#E11D48] to-[#1D4ED8] dark:from-[#FB7185] dark:to-[#38BDF8] bg-clip-text text-transparent mb-2">
                 APPROVED 11-CHAPTER MANUSCRIPT ARCHITECTURE &amp; VISUAL ATLAS
               </div>
               <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold font-display text-[#091122] dark:text-[#F5F8FF] text-balance">
-                Explore the 11 Chapters &amp; Visual Infographics of AI vs. AI
+                Interactive Blueprint &amp; Chapter Infographic Atlas
               </h2>
               <p className="mt-2 text-sm sm:text-base text-[#334155] dark:text-[#AAB8CC] max-w-2xl">
-                Inspect the official Master Cybersecurity Blueprint and interactive chapter infographics below, or select any chapter to dive into its threat models, architecture, and key takeaways.
+                Inspect the official Master Cybersecurity Blueprint and interactive chapter infographics below, or head to The Book page for the complete chapter-by-chapter syllabus and technical takeaways.
               </p>
             </div>
-            <Link
-              to="/chapters"
-              className="inline-flex items-center gap-2 text-xs sm:text-sm font-semibold text-[#1D4ED8] dark:text-[#38BDF8] hover:text-[#E11D48] hover:underline whitespace-nowrap shrink-0"
-            >
-              <span>View Full Syllabus &amp; Outcomes</span>
-              <ArrowRight className="w-4 h-4" />
-            </Link>
+            <div className="flex flex-wrap items-center gap-3 shrink-0">
+              <Link
+                to="/book"
+                className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-gradient-to-r from-[#E11D48] to-[#1D4ED8] text-white text-xs sm:text-sm font-bold shadow-xs hover:opacity-95 transition-opacity"
+              >
+                <BookOpen className="w-4 h-4" />
+                <span>Chapter-Level Details in The Book</span>
+              </Link>
+              <Link
+                to="/chapters"
+                className="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-xl bg-white dark:bg-[#0F1D33] border border-[#D5E0F0] dark:border-slate-400/20 text-xs sm:text-sm font-semibold text-[#1D4ED8] dark:text-[#38BDF8] hover:border-[#1D4ED8] transition-colors"
+              >
+                <span>11-Chapter Syllabus</span>
+                <ArrowRight className="w-4 h-4" />
+              </Link>
+            </div>
           </FadeInUp>
 
           {/* Interactive Master Blueprint & Chapter Infographic Explorer */}
           <FadeInUp delay={0.05}>
             <ChapterInfographicAtlas />
           </FadeInUp>
-
-          {/* All 11 Chapters Grid with Embedded Infographic Thumbnails */}
-          <motion.div
-            variants={staggerGridVariants}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, amount: 0.08 }}
-            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6"
-          >
-            {CHAPTERS_DATA.map((ch) => {
-              const isRedChapter = ch.number <= 3;
-              return (
-                <motion.div key={ch.slug} variants={fadeInUpVariants} className="min-w-0">
-                  <div
-                    className={`group h-full rounded-2xl bg-white dark:bg-[#0F1D33] border border-[#D5E0F0] dark:border-slate-400/15 ${
-                      isRedChapter
-                        ? 'hover:border-[#E11D48] dark:hover:border-[#FB7185]/60'
-                        : 'hover:border-[#1D4ED8] dark:hover:border-[#38BDF8]/60'
-                    } p-4 sm:p-5 flex flex-col justify-between transition-all duration-200 hover:-translate-y-1 shadow-2xs hover:shadow-lg`}
-                  >
-                    <div>
-                      {/* Infographic Thumbnail Banner with Quick Lightbox Trigger */}
-                      <button
-                        type="button"
-                        onClick={() => setLightboxSlideId(`ch-${ch.number}`)}
-                        className="relative block w-full h-36 sm:h-40 mb-4 rounded-xl overflow-hidden bg-[#F4F7FC] dark:bg-[#07111F] border border-slate-200/80 dark:border-slate-400/15 cursor-zoom-in"
-                        aria-label={`Inspect Chapter ${ch.number} Infographic`}
-                      >
-                        <img
-                          src={ch.infographicUrl}
-                          alt={ch.infographicTitle}
-                          loading="lazy"
-                          className="w-full h-full object-cover object-top transition-transform duration-300 group-hover:scale-105"
-                        />
-                        <span className="absolute bottom-2 right-2 inline-flex items-center gap-1 px-2 py-1 rounded-md bg-slate-900/85 text-white text-[10px] font-mono font-semibold backdrop-blur-xs">
-                          <Maximize2 className="w-2.5 h-2.5" />
-                          <span>Infographic</span>
-                        </span>
-                      </button>
-
-                      <div className="flex flex-wrap items-center gap-1.5 text-xs font-mono text-slate-500 dark:text-[#AAB8CC] mb-2">
-                        <span
-                          className={`font-bold ${
-                            isRedChapter
-                              ? 'text-[#E11D48] dark:text-[#FB7185]'
-                              : 'text-[#1D4ED8] dark:text-[#38BDF8]'
-                          }`}
-                        >
-                          Chapter {String(ch.number).padStart(2, '0')}
-                        </span>
-                        <span aria-hidden="true">·</span>
-                        <span className="truncate">{ch.partLabel}</span>
-                      </div>
-                      <Link to={`/chapters/${ch.slug}`} className="block">
-                        <h3 className="text-base sm:text-lg font-bold font-display text-[#091122] dark:text-[#F5F8FF] group-hover:text-[#1D4ED8] dark:group-hover:text-[#38BDF8] transition-colors">
-                          {ch.title}
-                        </h3>
-                        <p className="mt-1.5 text-xs text-[#334155] dark:text-[#AAB8CC] leading-relaxed line-clamp-2">
-                          {ch.summary}
-                        </p>
-                      </Link>
-                    </div>
-
-                    <div className="mt-4 pt-3 border-t border-slate-200 dark:border-slate-400/10 flex items-center justify-between gap-2 text-xs">
-                      <button
-                        type="button"
-                        onClick={() => setLightboxSlideId(`ch-${ch.number}`)}
-                        className="text-slate-600 dark:text-[#AAB8CC] hover:text-[#E11D48] dark:hover:text-[#38BDF8] font-mono truncate cursor-pointer"
-                      >
-                        Zoom Infographic
-                      </button>
-                      <Link
-                        to={`/chapters/${ch.slug}`}
-                        className="text-[#1D4ED8] dark:text-[#38BDF8] font-semibold inline-flex items-center gap-1 shrink-0 group-hover:translate-x-0.5 transition-transform"
-                      >
-                        <span>Explore</span>
-                        <ArrowRight className="w-3.5 h-3.5" />
-                      </Link>
-                    </div>
-                  </div>
-                </motion.div>
-              );
-            })}
-          </motion.div>
         </div>
-
-        <InfographicLightboxModal
-          isOpen={Boolean(lightboxSlideId)}
-          initialSlideId={lightboxSlideId || 'master-blueprint'}
-          onClose={() => setLightboxSlideId(null)}
-        />
       </section>
 
       {/* 6.6 TECHNICAL ENGINEERING HIGHLIGHTS — 4 DESIGN PATTERNS */}

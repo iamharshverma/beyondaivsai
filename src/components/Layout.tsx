@@ -1,22 +1,23 @@
 import React, { useState, useEffect } from 'react';
 import { Link, NavLink, useLocation } from 'react-router-dom';
-import { Menu, X, ChevronRight, ExternalLink, Sun, Moon, ShieldAlert, ShieldCheck } from 'lucide-react';
+import {
+  Menu,
+  X,
+  ChevronRight,
+  ExternalLink,
+  Sun,
+  Moon,
+  ShieldAlert,
+  ShieldCheck,
+  FolderTree,
+} from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { BOOK_METADATA } from '../data/bookConfig';
 import { AUTHOR_DATA } from '../data/authorData';
 import { trackEvent } from '../utils/analytics';
 import { useTheme } from '../context/ThemeContext';
 import { BrandLogo, FloatingThemeSwitcher } from './BrandLogo';
-
-const SECONDARY_PLATFORM_LINKS = [
-  { to: '/blogs', label: 'Author Blogs (30+)' },
-  { to: '/excerpt', label: 'Chapter 1 Excerpt' },
-  { to: '/reviews', label: 'Reviews & Credibility' },
-  { to: '/educators', label: 'Educators & Enterprises' },
-  { to: '/insights', label: 'Insights Hub' },
-  { to: '/media', label: 'Press & Media' },
-  { to: '/contact', label: 'Contact' },
-];
+import { NavigationTreeModal } from './NavigationTreeModal';
 
 const ESSENTIAL_FOOTER_LINKS = [
   { to: '/book', label: 'The Book' },
@@ -31,9 +32,9 @@ const ESSENTIAL_FOOTER_LINKS = [
 ];
 
 const ROUTE_LABELS: Record<string, string> = {
-  book: 'The Book',
+  book: 'The Book & Chapter Details',
   order: 'Order the Book',
-  chapters: '11 Chapters',
+  chapters: '11 Chapters & Infographics',
   framework: 'Security Framework',
   resources: 'Technical Resources',
   blogs: 'Author Blogs & Articles',
@@ -51,11 +52,13 @@ const ROUTE_LABELS: Record<string, string> = {
 
 export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [navTreeOpen, setNavTreeOpen] = useState(false);
   const location = useLocation();
   const { theme, toggleTheme } = useTheme();
 
   useEffect(() => {
     setMobileMenuOpen(false);
+    setNavTreeOpen(false);
     if (location.hash) {
       const targetId = location.hash.replace('#', '');
       setTimeout(() => {
@@ -69,6 +72,17 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }, [location.pathname, location.hash, location.key]);
 
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
+        e.preventDefault();
+        setNavTreeOpen((prev) => !prev);
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, []);
+
   const handleFooterNavClick = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
@@ -77,12 +91,12 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
 
   return (
     <div className="min-h-screen flex flex-col bg-transparent dark:bg-[#060D1A] text-[#091122] dark:text-[#F5F8FF] transition-colors duration-200 overflow-x-hidden">
-      {/* Top Header with Red-vs-Blue Clash Bar, Creative BrandLogo, Navigation, and Icon Theme Switcher */}
-      <header className="sticky top-0 z-40 bg-white/90 dark:bg-[#060D1A]/90 backdrop-blur-xl border-b border-[#D5E0F0] dark:border-slate-400/15 shadow-[0_4px_24px_-6px_rgba(29,78,216,0.08)] dark:shadow-none">
-        {/* 2px Animated Red-vs-Blue AI Clash Accent Strip */}
+      {/* Premium Glassmorphic Header with Red-vs-Blue Clash Bar, BrandLogo, Core Links & Interactive Navigation Tree Button */}
+      <header className="sticky top-0 z-40 bg-white/92 dark:bg-[#060D1A]/92 backdrop-blur-xl border-b border-[#D5E0F0]/90 dark:border-slate-400/15 shadow-[0_6px_28px_-10px_rgba(29,78,216,0.08)] dark:shadow-none">
+        {/* 2.5px Animated Red-vs-Blue AI Clash Accent Strip */}
         <div className="h-[2.5px] w-full bg-gradient-to-r from-[#E11D48] via-[#7C3AED] to-[#1D4ED8] bg-ai-clash-gradient" />
 
-        <div className="max-w-[1280px] mx-auto flex items-center justify-between gap-3 sm:gap-6 px-4 sm:px-6 py-3">
+        <div className="max-w-[1280px] mx-auto flex items-center justify-between gap-2.5 sm:gap-5 px-4 sm:px-6 py-2.5 sm:py-3">
           {/* Zone 1: Creative Brand Logo */}
           <Link
             to="/"
@@ -92,16 +106,16 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
             <BrandLogo size="header" />
           </Link>
 
-          {/* Zone 2: Primary Desktop Navigation */}
+          {/* Zone 2: Streamlined Executive Navigation Pills */}
           <nav
             aria-label="Primary Navigation"
-            className="hidden md:flex items-center gap-5 lg:gap-6 text-sm font-medium text-slate-600 dark:text-[#AAB8CC]"
+            className="hidden lg:flex items-center gap-1 p-1 rounded-xl bg-[#F2F6FC]/90 dark:bg-[#0B1628]/90 border border-[#DCE5F4] dark:border-slate-400/15 text-xs font-semibold text-slate-600 dark:text-[#AAB8CC]"
           >
             {[
-              { to: '/book', label: 'Book' },
-              { to: '/chapters', label: 'Chapters' },
+              { to: '/book', label: 'The Book' },
+              { to: '/chapters', label: '11 Chapters' },
               { to: '/framework', label: 'Framework' },
-              { to: '/resources', label: 'Resources' },
+              { to: '/resources', label: 'Toolkit' },
               { to: '/blogs', label: 'Blogs' },
               { to: '/author', label: 'Author' },
             ].map((item) => (
@@ -109,10 +123,10 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
                 key={item.to}
                 to={item.to}
                 className={({ isActive }) =>
-                  `hover:text-[#1D4ED8] dark:hover:text-[#F5F8FF] transition-colors whitespace-nowrap shrink-0 ${
+                  `px-3 py-1.5 rounded-lg transition-all whitespace-nowrap shrink-0 ${
                     isActive
-                      ? 'text-[#091122] dark:text-[#F5F8FF] font-semibold underline underline-offset-8 decoration-2 decoration-[#E11D48] dark:decoration-[#38BDF8]'
-                      : ''
+                      ? 'bg-white dark:bg-[#162944] text-[#091122] dark:text-[#F5F8FF] shadow-2xs font-bold'
+                      : 'hover:text-[#1D4ED8] dark:hover:text-[#F5F8FF]'
                   }`
                 }
               >
@@ -121,21 +135,38 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
             ))}
           </nav>
 
-          {/* Zone 3: Order CTA + Icon-Only Theme Switcher + Mobile Hamburger */}
-          <div className="flex items-center gap-2 sm:gap-2.5 shrink-0">
+          {/* Zone 3: Interactive Navigation Tree Button + Order CTA + Icon Theme Switcher + Mobile Menu */}
+          <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
+            {/* Creative Navigation Tree Explorer Button */}
+            <button
+              type="button"
+              onClick={() => setNavTreeOpen(true)}
+              className="inline-flex items-center gap-1.5 px-2.5 sm:px-3.5 py-2 rounded-xl bg-[#F4F7FC] dark:bg-[#0F1D33] hover:bg-white dark:hover:bg-[#162944] border border-[#CBD5E1] dark:border-slate-400/20 text-xs font-semibold text-[#091122] dark:text-[#F5F8FF] shadow-2xs transition-all cursor-pointer group"
+              title="Open Complete Site & Chapter Navigation Tree (⌘K)"
+            >
+              <FolderTree className="w-3.5 h-3.5 text-[#E11D48] dark:text-[#38BDF8] group-hover:scale-110 transition-transform shrink-0" />
+              <span className="hidden sm:inline">Explore Sections</span>
+              <span className="sm:hidden">Sections</span>
+              <kbd className="hidden xl:inline-block ml-1 px-1.5 py-0.5 rounded bg-white dark:bg-[#060D1A] border border-slate-200 dark:border-slate-700 text-[10px] font-mono text-slate-500 dark:text-[#AAB8CC]">
+                ⌘K
+              </kbd>
+            </button>
+
             <Link
               to="/order"
               onClick={() => trackEvent('order_cta_clicked', { source: 'top_nav' })}
-              className="px-3 sm:px-4 py-2 text-xs font-semibold text-white bg-gradient-to-r from-[#E11D48] via-[#4F46E5] to-[#1D4ED8] hover:from-[#BE123C] hover:to-[#1E40AF] rounded-lg transition-all whitespace-nowrap shrink-0 shadow-[0_4px_14px_-2px_rgba(225,29,72,0.32),0_4px_14px_-2px_rgba(29,78,216,0.35)]"
+              className="px-3 sm:px-4 py-2 text-xs font-semibold text-white bg-gradient-to-r from-[#E11D48] via-[#4F46E5] to-[#1D4ED8] hover:from-[#BE123C] hover:to-[#1E40AF] rounded-xl transition-all whitespace-nowrap shrink-0 shadow-[0_4px_14px_-3px_rgba(225,29,72,0.3),0_4px_14px_-3px_rgba(29,78,216,0.32)]"
             >
-              <span className="hidden xs:inline">Order the Book</span>
-              <span className="xs:hidden">Order</span>
+              <span className="hidden sm:inline">Order the Book</span>
+              <span className="sm:hidden">Order</span>
             </Link>
+
             <FloatingThemeSwitcher />
+
             <button
               type="button"
               onClick={() => setMobileMenuOpen((prev) => !prev)}
-              className="md:hidden p-2 rounded-lg text-slate-700 dark:text-[#AAB8CC] hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-[#101F34] transition-colors"
+              className="lg:hidden p-2 rounded-xl text-slate-700 dark:text-[#AAB8CC] hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-[#101F34] transition-colors"
               aria-label="Toggle navigation menu"
             >
               {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
@@ -151,13 +182,21 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
               animate={{ height: 'auto', opacity: 1 }}
               exit={{ height: 0, opacity: 0 }}
               transition={{ duration: 0.2, ease: 'easeOut' }}
-              className="md:hidden overflow-hidden bg-white/98 dark:bg-[#0A1426] border-t border-[#D5E0F0] dark:border-slate-400/15"
+              className="lg:hidden overflow-hidden bg-white/98 dark:bg-[#0A1426] border-t border-[#D5E0F0] dark:border-slate-400/15"
             >
               <div className="px-4 py-4 space-y-4">
                 <div className="flex items-center justify-between pb-3 border-b border-slate-200 dark:border-slate-400/15">
-                  <span className="text-[11px] font-mono font-semibold bg-gradient-to-r from-[#E11D48] to-[#1D4ED8] bg-clip-text text-transparent">
-                    AI VS. AI · NAVIGATION
-                  </span>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setMobileMenuOpen(false);
+                      setNavTreeOpen(true);
+                    }}
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-gradient-to-r from-[#E11D48]/10 to-[#1D4ED8]/10 border border-[#1D4ED8]/30 text-xs font-mono font-bold text-[#1D4ED8] dark:text-[#38BDF8]"
+                  >
+                    <FolderTree className="w-3.5 h-3.5" />
+                    <span>Open Full Navigation Tree</span>
+                  </button>
                   <button
                     type="button"
                     onClick={toggleTheme}
@@ -180,14 +219,14 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
                 <div className="grid grid-cols-2 gap-2 text-sm font-medium">
                   {[
                     { to: '/', label: 'Home' },
-                    { to: '/book', label: 'The Book' },
+                    { to: '/book', label: 'The Book & Chapters' },
                     { to: '/order', label: 'Order the Book', highlight: true },
-                    { to: '/chapters', label: '11 Chapters' },
-                    { to: '/framework', label: 'Framework' },
-                    { to: '/resources', label: 'Resources' },
+                    { to: '/chapters', label: '11 Chapters Atlas' },
+                    { to: '/framework', label: 'Security Framework' },
+                    { to: '/resources', label: 'Toolkit & Resources' },
                     { to: '/blogs', label: 'Author Blogs (30+)' },
-                    { to: '/excerpt', label: 'Sample Chapter' },
-                    { to: '/author', label: 'About Author' },
+                    { to: '/excerpt', label: 'Sample Chapter 1' },
+                    { to: '/author', label: 'About Harsh Verma' },
                     { to: '/reviews', label: 'Reviews' },
                     { to: '/educators', label: 'Educators' },
                     { to: '/insights', label: 'Insights Hub' },
@@ -213,64 +252,60 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
         </AnimatePresence>
       </header>
 
-      {/* Secondary Platform Strip & Breadcrumbs */}
-      <div className="bg-[#EAF0F8]/85 dark:bg-[#0A1426] backdrop-blur-sm border-b border-[#D5E0F0] dark:border-slate-400/10">
-        <div className="max-w-[1280px] mx-auto px-4 sm:px-6 py-2 flex items-center justify-between gap-4 text-xs text-slate-600 dark:text-[#AAB8CC]">
-          {/* Breadcrumbs */}
-          <nav aria-label="Breadcrumb" className="flex items-center gap-1.5 overflow-x-auto no-scrollbar whitespace-nowrap">
-            <Link
-              to="/"
-              className="hover:text-[#1D4ED8] dark:hover:text-[#F5F8FF] transition-colors font-medium text-[#091122] dark:text-[#AAB8CC] shrink-0"
-            >
-              Beyond AI vs. AI
-            </Link>
-            {pathSegments.map((seg, idx) => {
-              const url = '/' + pathSegments.slice(0, idx + 1).join('/');
-              const isLast = idx === pathSegments.length - 1;
-              const label =
-                ROUTE_LABELS[seg] ||
-                seg
-                  .split('-')
-                  .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
-                  .join(' ');
-              return (
-                <React.Fragment key={url}>
-                  <ChevronRight className="w-3.5 h-3.5 text-slate-400 dark:text-slate-600 shrink-0" />
-                  {isLast ? (
-                    <span className="text-[#E11D48] dark:text-[#38BDF8] font-semibold truncate max-w-[180px] sm:max-w-[240px]">
-                      {label}
-                    </span>
-                  ) : (
-                    <Link
-                      to={url}
-                      className="hover:text-[#1D4ED8] dark:hover:text-[#F5F8FF] transition-colors shrink-0"
-                    >
-                      {label}
-                    </Link>
-                  )}
-                </React.Fragment>
-              );
-            })}
-          </nav>
-
-          {/* Quick Platform Links */}
-          <div className="hidden lg:flex items-center gap-5">
-            {SECONDARY_PLATFORM_LINKS.map((item) => (
-              <NavLink
-                key={item.to}
-                to={item.to}
-                className={({ isActive }) =>
-                  `hover:text-[#1D4ED8] dark:hover:text-[#F5F8FF] transition-colors whitespace-nowrap shrink-0 ${
-                    isActive ? 'text-[#E11D48] dark:text-[#38BDF8] font-semibold' : ''
-                  }`
-                }
+      {/* Contextual Breadcrumb Strip on Subpages with Quick Tree Trigger */}
+      {pathSegments.length > 0 && (
+        <div className="bg-[#F2F6FC]/90 dark:bg-[#0A1426]/90 backdrop-blur-xs border-b border-[#D5E0F0]/80 dark:border-slate-400/10">
+          <div className="max-w-[1280px] mx-auto px-4 sm:px-6 py-2 flex items-center justify-between gap-4 text-xs text-slate-600 dark:text-[#AAB8CC]">
+            <nav aria-label="Breadcrumb" className="flex items-center gap-1.5 overflow-x-auto no-scrollbar whitespace-nowrap">
+              <Link
+                to="/"
+                className="hover:text-[#1D4ED8] dark:hover:text-[#F5F8FF] transition-colors font-medium text-[#091122] dark:text-[#AAB8CC] shrink-0"
               >
-                {item.label}
-              </NavLink>
-            ))}
+                Beyond AI vs. AI
+              </Link>
+              {pathSegments.map((seg, idx) => {
+                const url = '/' + pathSegments.slice(0, idx + 1).join('/');
+                const isLast = idx === pathSegments.length - 1;
+                const label =
+                  ROUTE_LABELS[seg] ||
+                  seg
+                    .split('-')
+                    .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
+                    .join(' ');
+                return (
+                  <React.Fragment key={url}>
+                    <ChevronRight className="w-3.5 h-3.5 text-slate-400 dark:text-slate-600 shrink-0" />
+                    {isLast ? (
+                      <span className="text-[#E11D48] dark:text-[#38BDF8] font-semibold truncate max-w-[200px] sm:max-w-[280px]">
+                        {label}
+                      </span>
+                    ) : (
+                      <Link
+                        to={url}
+                        className="hover:text-[#1D4ED8] dark:hover:text-[#F5F8FF] transition-colors shrink-0"
+                      >
+                        {label}
+                      </Link>
+                    )}
+                  </React.Fragment>
+                );
+              })}
+            </nav>
+
+            <button
+              type="button"
+              onClick={() => setNavTreeOpen(true)}
+              className="hidden sm:inline-flex items-center gap-1.5 text-[11px] font-mono font-semibold text-[#1D4ED8] dark:text-[#38BDF8] hover:underline shrink-0 cursor-pointer"
+            >
+              <FolderTree className="w-3.5 h-3.5" />
+              <span>View Full Site Tree</span>
+            </button>
           </div>
         </div>
-      </div>
+      )}
+
+      {/* Interactive Navigation Tree Modal */}
+      <NavigationTreeModal isOpen={navTreeOpen} onClose={() => setNavTreeOpen(false)} />
 
       {/* Main Content */}
       <main className="flex-1">{children}</main>
