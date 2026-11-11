@@ -26,6 +26,8 @@ import {
   AlertTriangle,
   TrendingUp,
   ShieldX,
+  Share2,
+  ExternalLink,
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { CHAPTERS_DATA } from '../data/chaptersData';
@@ -683,6 +685,9 @@ export const CounteroffensiveAssessment: React.FC<CounteroffensiveAssessmentProp
   const [copiedCode, setCopiedCode] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [copiedBlueprint, setCopiedBlueprint] = useState(false);
+  const [copiedSocialSnippet, setCopiedSocialSnippet] = useState(false);
+  const [hoveredDomainIdx, setHoveredDomainIdx] = useState<number | null>(null);
+  const [showSocialSnippetPreview, setShowSocialSnippetPreview] = useState(false);
   const [simulatedControls, setSimulatedControls] = useState<Record<string, boolean>>({
     'circuit-breaker': true,
     'retrieval-gatekeeper': true,
@@ -951,6 +956,51 @@ export const CounteroffensiveAssessment: React.FC<CounteroffensiveAssessmentProp
     navigator.clipboard.writeText(lines.join('\n'));
     setCopiedBlueprint(true);
     setTimeout(() => setCopiedBlueprint(false), 2500);
+  };
+
+  // Custom generated snippet for social sharing based on user's assessment results
+  const socialShareSnippet = useMemo(() => {
+    const topStrength =
+      diagnostic.strengths[0]?.title || 'Deterministic Circuit Breakers';
+    const deltaSign = diagnostic.peerDelta >= 0 ? '+' : '';
+    const deltaText = `${deltaSign}${diagnostic.peerDelta}% vs ${activeBenchmark.label} peer avg`;
+
+    return `🛡️ Assessed our AI defense readiness on "AI vs. AI: Engineering the Cybersecurity Counteroffensive" by Harsh Verma!
+
+📊 Cyber Defense Rating: ${diagnostic.overallScore}/100 (Grade ${diagnostic.defenseRatingGrade} · ${diagnostic.defenseRatingBadge})
+🎯 Practitioner Role: ${activeRoleProfile.label}
+🏢 Sector: ${activeBenchmark.label} (${deltaText})
+⚡ Key Defense Control: ${topStrength}
+🚀 Projected with Book Architecture: ${diagnostic.projectedScore}/100
+
+Benchmark your AI defense posture & agentic guardrails:
+https://www.beyondaivsai.com/assessment
+
+#Cybersecurity #AI #AgenticAI #GenAISecurity #InfoSec #CyberDefense`;
+  }, [diagnostic, activeRoleProfile, activeBenchmark]);
+
+  const handleShareTwitter = () => {
+    const tweetUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(socialShareSnippet)}`;
+    window.open(tweetUrl, '_blank', 'noopener,noreferrer');
+    trackEvent('order_cta_clicked', { source: 'assessment_share_twitter' });
+  };
+
+  const handleShareLinkedIn = () => {
+    navigator.clipboard.writeText(socialShareSnippet);
+    setCopiedSocialSnippet(true);
+    setTimeout(() => setCopiedSocialSnippet(false), 3000);
+    const linkedInUrl = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(
+      'https://www.beyondaivsai.com/assessment'
+    )}`;
+    window.open(linkedInUrl, '_blank', 'noopener,noreferrer');
+    trackEvent('order_cta_clicked', { source: 'assessment_share_linkedin' });
+  };
+
+  const handleCopySocialSnippet = () => {
+    navigator.clipboard.writeText(socialShareSnippet);
+    setCopiedSocialSnippet(true);
+    setTimeout(() => setCopiedSocialSnippet(false), 2500);
+    trackEvent('order_cta_clicked', { source: 'assessment_copy_snippet' });
   };
 
   // Compute SVG Radar coordinates for 4 domains (Top, Right, Bottom, Left)
@@ -1668,6 +1718,115 @@ export const CounteroffensiveAssessment: React.FC<CounteroffensiveAssessmentProp
                 </div>
               </div>
 
+              {/* SOCIAL MEDIA SHARING COMPONENT */}
+              <div className="rounded-2xl bg-gradient-to-br from-white via-[#F8FAFC] to-[#1D4ED8]/[0.04] dark:from-[#0B1628] dark:via-[#0E1A30] dark:to-[#1D4ED8]/[0.10] border border-[#CBD5E1] dark:border-slate-400/20 p-5 sm:p-6 shadow-sm space-y-4">
+                <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                  <div className="space-y-1 max-w-xl">
+                    <div className="inline-flex items-center gap-1.5 text-xs font-mono font-bold text-[#1D4ED8] dark:text-[#38BDF8]">
+                      <Share2 className="w-4 h-4 text-[#E11D48]" />
+                      <span>SHARE YOUR CYBER DEFENSE RATING</span>
+                    </div>
+                    <h4 className="text-base sm:text-lg font-bold font-display text-[#091122] dark:text-[#F5F8FF]">
+                      Broadcast Your Rating or Challenge Sector Peers
+                    </h4>
+                    <p className="text-xs text-[#334155] dark:text-[#AAB8CC] leading-relaxed">
+                      Share your <strong className="text-[#091122] dark:text-white">{diagnostic.overallScore}/100 ({diagnostic.defenseRatingGrade} · {diagnostic.defenseRatingBadge})</strong> assessment on LinkedIn or X / Twitter with an auto-generated executive summary tailored to your role.
+                    </p>
+                  </div>
+
+                  {/* Share Action Buttons */}
+                  <div className="flex flex-wrap items-center gap-2.5 shrink-0">
+                    {/* LinkedIn Button */}
+                    <button
+                      type="button"
+                      onClick={handleShareLinkedIn}
+                      className="inline-flex items-center gap-2 px-3.5 py-2.5 rounded-xl bg-[#0A66C2] hover:bg-[#004182] text-white text-xs font-mono font-bold transition-all shadow-sm hover:shadow-md cursor-pointer active:scale-95"
+                      title="Share your Cyber Defense Rating on LinkedIn"
+                    >
+                      <svg className="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24">
+                        <path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.28 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.75M6.46 8.76a1.64 1.64 0 0 0 1.64-1.64 1.64 1.64 0 0 0-1.64-1.64 1.64 1.64 0 0 0-1.64 1.64 1.64 1.64 0 0 0 1.64 1.64m1.39 9.74v-8.37H5.07v8.37h2.78z" />
+                      </svg>
+                      <span>Share on LinkedIn</span>
+                    </button>
+
+                    {/* X (Twitter) Button */}
+                    <button
+                      type="button"
+                      onClick={handleShareTwitter}
+                      className="inline-flex items-center gap-2 px-3.5 py-2.5 rounded-xl bg-black dark:bg-[#020617] hover:bg-slate-800 text-white border border-slate-700/60 text-xs font-mono font-bold transition-all shadow-sm hover:shadow-md cursor-pointer active:scale-95"
+                      title="Share your Cyber Defense Rating on X (Twitter)"
+                    >
+                      <svg className="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24">
+                        <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+                      </svg>
+                      <span>Share on X</span>
+                    </button>
+
+                    {/* 1-Click Copy Share Snippet Button */}
+                    <button
+                      type="button"
+                      onClick={handleCopySocialSnippet}
+                      className="inline-flex items-center gap-2 px-3.5 py-2.5 rounded-xl bg-white dark:bg-[#060D1A] border border-[#CBD5E1] dark:border-slate-400/20 text-xs font-mono font-semibold text-[#091122] dark:text-[#F5F8FF] hover:border-[#1D4ED8] transition-colors cursor-pointer active:scale-95"
+                    >
+                      {copiedSocialSnippet ? (
+                        <>
+                          <Check className="w-3.5 h-3.5 text-emerald-500" />
+                          <span className="text-emerald-600 dark:text-emerald-400 font-bold">Copied Share Snippet!</span>
+                        </>
+                      ) : (
+                        <>
+                          <Copy className="w-3.5 h-3.5 text-[#1D4ED8] dark:text-[#38BDF8]" />
+                          <span>Copy Share Text</span>
+                        </>
+                      )}
+                    </button>
+
+                    {/* Toggle Snippet Preview Button */}
+                    <button
+                      type="button"
+                      onClick={() => setShowSocialSnippetPreview((prev) => !prev)}
+                      className="inline-flex items-center gap-1.5 px-3 py-2.5 rounded-xl text-xs font-mono text-slate-500 dark:text-[#AAB8CC] hover:text-[#1D4ED8] dark:hover:text-[#38BDF8] cursor-pointer"
+                    >
+                      <Code2 className="w-3.5 h-3.5" />
+                      <span>{showSocialSnippetPreview ? 'Hide Snippet' : 'View Snippet'}</span>
+                    </button>
+                  </div>
+                </div>
+
+                {/* Dynamic Share Snippet Preview Box */}
+                {showSocialSnippetPreview && (
+                  <motion.div
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: 'auto' }}
+                    exit={{ opacity: 0, height: 0 }}
+                    className="rounded-xl bg-[#070F1E] border border-slate-700/60 p-4 space-y-2 overflow-hidden"
+                  >
+                    <div className="flex items-center justify-between text-[11px] font-mono text-slate-400 border-b border-slate-800 pb-2">
+                      <span className="flex items-center gap-1.5">
+                        <Terminal className="w-3.5 h-3.5 text-[#38BDF8]" />
+                        <span>Generated Social Snippet Preview</span>
+                      </span>
+                      <span className="text-[10px] text-slate-500">
+                        {socialShareSnippet.length} characters · Optimized for LinkedIn &amp; X
+                      </span>
+                    </div>
+                    <pre className="text-xs font-mono text-slate-200 whitespace-pre-wrap leading-relaxed select-all">
+                      {socialShareSnippet}
+                    </pre>
+                    <div className="pt-1 flex items-center justify-between text-[10px] font-mono text-slate-400">
+                      <span>Tip: When clicking "Share on LinkedIn", the snippet is automatically copied to your clipboard to paste into your update.</span>
+                      <button
+                        type="button"
+                        onClick={handleCopySocialSnippet}
+                        className="text-[#38BDF8] hover:underline font-bold inline-flex items-center gap-1 cursor-pointer"
+                      >
+                        <Copy className="w-3 h-3" /> Copy Snippet
+                      </button>
+                    </div>
+                  </motion.div>
+                )}
+              </div>
+
               {/* DEDICATED STRENGTHS & WEAKNESSES BREAKDOWN DASHBOARD */}
               <div className="rounded-2xl bg-[#F8FAFC] dark:bg-[#0F1D33] border border-[#D5E0F0] dark:border-slate-400/15 p-5 sm:p-6 space-y-5">
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-200/80 dark:border-slate-400/15 pb-4">
@@ -1811,7 +1970,7 @@ export const CounteroffensiveAssessment: React.FC<CounteroffensiveAssessmentProp
 
                   <div className="grid grid-cols-1 md:grid-cols-12 gap-4 items-center">
                     {/* Interactive Comparative SVG Radar Chart (Red AI vs. Blue AI vs. Industry Benchmark) */}
-                    <div className="md:col-span-5 flex flex-col items-center justify-center bg-white dark:bg-[#081222] rounded-2xl border border-slate-200/80 dark:border-slate-400/15 p-3.5 space-y-2">
+                    <div className="md:col-span-5 flex flex-col items-center justify-center bg-white dark:bg-[#081222] rounded-2xl border border-slate-200/80 dark:border-slate-400/15 p-3.5 space-y-2 relative">
                       <svg viewBox="0 0 260 260" className="w-full max-w-[240px] h-auto overflow-visible">
                         <defs>
                           {/* Red AI Baseline Area Glow */}
@@ -1850,7 +2009,7 @@ export const CounteroffensiveAssessment: React.FC<CounteroffensiveAssessmentProp
                               <text
                                 x="133"
                                 y={130 - r + 9}
-                                className="fill-slate-400 dark:fill-slate-600 text-[7px] font-mono"
+                                className="fill-slate-400 dark:fill-slate-600 text-[7px] font-mono select-none"
                               >
                                 {pct}%
                               </text>
@@ -1859,11 +2018,39 @@ export const CounteroffensiveAssessment: React.FC<CounteroffensiveAssessmentProp
                         })}
 
                         {/* Diagonal Crosshair Axes */}
-                        <line x1="130" y1="36" x2="130" y2="224" stroke="currentColor" strokeWidth="0.85" className="text-slate-300 dark:text-slate-700" />
-                        <line x1="36" y1="130" x2="224" y2="130" stroke="currentColor" strokeWidth="0.85" className="text-slate-300 dark:text-slate-700" />
+                        <line
+                          x1="130"
+                          y1="36"
+                          x2="130"
+                          y2="224"
+                          stroke="currentColor"
+                          strokeWidth={hoveredDomainIdx === 0 || hoveredDomainIdx === 2 ? '1.5' : '0.85'}
+                          className={
+                            hoveredDomainIdx === 0 || hoveredDomainIdx === 2
+                              ? 'text-[#1D4ED8] dark:text-[#38BDF8] transition-colors'
+                              : 'text-slate-300 dark:text-slate-700 transition-colors'
+                          }
+                        />
+                        <line
+                          x1="36"
+                          y1="130"
+                          x2="224"
+                          y2="130"
+                          stroke="currentColor"
+                          strokeWidth={hoveredDomainIdx === 1 || hoveredDomainIdx === 3 ? '1.5' : '0.85'}
+                          className={
+                            hoveredDomainIdx === 1 || hoveredDomainIdx === 3
+                              ? 'text-[#1D4ED8] dark:text-[#38BDF8] transition-colors'
+                              : 'text-slate-300 dark:text-slate-700 transition-colors'
+                          }
+                        />
 
-                        {/* Industry Peer Benchmark Polygon (Dashed Slate) */}
-                        <polygon
+                        {/* Industry Peer Benchmark Polygon (Dashed Slate) with entrance animation */}
+                        <motion.polygon
+                          initial={{ opacity: 0, scale: 0.15 }}
+                          animate={{ opacity: 1, scale: 1 }}
+                          transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+                          style={{ transformOrigin: '130px 130px' }}
                           points={radarPoints.peerPoly}
                           fill="rgba(148,163,184,0.12)"
                           stroke="#94A3B8"
@@ -1871,86 +2058,268 @@ export const CounteroffensiveAssessment: React.FC<CounteroffensiveAssessmentProp
                           strokeDasharray="4 3"
                         />
                         {radarPoints.peerVertices.map((v, i) => (
-                          <circle
+                          <motion.circle
                             key={`peer-${i}`}
+                            initial={{ opacity: 0, scale: 0 }}
+                            animate={{ opacity: 1, scale: hoveredDomainIdx === i ? 1.4 : 1 }}
+                            transition={{ duration: 0.4, delay: 0.1 + i * 0.05 }}
+                            style={{ transformOrigin: `${v.x}px ${v.y}px` }}
                             cx={v.x}
                             cy={v.y}
-                            r="3"
+                            r={hoveredDomainIdx === i ? 4.5 : 3}
                             fill="#94A3B8"
                             stroke="#FFFFFF"
-                            strokeWidth="1"
+                            strokeWidth={hoveredDomainIdx === i ? 1.5 : 1}
                           />
                         ))}
 
-                        {/* Simulated Blue AI Projected Target Polygon (Cyan / Blue Gradient) */}
-                        <polygon
+                        {/* Simulated Blue AI Projected Target Polygon with entrance animation */}
+                        <motion.polygon
+                          initial={{ opacity: 0, scale: 0.15 }}
+                          animate={{ opacity: 1, scale: 1 }}
+                          transition={{ duration: 0.85, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+                          style={{ transformOrigin: '130px 130px' }}
                           points={radarPoints.projectedPoly}
                           fill="url(#blueRadarFill)"
                           stroke="#0284C7"
-                          strokeWidth="2.2"
+                          strokeWidth={hoveredDomainIdx !== null ? 2.5 : 2.2}
                           filter="url(#radarGlowBlue)"
-                          className="transition-all duration-500 ease-out"
+                          className="transition-all duration-300"
                         />
                         {radarPoints.projectedVertices.map((v, i) => (
-                          <circle
+                          <motion.circle
                             key={`proj-${i}`}
+                            initial={{ opacity: 0, scale: 0 }}
+                            animate={{ opacity: 1, scale: hoveredDomainIdx === i ? 1.5 : 1 }}
+                            transition={{ duration: 0.4, delay: 0.15 + i * 0.05 }}
+                            style={{ transformOrigin: `${v.x}px ${v.y}px` }}
                             cx={v.x}
                             cy={v.y}
-                            r="3.5"
+                            r={hoveredDomainIdx === i ? 5 : 3.5}
                             fill="#0284C7"
                             stroke="#FFFFFF"
-                            strokeWidth="1.5"
+                            strokeWidth={hoveredDomainIdx === i ? 2 : 1.5}
                           />
                         ))}
 
-                        {/* User Baseline Posture Polygon (Red AI / Rose Theme) */}
-                        <polygon
+                        {/* User Baseline Posture Polygon (Red AI / Rose Theme) with entrance animation */}
+                        <motion.polygon
+                          initial={{ opacity: 0, scale: 0.15 }}
+                          animate={{ opacity: 1, scale: 1 }}
+                          transition={{ duration: 0.95, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+                          style={{ transformOrigin: '130px 130px' }}
                           points={radarPoints.baselinePoly}
                           fill="url(#redRadarFill)"
                           stroke="#E11D48"
-                          strokeWidth="2.5"
+                          strokeWidth={hoveredDomainIdx !== null ? 3 : 2.5}
                           filter="url(#radarGlowRed)"
-                          className="transition-all duration-500 ease-out"
+                          className="transition-all duration-300"
                         />
                         {radarPoints.baselineVertices.map((v, i) => (
-                          <circle
+                          <motion.circle
                             key={`base-${i}`}
+                            initial={{ opacity: 0, scale: 0 }}
+                            animate={{ opacity: 1, scale: hoveredDomainIdx === i ? 1.6 : 1 }}
+                            transition={{ duration: 0.4, delay: 0.25 + i * 0.05 }}
+                            style={{ transformOrigin: `${v.x}px ${v.y}px` }}
                             cx={v.x}
                             cy={v.y}
-                            r="4"
+                            r={hoveredDomainIdx === i ? 5.5 : 4}
                             fill="#E11D48"
                             stroke="#FFFFFF"
-                            strokeWidth="1.5"
+                            strokeWidth={hoveredDomainIdx === i ? 2 : 1.5}
                           />
                         ))}
 
-                        {/* Radar Domain Labels & Scores */}
-                        <text x="130" y="24" textAnchor="middle" className="fill-slate-800 dark:fill-slate-200 text-[9px] font-mono font-bold">
+                        {/* Pulsing beacon highlight on hovered baseline vertex */}
+                        {hoveredDomainIdx !== null && radarPoints.baselineVertices[hoveredDomainIdx] && (
+                          <circle
+                            cx={radarPoints.baselineVertices[hoveredDomainIdx].x}
+                            cy={radarPoints.baselineVertices[hoveredDomainIdx].y}
+                            r="9"
+                            fill="none"
+                            stroke="#E11D48"
+                            strokeWidth="1.5"
+                            className="animate-ping"
+                          />
+                        )}
+
+                        {/* Interactive Invisible Touch / Hover Hit Zones on 4 vertices */}
+                        {radarPoints.baselineVertices.map((v, i) => (
+                          <g
+                            key={`hover-zone-${i}`}
+                            className="cursor-pointer"
+                            onMouseEnter={() => setHoveredDomainIdx(i)}
+                            onMouseLeave={() => setHoveredDomainIdx(null)}
+                            onClick={() => setHoveredDomainIdx((prev) => (prev === i ? null : i))}
+                          >
+                            <circle cx={v.x} cy={v.y} r="20" fill="transparent" />
+                          </g>
+                        ))}
+
+                        {/* Radar Domain Labels & Scores with Interactive Hover Triggers */}
+                        <text
+                          x="130"
+                          y="24"
+                          textAnchor="middle"
+                          onMouseEnter={() => setHoveredDomainIdx(0)}
+                          onMouseLeave={() => setHoveredDomainIdx(null)}
+                          onClick={() => setHoveredDomainIdx((prev) => (prev === 0 ? null : 0))}
+                          className={`text-[9px] font-mono font-bold cursor-pointer transition-colors ${
+                            hoveredDomainIdx === 0
+                              ? 'fill-[#E11D48] dark:fill-[#FB7185]'
+                              : 'fill-slate-800 dark:fill-slate-200'
+                          }`}
+                        >
                           THREAT &amp; RAG ({diagnostic.domainBreakdown[0].score}%)
                         </text>
-                        <text x="254" y="133" textAnchor="end" className="fill-slate-800 dark:fill-slate-200 text-[8px] font-mono font-bold">
+                        <text
+                          x="254"
+                          y="133"
+                          textAnchor="end"
+                          onMouseEnter={() => setHoveredDomainIdx(1)}
+                          onMouseLeave={() => setHoveredDomainIdx(null)}
+                          onClick={() => setHoveredDomainIdx((prev) => (prev === 1 ? null : 1))}
+                          className={`text-[8px] font-mono font-bold cursor-pointer transition-colors ${
+                            hoveredDomainIdx === 1
+                              ? 'fill-[#E11D48] dark:fill-[#FB7185]'
+                              : 'fill-slate-800 dark:fill-slate-200'
+                          }`}
+                        >
                           RUNTIME ({diagnostic.domainBreakdown[1].score}%)
                         </text>
-                        <text x="130" y="244" textAnchor="middle" className="fill-slate-800 dark:fill-slate-200 text-[9px] font-mono font-bold">
+                        <text
+                          x="130"
+                          y="244"
+                          textAnchor="middle"
+                          onMouseEnter={() => setHoveredDomainIdx(2)}
+                          onMouseLeave={() => setHoveredDomainIdx(null)}
+                          onClick={() => setHoveredDomainIdx((prev) => (prev === 2 ? null : 2))}
+                          className={`text-[9px] font-mono font-bold cursor-pointer transition-colors ${
+                            hoveredDomainIdx === 2
+                              ? 'fill-[#E11D48] dark:fill-[#FB7185]'
+                              : 'fill-slate-800 dark:fill-slate-200'
+                          }`}
+                        >
                           SELF-HEALING ({diagnostic.domainBreakdown[2].score}%)
                         </text>
-                        <text x="6" y="133" textAnchor="start" className="fill-slate-800 dark:fill-slate-200 text-[8px] font-mono font-bold">
+                        <text
+                          x="6"
+                          y="133"
+                          textAnchor="start"
+                          onMouseEnter={() => setHoveredDomainIdx(3)}
+                          onMouseLeave={() => setHoveredDomainIdx(null)}
+                          onClick={() => setHoveredDomainIdx((prev) => (prev === 3 ? null : 3))}
+                          className={`text-[8px] font-mono font-bold cursor-pointer transition-colors ${
+                            hoveredDomainIdx === 3
+                              ? 'fill-[#E11D48] dark:fill-[#FB7185]'
+                              : 'fill-slate-800 dark:fill-slate-200'
+                          }`}
+                        >
                           OBO MESH ({diagnostic.domainBreakdown[3].score}%)
                         </text>
                       </svg>
 
-                      {/* Radar Footer Note */}
-                      <div className="text-[10px] font-mono text-center text-slate-500 dark:text-[#AAB8CC]">
-                        Red (Current) vs. Gray ({activeBenchmark.label} Avg: {activeBenchmark.peerAvg}%) vs. Blue (Target: {diagnostic.projectedScore}%)
+                      {/* Interactive Radar Hover Tooltip Card / Legend Footer */}
+                      <div className="w-full min-h-[76px] flex flex-col justify-center">
+                        <AnimatePresence mode="wait">
+                          {hoveredDomainIdx !== null && diagnostic.domainBreakdown[hoveredDomainIdx] ? (
+                            <motion.div
+                              key={`tooltip-${hoveredDomainIdx}`}
+                              initial={{ opacity: 0, y: 4 }}
+                              animate={{ opacity: 1, y: 0 }}
+                              exit={{ opacity: 0, y: -4 }}
+                              transition={{ duration: 0.15 }}
+                              className="w-full rounded-xl bg-slate-900 dark:bg-[#060D1A] text-white p-2.5 border border-[#1D4ED8]/40 shadow-md space-y-1.5"
+                            >
+                              <div className="flex items-center justify-between text-[11px] font-mono border-b border-slate-700/60 pb-1">
+                                <span className="font-bold text-[#38BDF8] flex items-center gap-1 truncate">
+                                  <span className="w-2 h-2 rounded-full bg-[#38BDF8] shrink-0" />
+                                  <span>{diagnostic.domainBreakdown[hoveredDomainIdx].label}</span>
+                                </span>
+                                <span className="text-[10px] text-slate-400 shrink-0">
+                                  {diagnostic.domainBreakdown[hoveredDomainIdx].seqRange}
+                                </span>
+                              </div>
+                              <div className="grid grid-cols-3 gap-1.5 text-center text-[10px] font-mono">
+                                <div className="bg-white/5 rounded-lg p-1 border border-[#E11D48]/40">
+                                  <div className="text-[#FB7185] text-[9px] font-bold">You (Baseline)</div>
+                                  <div className="text-xs font-bold text-white">
+                                    {diagnostic.domainBreakdown[hoveredDomainIdx].score}%
+                                  </div>
+                                </div>
+                                <div className="bg-white/5 rounded-lg p-1 border border-slate-700">
+                                  <div className="text-slate-400 text-[9px] font-bold truncate">
+                                    {activeBenchmark.label} Peer
+                                  </div>
+                                  <div className="text-xs font-bold text-slate-200">
+                                    {diagnostic.domainBreakdown[hoveredDomainIdx].peerDomainScore}%
+                                  </div>
+                                  <div
+                                    className={`text-[8px] font-bold ${
+                                      diagnostic.domainBreakdown[hoveredDomainIdx].score >=
+                                      diagnostic.domainBreakdown[hoveredDomainIdx].peerDomainScore
+                                        ? 'text-emerald-400'
+                                        : 'text-[#FB7185]'
+                                    }`}
+                                  >
+                                    {diagnostic.domainBreakdown[hoveredDomainIdx].score >=
+                                    diagnostic.domainBreakdown[hoveredDomainIdx].peerDomainScore
+                                      ? `+${
+                                          diagnostic.domainBreakdown[hoveredDomainIdx].score -
+                                          diagnostic.domainBreakdown[hoveredDomainIdx].peerDomainScore
+                                        }% vs Peer`
+                                      : `${
+                                          diagnostic.domainBreakdown[hoveredDomainIdx].score -
+                                          diagnostic.domainBreakdown[hoveredDomainIdx].peerDomainScore
+                                        }% vs Peer`}
+                                  </div>
+                                </div>
+                                <div className="bg-white/5 rounded-lg p-1 border border-[#38BDF8]/40">
+                                  <div className="text-[#38BDF8] text-[9px] font-bold">Book Target</div>
+                                  <div className="text-xs font-bold text-white">
+                                    {diagnostic.domainBreakdown[hoveredDomainIdx].projectedDomainScore}%
+                                  </div>
+                                  <div className="text-[8px] text-emerald-400 font-bold">
+                                    +{diagnostic.domainBreakdown[hoveredDomainIdx].projectedDomainScore -
+                                      diagnostic.domainBreakdown[hoveredDomainIdx].score}% Target
+                                  </div>
+                                </div>
+                              </div>
+                            </motion.div>
+                          ) : (
+                            <motion.div
+                              key="default-note"
+                              initial={{ opacity: 0 }}
+                              animate={{ opacity: 1 }}
+                              exit={{ opacity: 0 }}
+                              className="text-[10px] font-mono text-center text-slate-500 dark:text-[#AAB8CC] space-y-1"
+                            >
+                              <div>
+                                Red (Baseline) vs. Gray ({activeBenchmark.label} Peer: {activeBenchmark.peerAvg}%) vs. Blue (Target: {diagnostic.projectedScore}%)
+                              </div>
+                              <div className="text-[#1D4ED8] dark:text-[#38BDF8] flex items-center justify-center gap-1 font-semibold">
+                                <span className="w-1.5 h-1.5 rounded-full bg-[#1D4ED8] animate-pulse" />
+                                <span>Hover or tap any vertex or domain to inspect comparative benchmarks</span>
+                              </div>
+                            </motion.div>
+                          )}
+                        </AnimatePresence>
                       </div>
                     </div>
 
                     {/* 4-Domain Posture Bars */}
                     <div className="md:col-span-7 space-y-2.5">
-                      {diagnostic.domainBreakdown.map((dom) => (
+                      {diagnostic.domainBreakdown.map((dom, index) => (
                         <div
                           key={dom.id}
-                          className="rounded-xl bg-white dark:bg-[#081222] border border-slate-200/80 dark:border-slate-400/15 p-3 space-y-1.5"
+                          onMouseEnter={() => setHoveredDomainIdx(index)}
+                          onMouseLeave={() => setHoveredDomainIdx(null)}
+                          className={`rounded-xl bg-white dark:bg-[#081222] border transition-all duration-200 p-3 space-y-1.5 cursor-pointer ${
+                            hoveredDomainIdx === index
+                              ? 'border-[#1D4ED8] dark:border-[#38BDF8] ring-2 ring-[#1D4ED8]/20 shadow-md'
+                              : 'border-slate-200/80 dark:border-slate-400/15 hover:border-slate-300'
+                          }`}
                         >
                           <div className="flex items-center justify-between gap-2">
                             <div className="flex items-center gap-2 min-w-0">
