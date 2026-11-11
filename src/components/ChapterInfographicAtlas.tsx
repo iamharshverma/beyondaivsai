@@ -540,14 +540,34 @@ export const ChapterInfographicAtlas: React.FC<ChapterInfographicAtlasProps> = (
                 <SequenceMinimalIcon id={activeSlide.iconKey} size="xs" />
                 <span>{activeSlide.badge}</span>
               </span>
-              <button
-                type="button"
-                onClick={() => setShowGalleryGrid((prev) => !prev)}
-                className="inline-flex items-center gap-1 text-xs font-mono font-semibold text-[#1D4ED8] dark:text-[#38BDF8] hover:underline cursor-pointer"
-              >
-                <LayoutGrid className="w-3.5 h-3.5" />
-                <span>{showGalleryGrid ? 'Hide Visual Thumbnail Grid' : 'Show All 13 Visual Thumbnails'}</span>
-              </button>
+              <div className="flex items-center gap-1.5 font-mono text-[11px]">
+                <button
+                  type="button"
+                  onClick={() => {
+                    const currentIdx = slides.findIndex((s) => s.id === selectedSlideId);
+                    const prevIdx = (currentIdx - 1 + slides.length) % slides.length;
+                    setSelectedSlideId(slides[prevIdx].id);
+                    setUseSecondary(false);
+                  }}
+                  className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-[#F4F7FC] dark:bg-[#0A1426] hover:bg-slate-200 dark:hover:bg-[#162944] border border-[#D5E0F0] dark:border-slate-400/20 text-slate-700 dark:text-[#AAB8CC] transition-colors cursor-pointer"
+                >
+                  <ChevronLeft className="w-3.5 h-3.5" />
+                  <span>Previous Sequence</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    const currentIdx = slides.findIndex((s) => s.id === selectedSlideId);
+                    const nextIdx = (currentIdx + 1) % slides.length;
+                    setSelectedSlideId(slides[nextIdx].id);
+                    setUseSecondary(false);
+                  }}
+                  className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-[#F4F7FC] dark:bg-[#0A1426] hover:bg-slate-200 dark:hover:bg-[#162944] border border-[#D5E0F0] dark:border-slate-400/20 text-slate-700 dark:text-[#AAB8CC] transition-colors cursor-pointer"
+                >
+                  <span>Next Sequence</span>
+                  <ChevronRight className="w-3.5 h-3.5" />
+                </button>
+              </div>
             </div>
           </div>
 
@@ -638,60 +658,6 @@ export const ChapterInfographicAtlas: React.FC<ChapterInfographicAtlasProps> = (
           </div>
         </div>
       </motion.div>
-
-      {/* Staggered Scroll-Triggered Infographic Gallery Grid (Master Blueprint + 12 Sequence Visuals) */}
-      {showGalleryGrid && (
-        <motion.div
-          variants={galleryContainerVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.08 }}
-          className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 sm:gap-4"
-        >
-          {slides.map((slide) => {
-            const isSelected = slide.id === selectedSlideId;
-            return (
-              <motion.button
-                key={slide.id}
-                variants={galleryItemVariants}
-                whileHover={{ y: -4, scale: 1.015 }}
-                type="button"
-                onClick={() => {
-                  setSelectedSlideId(slide.id);
-                  setUseSecondary(false);
-                }}
-                onDoubleClick={() => {
-                  setSelectedSlideId(slide.id);
-                  setLightboxOpen(true);
-                }}
-                className={`group text-left rounded-xl overflow-hidden border transition-all cursor-pointer flex flex-col justify-between ${
-                  isSelected
-                    ? 'bg-gradient-to-br from-[#E11D48]/[0.08] to-[#1D4ED8]/[0.10] border-[#1D4ED8] dark:border-[#38BDF8] ring-1 ring-[#1D4ED8]/30 shadow-md'
-                    : 'bg-white dark:bg-[#0F1D33] border-[#D5E0F0] dark:border-slate-400/15 hover:border-[#1D4ED8]/60 dark:hover:border-[#38BDF8]/50 shadow-2xs'
-                }`}
-              >
-                <div className="relative h-24 sm:h-28 w-full overflow-hidden bg-[#F4F7FC] dark:bg-[#07111F] border-b border-slate-200/70 dark:border-slate-400/10">
-                  <img
-                    src={slide.imageUrl}
-                    alt={slide.title}
-                    loading="lazy"
-                    className="w-full h-full object-cover object-top transition-transform duration-300 group-hover:scale-105"
-                  />
-                  <span className="absolute top-1.5 left-1.5 inline-flex items-center gap-1 px-1.5 py-0.5 rounded-md bg-white/92 dark:bg-[#091426]/90 border border-slate-200/80 dark:border-slate-700 text-[10px] font-mono font-bold text-[#091122] dark:text-[#F5F8FF] shadow-2xs">
-                    <SequenceMinimalIcon id={slide.iconKey} size="xs" />
-                    <span>{slide.shortLabel}</span>
-                  </span>
-                </div>
-                <div className="p-2.5">
-                  <div className="text-[11px] font-bold font-display text-[#091122] dark:text-[#F5F8FF] group-hover:text-[#1D4ED8] dark:group-hover:text-[#38BDF8] line-clamp-1">
-                    {slide.title.replace(/^Sequence \d+:\s*/, '')}
-                  </div>
-                </div>
-              </motion.button>
-            );
-          })}
-        </motion.div>
-      )}
 
       <InfographicLightboxModal
         isOpen={lightboxOpen}
