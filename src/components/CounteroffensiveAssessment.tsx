@@ -28,6 +28,10 @@ import {
   ShieldX,
   Share2,
   ExternalLink,
+  FileDown,
+  Download,
+  FileText,
+  X,
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { CHAPTERS_DATA } from '../data/chaptersData';
@@ -689,6 +693,7 @@ export const CounteroffensiveAssessment: React.FC<CounteroffensiveAssessmentProp
   const [copiedSocialSnippet, setCopiedSocialSnippet] = useState(false);
   const [hoveredDomainIdx, setHoveredDomainIdx] = useState<number | null>(null);
   const [showSocialSnippetPreview, setShowSocialSnippetPreview] = useState(false);
+  const [showExportModal, setShowExportModal] = useState(false);
   const [simulatedControls, setSimulatedControls] = useState<Record<string, boolean>>({
     'circuit-breaker': true,
     'retrieval-gatekeeper': true,
@@ -1003,6 +1008,186 @@ https://www.beyondaivsai.com/assessment
     setCopiedSocialSnippet(true);
     setTimeout(() => setCopiedSocialSnippet(false), 2500);
     trackEvent('order_cta_clicked', { source: 'assessment_copy_snippet' });
+  };
+
+  const handlePrintPDF = () => {
+    trackEvent('order_cta_clicked', { source: 'assessment_pdf_export_print' });
+    setShowExportModal(false);
+    setTimeout(() => {
+      window.print();
+    }, 150);
+  };
+
+  const handleDownloadReportHTML = () => {
+    trackEvent('order_cta_clicked', { source: 'assessment_pdf_export_download' });
+    const reportRefId = `CDA-${Date.now().toString(36).toUpperCase()}`;
+    const reportDate = new Date().toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+    });
+
+    const htmlContent = `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cyber Defense Rating Report — ${diagnostic.overallScore}/100 (${diagnostic.defenseRatingGrade})</title>
+  <style>
+    @page { size: A4 portrait; margin: 12mm 15mm; }
+    * { box-sizing: border-box; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; color: #0f172a; background: #ffffff; margin: 0; padding: 24px; line-height: 1.5; font-size: 13px; }
+    .header { border-bottom: 2px solid #0f172a; padding-bottom: 16px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: flex-start; }
+    .brand-title { font-size: 18px; font-weight: 800; color: #091122; text-transform: uppercase; letter-spacing: 0.5px; }
+    .brand-sub { font-size: 11px; color: #475569; margin-top: 2px; }
+    .meta-box { text-align: right; font-family: monospace; font-size: 11px; color: #334155; }
+    .score-card { background: #f8fafc; border: 1px solid #cbd5e1; border-radius: 12px; padding: 18px; margin-bottom: 20px; display: grid; grid-template-columns: 180px 1fr; gap: 20px; align-items: center; }
+    .score-badge { text-align: center; border-right: 1px solid #e2e8f0; padding-right: 18px; }
+    .score-val { font-size: 44px; font-weight: 900; color: #0f172a; font-family: monospace; line-height: 1; }
+    .grade-tag { display: inline-block; padding: 3px 10px; border-radius: 999px; background: #0284c7; color: #ffffff; font-weight: 800; font-size: 12px; margin-top: 8px; font-family: monospace; }
+    .summary-text { font-size: 13px; color: #334155; line-height: 1.6; }
+    h2 { font-size: 14px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; color: #1e293b; margin: 20px 0 10px 0; border-bottom: 1px solid #e2e8f0; padding-bottom: 6px; }
+    table { width: 100%; border-collapse: collapse; margin-bottom: 18px; font-size: 12px; }
+    th { text-align: left; padding: 8px 10px; background: #f1f5f9; border: 1px solid #cbd5e1; font-weight: 700; font-size: 11px; font-family: monospace; }
+    td { padding: 8px 10px; border: 1px solid #cbd5e1; vertical-align: top; }
+    .card-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px; }
+    .box { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 12px; }
+    .box-title { font-weight: 700; font-size: 12px; margin-bottom: 4px; }
+    .tag { font-family: monospace; font-size: 10px; font-weight: bold; color: #64748b; }
+    .footer { margin-top: 30px; padding-top: 12px; border-top: 1px solid #cbd5e1; font-size: 10px; color: #64748b; display: flex; justify-content: space-between; font-family: monospace; }
+    .print-bar { background: #0f172a; color: #ffffff; padding: 10px 16px; border-radius: 8px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; }
+    .print-btn { background: #2563eb; color: #ffffff; border: none; padding: 8px 16px; border-radius: 6px; font-weight: 700; font-size: 12px; cursor: pointer; }
+    @media print { .print-bar { display: none !important; } }
+  </style>
+</head>
+<body>
+  <div class="print-bar">
+    <span><strong>Official Executive Report</strong> · Click below to generate or save a vector PDF.</span>
+    <button class="print-btn" onclick="window.print()">Print / Save as PDF</button>
+  </div>
+
+  <div class="header">
+    <div>
+      <div class="brand-title">AI vs. AI: Cyber Defense Rating Report</div>
+      <div class="brand-sub">Autonomous Counteroffensive Architecture Assessment &amp; Benchmark Dossier</div>
+      <div class="brand-sub">Based on <em>AI vs. AI: Engineering the Cybersecurity Counteroffensive</em> by Harsh Verma</div>
+    </div>
+    <div class="meta-box">
+      <div><strong>Date:</strong> ${reportDate}</div>
+      <div><strong>Dossier Ref:</strong> ${reportRefId}</div>
+      <div><strong>Target Role:</strong> ${activeRoleProfile.label}</div>
+      <div><strong>Industry Sector:</strong> ${activeBenchmark.label}</div>
+    </div>
+  </div>
+
+  <div class="score-card">
+    <div class="score-badge">
+      <div class="score-val">${diagnostic.overallScore}<span style="font-size:18px;color:#94a3b8">/100</span></div>
+      <div class="grade-tag">Grade ${diagnostic.defenseRatingGrade}</div>
+      <div style="font-size:10px;font-weight:700;margin-top:6px;color:#0f172a">${diagnostic.defenseRatingBadge}</div>
+    </div>
+    <div>
+      <div style="font-weight:800;font-size:15px;color:#0f172a;margin-bottom:6px">
+        ${diagnostic.overallScore < 75 ? 'Critical Gaps Detected Between AI Velocity &amp; Deterministic Defense' : 'Strong Foundation Ready for Autonomous Self-Healing Hardening'}
+      </div>
+      <div class="summary-text">${diagnostic.tierSummary} ${activeRoleProfile.bookValueHook}</div>
+      <div style="margin-top:10px;font-family:monospace;font-size:11px;color:#475569">
+        <strong>Sector Comparison:</strong> ${diagnostic.peerDelta >= 0 ? `+${diagnostic.peerDelta}% Above` : `${Math.abs(diagnostic.peerDelta)}% Below`} ${activeBenchmark.label} Peer Average (${activeBenchmark.peerAvg}%) · <strong>Target with Book Architecture:</strong> ${diagnostic.projectedScore}%
+      </div>
+    </div>
+  </div>
+
+  <h2>1. 4-Domain Counteroffensive Telemetry Matrix</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Domain</th>
+        <th>Book Sequence</th>
+        <th>Your Baseline Score</th>
+        <th>${activeBenchmark.label} Peer Avg</th>
+        <th>Variance</th>
+        <th>Target with Book</th>
+      </tr>
+    </thead>
+    <tbody>
+      ${diagnostic.domainBreakdown
+        .map(
+          (d) => `<tr>
+        <td><strong>${d.label}</strong></td>
+        <td><span class="tag">${d.seqRange}</span></td>
+        <td><strong>${d.score}%</strong></td>
+        <td>${d.peerDomainScore}%</td>
+        <td style="color:${d.score >= d.peerDomainScore ? '#059669' : '#e11d48'};font-weight:bold">${d.score >= d.peerDomainScore ? `+${d.score - d.peerDomainScore}%` : `${d.score - d.peerDomainScore}%`}</td>
+        <td style="color:#2563eb;font-weight:bold">${d.projectedDomainScore}%</td>
+      </tr>`
+        )
+        .join('')}
+    </tbody>
+  </table>
+
+  <h2>2. Confirmed Architectural Strengths (${diagnostic.strengths.length})</h2>
+  <div class="card-grid">
+    ${diagnostic.strengths
+      .map(
+        (s) => `<div class="box">
+      <div class="tag" style="color:#059669">Verified Control · Sequence ${String(s.sequenceNumber).padStart(2, '0')}</div>
+      <div class="box-title">${s.title}</div>
+      <div style="font-size:11px;color:#334155">${s.summary}</div>
+      <div style="font-size:10px;color:#64748b;margin-top:4px"><strong>Impact:</strong> ${s.impact}</div>
+    </div>`
+      )
+      .join('')}
+  </div>
+
+  <h2>3. Priority Vulnerability Gaps &amp; Remediations (${diagnostic.weaknesses.length})</h2>
+  <div class="card-grid">
+    ${diagnostic.weaknesses
+      .map(
+        (w) => `<div class="box" style="border-left:3px solid #e11d48">
+      <div class="tag" style="color:#e11d48">Vulnerability Exposure · Sequence ${String(w.sequenceNumber).padStart(2, '0')}</div>
+      <div class="box-title">${w.title}</div>
+      <div style="font-size:11px;color:#334155"><strong>Risk:</strong> ${w.risk}</div>
+      <div style="font-size:10px;color:#2563eb;margin-top:4px"><strong>Action:</strong> ${w.remediation}</div>
+    </div>`
+      )
+      .join('')}
+  </div>
+
+  <h2>4. 30/60/90-Day Implementation Action Plan</h2>
+  <table>
+    <tbody>
+      <tr>
+        <td style="width:130px;font-family:monospace;font-weight:bold;color:#2563eb">Days 01–30</td>
+        <td><strong>Discovery &amp; Gateways:</strong> Inventory Shadow AI, isolate vector databases with cryptographically scoped Retrieval Gatekeepers and strict provenance boundary delimiters (Sequences 01–03).</td>
+      </tr>
+      <tr>
+        <td style="font-family:monospace;font-weight:bold;color:#2563eb">Days 31–60</td>
+        <td><strong>Deterministic Mediation:</strong> Enforce Inline Circuit Breakers, Shadow Evaluators, and sandboxed On-Behalf-Of (OBO) Tool Brokers for autonomous agents (Sequences 04–08).</td>
+      </tr>
+      <tr>
+        <td style="font-family:monospace;font-weight:bold;color:#2563eb">Days 61–90</td>
+        <td><strong>Adversarial Resilience:</strong> Automate CI/CD red-teaming harnesses, multi-turn jailbreak simulations, and self-healing episodic state rollback (Sequences 09–11).</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="footer">
+    <div>Beyond AI vs. AI · www.beyondaivsai.com · Official Cybersecurity Counteroffensive Platform</div>
+    <div>Harsh Verma · ISBN: 978-1-965801-00-0</div>
+  </div>
+</body>
+</html>`;
+
+    const blob = new Blob([htmlContent], { type: 'text/html;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `Cyber-Defense-Rating-Report-${reportRefId}.html`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    setShowExportModal(false);
   };
 
   // Compute SVG Radar coordinates for 4 domains (Top, Right, Bottom, Left)
@@ -1495,7 +1680,7 @@ https://www.beyondaivsai.com/assessment
               initial={{ opacity: 0, y: 14 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.3 }}
-              className="space-y-8"
+              className="space-y-8 print:hidden"
             >
               {/* Top Score, Sector Benchmark Comparison & Role Diagnosis Banner */}
               <div className="rounded-2xl bg-gradient-to-r from-[#E11D48]/[0.08] via-[#F8FAFC] to-[#1D4ED8]/[0.10] dark:from-[#E11D48]/[0.16] dark:via-[#0F1D33] dark:to-[#1D4ED8]/[0.18] border border-[#D5E0F0] dark:border-slate-400/20 p-5 sm:p-7 grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
@@ -1506,8 +1691,8 @@ https://www.beyondaivsai.com/assessment
                   </div>
 
                   {/* High-Precision SVG Semicircular Speedometer Gauge */}
-                  <div className="relative w-full max-w-[210px] flex flex-col items-center justify-center pt-1">
-                    <svg viewBox="0 0 200 125" className="w-full h-auto overflow-visible">
+                  <div className="relative w-full max-w-[210px] sm:max-w-[230px] mx-auto flex flex-col items-center justify-center pt-1 overflow-hidden sm:overflow-visible">
+                    <svg viewBox="-4 0 208 126" className="w-full h-auto overflow-visible">
                       <defs>
                         {/* Red to Blue AI Cyber Spectrum Gradient */}
                         <linearGradient id="cyberGaugeGradient" x1="0%" y1="0%" x2="100%" y2="0%">
@@ -1611,10 +1796,10 @@ https://www.beyondaivsai.com/assessment
                       })()}
 
                       {/* Sub-label indicators */}
-                      <text x="20" y="122" className="fill-slate-400 text-[8px] font-mono font-bold" textAnchor="start">
+                      <text x="24" y="122" className="fill-slate-400 text-[8px] font-mono font-bold" textAnchor="start">
                         0 (EXPOSED)
                       </text>
-                      <text x="180" y="122" className="fill-slate-400 text-[8px] font-mono font-bold" textAnchor="end">
+                      <text x="176" y="122" className="fill-slate-400 text-[8px] font-mono font-bold" textAnchor="end">
                         100 (SHIELD)
                       </text>
                     </svg>
@@ -1684,36 +1869,36 @@ https://www.beyondaivsai.com/assessment
                     {activeBenchmark.regulatoryNote}
                   </div>
 
-                  <div className="flex flex-wrap items-center gap-2.5 pt-1">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:flex lg:flex-wrap items-center gap-2.5 pt-1 w-full">
+                    <button
+                      type="button"
+                      onClick={() => setShowExportModal(true)}
+                      className="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-gradient-to-r from-[#E11D48] to-[#1D4ED8] hover:from-[#BE123C] hover:to-[#1E40AF] text-white text-xs font-mono font-bold shadow-md hover:shadow-lg transition-all cursor-pointer min-h-[44px] active:scale-95"
+                    >
+                      <FileDown className="w-4 h-4" />
+                      <span>Export PDF Report</span>
+                    </button>
                     <button
                       type="button"
                       onClick={handleCopyFrameworkReport}
-                      className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-white dark:bg-[#060D1A] border border-[#CBD5E1] dark:border-slate-400/20 text-xs font-mono font-semibold text-[#091122] dark:text-[#F5F8FF] hover:border-[#1D4ED8] transition-colors cursor-pointer"
+                      className="inline-flex items-center justify-center gap-2 px-3.5 py-2.5 rounded-xl bg-white dark:bg-[#060D1A] border border-[#CBD5E1] dark:border-slate-400/20 text-xs font-mono font-semibold text-[#091122] dark:text-[#F5F8FF] hover:border-[#1D4ED8] transition-colors cursor-pointer min-h-[44px] active:scale-95"
                     >
                       {copiedBlueprint ? (
                         <>
                           <Check className="w-3.5 h-3.5 text-emerald-500" />
-                          <span>Copied Full Blueprint Report!</span>
+                          <span>Copied Blueprint!</span>
                         </>
                       ) : (
                         <>
                           <Copy className="w-3.5 h-3.5 text-[#1D4ED8] dark:text-[#38BDF8]" />
-                          <span>Copy Executive Assessment (Markdown)</span>
+                          <span>Copy Markdown</span>
                         </>
                       )}
                     </button>
                     <button
                       type="button"
-                      onClick={() => window.print()}
-                      className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-white dark:bg-[#060D1A] border border-[#CBD5E1] dark:border-slate-400/20 text-xs font-mono font-semibold text-[#091122] dark:text-[#F5F8FF] hover:border-[#1D4ED8] transition-colors cursor-pointer"
-                    >
-                      <Printer className="w-3.5 h-3.5 text-[#E11D48] dark:text-[#FB7185]" />
-                      <span>Print / Save PDF Brief</span>
-                    </button>
-                    <button
-                      type="button"
                       onClick={handleReset}
-                      className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-mono text-slate-600 dark:text-[#AAB8CC] hover:text-[#E11D48] cursor-pointer"
+                      className="inline-flex items-center justify-center gap-1.5 px-3.5 py-2.5 rounded-xl text-xs font-mono text-slate-600 dark:text-[#AAB8CC] hover:text-[#E11D48] cursor-pointer min-h-[44px] sm:ml-auto"
                     >
                       <RotateCcw className="w-3.5 h-3.5" />
                       <span>Retake Test</span>
@@ -1739,15 +1924,15 @@ https://www.beyondaivsai.com/assessment
                   </div>
 
                   {/* Share Action Buttons */}
-                  <div className="flex flex-wrap items-center gap-2.5 shrink-0">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:flex lg:flex-wrap items-center gap-2.5 w-full sm:w-auto shrink-0">
                     {/* LinkedIn Button */}
                     <button
                       type="button"
                       onClick={handleShareLinkedIn}
-                      className="inline-flex items-center gap-2 px-3.5 py-2.5 rounded-xl bg-[#0A66C2] hover:bg-[#004182] text-white text-xs font-mono font-bold transition-all shadow-sm hover:shadow-md cursor-pointer active:scale-95"
+                      className="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-[#0A66C2] hover:bg-[#004182] text-white text-xs font-mono font-bold transition-all shadow-sm hover:shadow-md cursor-pointer active:scale-95 min-h-[44px] w-full sm:w-auto"
                       title="Share your Cyber Defense Rating on LinkedIn"
                     >
-                      <svg className="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24">
+                      <svg className="w-4 h-4 fill-current shrink-0" viewBox="0 0 24 24">
                         <path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.28 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.75M6.46 8.76a1.64 1.64 0 0 0 1.64-1.64 1.64 1.64 0 0 0-1.64-1.64 1.64 1.64 0 0 0-1.64 1.64 1.64 1.64 0 0 0 1.64 1.64m1.39 9.74v-8.37H5.07v8.37h2.78z" />
                       </svg>
                       <span>Share on LinkedIn</span>
@@ -1757,10 +1942,10 @@ https://www.beyondaivsai.com/assessment
                     <button
                       type="button"
                       onClick={handleShareTwitter}
-                      className="inline-flex items-center gap-2 px-3.5 py-2.5 rounded-xl bg-black dark:bg-[#020617] hover:bg-slate-800 text-white border border-slate-700/60 text-xs font-mono font-bold transition-all shadow-sm hover:shadow-md cursor-pointer active:scale-95"
+                      className="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-black dark:bg-[#020617] hover:bg-slate-800 text-white border border-slate-700/60 text-xs font-mono font-bold transition-all shadow-sm hover:shadow-md cursor-pointer active:scale-95 min-h-[44px] w-full sm:w-auto"
                       title="Share your Cyber Defense Rating on X (Twitter)"
                     >
-                      <svg className="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24">
+                      <svg className="w-3.5 h-3.5 fill-current shrink-0" viewBox="0 0 24 24">
                         <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
                       </svg>
                       <span>Share on X</span>
@@ -1770,16 +1955,16 @@ https://www.beyondaivsai.com/assessment
                     <button
                       type="button"
                       onClick={handleCopySocialSnippet}
-                      className="inline-flex items-center gap-2 px-3.5 py-2.5 rounded-xl bg-white dark:bg-[#060D1A] border border-[#CBD5E1] dark:border-slate-400/20 text-xs font-mono font-semibold text-[#091122] dark:text-[#F5F8FF] hover:border-[#1D4ED8] transition-colors cursor-pointer active:scale-95"
+                      className="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-white dark:bg-[#060D1A] border border-[#CBD5E1] dark:border-slate-400/20 text-xs font-mono font-semibold text-[#091122] dark:text-[#F5F8FF] hover:border-[#1D4ED8] transition-colors cursor-pointer active:scale-95 min-h-[44px] w-full sm:w-auto"
                     >
                       {copiedSocialSnippet ? (
                         <>
-                          <Check className="w-3.5 h-3.5 text-emerald-500" />
-                          <span className="text-emerald-600 dark:text-emerald-400 font-bold">Copied Share Snippet!</span>
+                          <Check className="w-3.5 h-3.5 text-emerald-500 shrink-0" />
+                          <span className="text-emerald-600 dark:text-emerald-400 font-bold">Copied Snippet!</span>
                         </>
                       ) : (
                         <>
-                          <Copy className="w-3.5 h-3.5 text-[#1D4ED8] dark:text-[#38BDF8]" />
+                          <Copy className="w-3.5 h-3.5 text-[#1D4ED8] dark:text-[#38BDF8] shrink-0" />
                           <span>Copy Share Text</span>
                         </>
                       )}
@@ -1789,9 +1974,9 @@ https://www.beyondaivsai.com/assessment
                     <button
                       type="button"
                       onClick={() => setShowSocialSnippetPreview((prev) => !prev)}
-                      className="inline-flex items-center gap-1.5 px-3 py-2.5 rounded-xl text-xs font-mono text-slate-500 dark:text-[#AAB8CC] hover:text-[#1D4ED8] dark:hover:text-[#38BDF8] cursor-pointer"
+                      className="inline-flex items-center justify-center gap-1.5 px-3 py-2.5 rounded-xl text-xs font-mono text-slate-500 dark:text-[#AAB8CC] hover:text-[#1D4ED8] dark:hover:text-[#38BDF8] cursor-pointer min-h-[44px] w-full sm:w-auto"
                     >
-                      <Code2 className="w-3.5 h-3.5" />
+                      <Code2 className="w-3.5 h-3.5 shrink-0" />
                       <span>{showSocialSnippetPreview ? 'Hide Snippet' : 'View Snippet'}</span>
                     </button>
                   </div>
@@ -1974,8 +2159,8 @@ https://www.beyondaivsai.com/assessment
 
                   <div className="grid grid-cols-1 md:grid-cols-12 gap-4 items-center">
                     {/* Interactive Comparative SVG Radar Chart (Red AI vs. Blue AI vs. Industry Benchmark) */}
-                    <div className="md:col-span-5 flex flex-col items-center justify-center bg-white dark:bg-[#081222] rounded-2xl border border-slate-200/80 dark:border-slate-400/15 p-3.5 space-y-2 relative">
-                      <svg viewBox="0 0 260 260" className="w-full max-w-[240px] h-auto overflow-visible">
+                    <div className="md:col-span-5 flex flex-col items-center justify-center bg-white dark:bg-[#081222] rounded-2xl border border-slate-200/80 dark:border-slate-400/15 p-2.5 sm:p-3.5 space-y-2 relative w-full max-w-[260px] sm:max-w-none mx-auto overflow-hidden sm:overflow-visible">
+                      <svg viewBox="-8 0 276 265" className="w-full max-w-[250px] h-auto overflow-visible">
                         <defs>
                           {/* Red AI Baseline Area Glow */}
                           <radialGradient id="redRadarFill" cx="50%" cy="50%" r="50%">
@@ -2164,7 +2349,7 @@ https://www.beyondaivsai.com/assessment
                         {/* Radar Domain Labels & Scores with Interactive Hover Triggers */}
                         <text
                           x="130"
-                          y="24"
+                          y="20"
                           textAnchor="middle"
                           onMouseEnter={() => setHoveredDomainIdx(0)}
                           onMouseLeave={() => setHoveredDomainIdx(null)}
@@ -2178,7 +2363,7 @@ https://www.beyondaivsai.com/assessment
                           THREAT &amp; RAG ({diagnostic.domainBreakdown[0].score}%)
                         </text>
                         <text
-                          x="254"
+                          x="262"
                           y="133"
                           textAnchor="end"
                           onMouseEnter={() => setHoveredDomainIdx(1)}
@@ -2194,7 +2379,7 @@ https://www.beyondaivsai.com/assessment
                         </text>
                         <text
                           x="130"
-                          y="244"
+                          y="250"
                           textAnchor="middle"
                           onMouseEnter={() => setHoveredDomainIdx(2)}
                           onMouseLeave={() => setHoveredDomainIdx(null)}
@@ -2208,7 +2393,7 @@ https://www.beyondaivsai.com/assessment
                           SELF-HEALING ({diagnostic.domainBreakdown[2].score}%)
                         </text>
                         <text
-                          x="6"
+                          x="-2"
                           y="133"
                           textAnchor="start"
                           onMouseEnter={() => setHoveredDomainIdx(3)}
@@ -2590,6 +2775,270 @@ https://www.beyondaivsai.com/assessment
             </motion.div>
           )}
         </AnimatePresence>
+
+        {/* EXECUTIVE PDF REPORT EXPORT MODAL */}
+        <AnimatePresence>
+          {showExportModal && (
+            <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm print:hidden">
+              <motion.div
+                initial={{ opacity: 0, scale: 0.95, y: 12 }}
+                animate={{ opacity: 1, scale: 1, y: 0 }}
+                exit={{ opacity: 0, scale: 0.95, y: 12 }}
+                className="w-full max-w-lg rounded-2xl bg-white dark:bg-[#0B1528] border border-slate-300 dark:border-slate-700 p-6 shadow-2xl space-y-5 text-left relative"
+              >
+                <button
+                  type="button"
+                  onClick={() => setShowExportModal(false)}
+                  className="absolute top-4 right-4 p-1.5 rounded-lg text-slate-400 hover:text-slate-600 dark:hover:text-white transition-colors cursor-pointer"
+                  aria-label="Close export modal"
+                >
+                  <X className="w-5 h-5" />
+                </button>
+
+                <div className="space-y-1 pr-6">
+                  <div className="inline-flex items-center gap-1.5 text-xs font-mono font-bold text-[#E11D48] dark:text-[#FB7185]">
+                    <FileDown className="w-4 h-4" />
+                    <span>EXECUTIVE DOSSIER EXPORT</span>
+                  </div>
+                  <h3 className="text-lg font-bold font-display text-[#091122] dark:text-[#F5F8FF]">
+                    Export Detailed Cyber Defense Rating Report
+                  </h3>
+                  <p className="text-xs text-slate-600 dark:text-[#AAB8CC] leading-relaxed">
+                    Generate an audit-grade, C-level executive PDF or standalone report containing your rating ({diagnostic.overallScore}/100), 4-domain telemetry breakdown, confirmed strengths, vulnerability gaps, and 30/60/90-day counteroffensive roadmap.
+                  </p>
+                </div>
+
+                <div className="space-y-3 pt-1">
+                  {/* Primary Option: Save as PDF (Print Dialog) */}
+                  <button
+                    type="button"
+                    onClick={handlePrintPDF}
+                    className="w-full flex items-start gap-3.5 p-3.5 rounded-xl bg-gradient-to-r from-[#E11D48]/10 via-[#1D4ED8]/10 to-transparent hover:from-[#E11D48]/20 hover:via-[#1D4ED8]/20 border border-[#1D4ED8]/30 dark:border-[#38BDF8]/30 text-left transition-all cursor-pointer group min-h-[44px]"
+                  >
+                    <div className="p-2.5 rounded-lg bg-[#1D4ED8] text-white shrink-0 group-hover:scale-105 transition-transform">
+                      <Printer className="w-5 h-5" />
+                    </div>
+                    <div className="space-y-0.5 min-w-0">
+                      <div className="text-xs sm:text-sm font-bold font-display text-[#091122] dark:text-white flex items-center gap-1.5">
+                        <span>Save as PDF (Recommended)</span>
+                        <span className="px-1.5 py-0.2 rounded text-[9px] font-mono bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 font-bold">
+                          Official
+                        </span>
+                      </div>
+                      <p className="text-[11px] text-slate-500 dark:text-slate-400 leading-snug">
+                        Opens print preview formatted specifically for A4 portrait with high-res vector charts, zero clutter, and executive letterhead. Select "Save as PDF".
+                      </p>
+                    </div>
+                  </button>
+
+                  {/* Secondary Option: Download Standalone HTML/Offline PDF */}
+                  <button
+                    type="button"
+                    onClick={handleDownloadReportHTML}
+                    className="w-full flex items-start gap-3.5 p-3.5 rounded-xl bg-slate-50 dark:bg-[#070E1A] hover:bg-slate-100 dark:hover:bg-[#0D192E] border border-slate-200 dark:border-slate-800 text-left transition-all cursor-pointer group min-h-[44px]"
+                  >
+                    <div className="p-2.5 rounded-lg bg-slate-800 dark:bg-slate-700 text-white shrink-0 group-hover:scale-105 transition-transform">
+                      <Download className="w-5 h-5" />
+                    </div>
+                    <div className="space-y-0.5 min-w-0">
+                      <div className="text-xs sm:text-sm font-bold font-display text-[#091122] dark:text-white">
+                        Download Standalone Report (.html / offline file)
+                      </div>
+                      <p className="text-[11px] text-slate-500 dark:text-slate-400 leading-snug">
+                        Downloads a self-contained, offline-ready executive report with embedded styles and instant 1-click print-to-PDF button.
+                      </p>
+                    </div>
+                  </button>
+
+                  {/* Tertiary Option: Copy Markdown */}
+                  <button
+                    type="button"
+                    onClick={() => {
+                      handleCopyFrameworkReport();
+                      setShowExportModal(false);
+                    }}
+                    className="w-full flex items-start gap-3.5 p-3.5 rounded-xl bg-slate-50 dark:bg-[#070E1A] hover:bg-slate-100 dark:hover:bg-[#0D192E] border border-slate-200 dark:border-slate-800 text-left transition-all cursor-pointer group min-h-[44px]"
+                  >
+                    <div className="p-2.5 rounded-lg bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-200 shrink-0 group-hover:scale-105 transition-transform">
+                      <FileText className="w-5 h-5" />
+                    </div>
+                    <div className="space-y-0.5 min-w-0">
+                      <div className="text-xs sm:text-sm font-bold font-display text-[#091122] dark:text-white">
+                        Copy Executive Markdown
+                      </div>
+                      <p className="text-[11px] text-slate-500 dark:text-slate-400 leading-snug">
+                        Formatted for internal incident tickets, Jira, Confluence, Obsidian, or executive email briefings.
+                      </p>
+                    </div>
+                  </button>
+                </div>
+
+                <div className="flex items-center justify-between pt-2 border-t border-slate-200 dark:border-slate-800 text-[11px] font-mono text-slate-500">
+                  <span>Prepared for: {activeRoleProfile.label}</span>
+                  <button
+                    type="button"
+                    onClick={() => setShowExportModal(false)}
+                    className="text-slate-500 hover:text-slate-800 dark:hover:text-slate-200 font-bold cursor-pointer"
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </motion.div>
+            </div>
+          )}
+        </AnimatePresence>
+
+        {/* DEDICATED PRINTABLE ASSESSMENT DOSSIER (Rendered exclusively in print mode) */}
+        {isSubmitted && (
+          <div
+            id="printable-assessment-dossier"
+            className="hidden print:block font-sans text-slate-900 bg-white p-6 max-w-[210mm] mx-auto space-y-5"
+          >
+            {/* Header Letterhead */}
+            <div className="border-b-2 border-slate-900 pb-4 flex items-start justify-between">
+              <div>
+                <div className="text-[11px] font-mono font-bold tracking-widest text-[#E11D48] uppercase">
+                  CONFIDENTIAL EXECUTIVE SECURITY DOSSIER
+                </div>
+                <h1 className="text-xl font-extrabold text-slate-900 tracking-tight font-display">
+                  CYBER DEFENSE RATING &amp; ARCHITECTURAL GAP ANALYSIS
+                </h1>
+                <p className="text-xs text-slate-600 font-mono mt-0.5">
+                  AI vs. AI: Engineering the Cybersecurity Counteroffensive · Author: Harsh Verma
+                </p>
+              </div>
+              <div className="text-right text-[11px] font-mono text-slate-600">
+                <div>Date: {new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })}</div>
+                <div>Role: <strong className="text-slate-900">{activeRoleProfile.label}</strong></div>
+                <div>Benchmark: <strong className="text-slate-900">{activeBenchmark.label}</strong></div>
+              </div>
+            </div>
+
+            {/* Score & Rating Executive Summary */}
+            <div className="grid grid-cols-3 gap-4 p-4 rounded-xl border border-slate-300 bg-slate-50">
+              <div className="text-center border-r border-slate-300 pr-2">
+                <div className="text-[10px] font-mono font-bold text-slate-500">CYBER DEFENSE RATING</div>
+                <div className="text-3xl font-extrabold font-mono text-[#091122]">
+                  {diagnostic.overallScore}<span className="text-sm font-normal text-slate-400">/100</span>
+                </div>
+                <div className="text-xs font-mono font-bold text-[#E11D48]">
+                  Grade: {diagnostic.defenseRatingGrade} ({diagnostic.defenseRatingBadge})
+                </div>
+              </div>
+              <div className="text-center border-r border-slate-300 px-2">
+                <div className="text-[10px] font-mono font-bold text-slate-500">SECTOR BENCHMARK DELTA</div>
+                <div className="text-2xl font-extrabold font-mono text-[#091122]">
+                  {diagnostic.peerDelta >= 0 ? `+${diagnostic.peerDelta}%` : `${diagnostic.peerDelta}%`}
+                </div>
+                <div className="text-xs font-mono text-slate-600">
+                  Sector Avg: {activeBenchmark.peerAvg}%
+                </div>
+              </div>
+              <div className="text-center pl-2">
+                <div className="text-[10px] font-mono font-bold text-slate-500">PROJECTED WITH BOOK</div>
+                <div className="text-2xl font-extrabold font-mono text-emerald-700">
+                  {diagnostic.projectedScore}%
+                </div>
+                <div className="text-xs font-mono text-emerald-800 font-bold">
+                  Target Readiness
+                </div>
+              </div>
+            </div>
+
+            {/* 4-Domain Telemetry Breakdown Table */}
+            <div>
+              <h2 className="text-xs font-mono font-bold tracking-wider text-slate-800 uppercase border-b border-slate-300 pb-1 mb-2">
+                4-Domain Counteroffensive Telemetry Matrix
+              </h2>
+              <table className="w-full text-left text-xs font-mono border border-slate-300 border-collapse">
+                <thead>
+                  <tr className="bg-slate-100 border-b border-slate-300 text-[10px] text-slate-700">
+                    <th className="p-2 border-r border-slate-300">Defense Domain</th>
+                    <th className="p-2 border-r border-slate-300">Blueprint Coverage</th>
+                    <th className="p-2 border-r border-slate-300 text-center">Your Score</th>
+                    <th className="p-2 border-r border-slate-300 text-center">Sector Avg</th>
+                    <th className="p-2 text-center">Projected Target</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {diagnostic.domainBreakdown.map((d) => (
+                    <tr key={d.id} className="border-b border-slate-200">
+                      <td className="p-2 border-r border-slate-300 font-bold text-slate-900">{d.label}</td>
+                      <td className="p-2 border-r border-slate-300 text-slate-600">{d.seqRange}</td>
+                      <td className="p-2 border-r border-slate-300 text-center font-bold text-slate-900">{d.score}%</td>
+                      <td className="p-2 border-r border-slate-300 text-center text-slate-600">{d.peerDomainScore}%</td>
+                      <td className="p-2 text-center font-bold text-emerald-700">{d.projectedDomainScore}%</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+
+            {/* Key Strengths & Vulnerabilities */}
+            <div className="grid grid-cols-2 gap-4">
+              <div className="border border-emerald-300 bg-emerald-50/50 rounded-xl p-3 space-y-2">
+                <div className="text-[11px] font-mono font-bold text-emerald-800 uppercase">
+                  Confirmed Strengths ({diagnostic.strengths.length})
+                </div>
+                <div className="space-y-1.5 text-xs text-slate-800">
+                  {diagnostic.strengths.slice(0, 3).map((s, i) => (
+                    <div key={i} className="leading-snug">
+                      <strong className="text-emerald-900">• {s.title}:</strong> {s.summary}
+                    </div>
+                  ))}
+                </div>
+              </div>
+              <div className="border border-red-300 bg-red-50/50 rounded-xl p-3 space-y-2">
+                <div className="text-[11px] font-mono font-bold text-red-800 uppercase">
+                  Identified Gaps ({diagnostic.weaknesses.length})
+                </div>
+                <div className="space-y-1.5 text-xs text-slate-800">
+                  {diagnostic.weaknesses.slice(0, 3).map((v, i) => (
+                    <div key={i} className="leading-snug">
+                      <strong className="text-red-900">• {v.title}:</strong> {v.remediation}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            {/* 30/60/90-Day Action Roadmap */}
+            <div className="border border-slate-300 rounded-xl p-3 space-y-2">
+              <h2 className="text-xs font-mono font-bold tracking-wider text-slate-800 uppercase">
+                30 / 60 / 90-Day Remediation Roadmap
+              </h2>
+              <div className="grid grid-cols-3 gap-3 text-[11px] text-slate-700">
+                <div className="border-r border-slate-200 pr-2">
+                  <div className="font-bold text-slate-900 font-mono">Days 1–30</div>
+                  <div className="font-semibold text-slate-800">Deterministic Gates</div>
+                  <p className="text-[10px] text-slate-600 mt-1">
+                    Deploy schema-pinned AST extractors, prompt firewalls, and vector metadata provenance.
+                  </p>
+                </div>
+                <div className="border-r border-slate-200 pr-2">
+                  <div className="font-bold text-slate-900 font-mono">Days 31–60</div>
+                  <div className="font-semibold text-slate-800">Agent Identity &amp; Circuit Breakers</div>
+                  <p className="text-[10px] text-slate-600 mt-1">
+                    Enforce OBO identity tokens and isolate all external execution in sandboxed tool brokers.
+                  </p>
+                </div>
+                <div>
+                  <div className="font-bold text-slate-900 font-mono">Days 61–90</div>
+                  <div className="font-semibold text-slate-800">Autonomous Self-Healing</div>
+                  <p className="text-[10px] text-slate-600 mt-1">
+                    Automate continuous red-teaming in CI/CD with episodic state rollback and honeytokens.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* Footer Citation */}
+            <div className="border-t border-slate-300 pt-2 text-[10px] font-mono text-slate-500 flex items-center justify-between">
+              <span>Source: "AI vs. AI: Engineering the Cybersecurity Counteroffensive"</span>
+              <span>Verification Key: {activeRoleProfile.id}-{diagnostic.overallScore}-{Date.now().toString(36).toUpperCase()}</span>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

@@ -133,3 +133,50 @@
     scroll-behavior: auto !important;
   }
 }
+
+/* =========================================================================
+   EXECUTIVE PDF EXPORT & PRINT MEDIA OPTIMIZATIONS
+   ========================================================================= */
+@media print {
+  @page {
+    size: A4 portrait;
+    margin: 10mm 12mm;
+  }
+
+  html, body {
+    background: #FFFFFF !important;
+    background-image: none !important;
+    color: #0F172A !important;
+    font-size: 10.5pt !important;
+    line-height: 1.45 !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  /* Hide screen chrome & UI interactive elements */
+  header,
+  footer,
+  nav,
+  button,
+  .print\:hidden,
+  [data-print-hide="true"] {
+    display: none !important;
+  }
+
+  /* Force display of dedicated print container */
+  .print\:block {
+    display: block !important;
+  }
+
+  /* Prevent page cuts inside executive blocks */
+  .break-inside-avoid,
+  .print\:break-inside-avoid {
+    break-inside: avoid !important;
+    page-break-inside: avoid !important;
+  }
+
+  /* Crisp high-resolution vector print styling */
+  svg {
+    max-width: 100% !important;
+  }
+}
