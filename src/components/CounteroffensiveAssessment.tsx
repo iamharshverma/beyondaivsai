@@ -968,17 +968,33 @@ export const CounteroffensiveAssessment: React.FC<CounteroffensiveAssessmentProp
     const toPolygon = (values: number[]) =>
       values
         .map((val, i) => {
-          const r = (Math.max(8, Math.min(100, val)) / 100) * maxR;
+          const r = (Math.max(10, Math.min(100, val)) / 100) * maxR;
           const x = cx + dirs[i].dx * r;
           const y = cy + dirs[i].dy * r;
           return `${x},${y}`;
         })
         .join(' ');
 
+    const toVertices = (values: number[]) =>
+      values.map((val, i) => {
+        const r = (Math.max(10, Math.min(100, val)) / 100) * maxR;
+        return {
+          x: cx + dirs[i].dx * r,
+          y: cy + dirs[i].dy * r,
+          val,
+        };
+      });
+
     return {
+      cx,
+      cy,
+      maxR,
       baselinePoly: toPolygon(diagnostic.domainBreakdown.map((d) => d.score)),
       peerPoly: toPolygon(diagnostic.domainBreakdown.map((d) => d.peerDomainScore)),
       projectedPoly: toPolygon(diagnostic.domainBreakdown.map((d) => d.projectedDomainScore)),
+      baselineVertices: toVertices(diagnostic.domainBreakdown.map((d) => d.score)),
+      peerVertices: toVertices(diagnostic.domainBreakdown.map((d) => d.peerDomainScore)),
+      projectedVertices: toVertices(diagnostic.domainBreakdown.map((d) => d.projectedDomainScore)),
     };
   }, [diagnostic.domainBreakdown]);
 
@@ -1431,20 +1447,140 @@ export const CounteroffensiveAssessment: React.FC<CounteroffensiveAssessmentProp
               <div className="rounded-2xl bg-gradient-to-r from-[#E11D48]/[0.08] via-[#F8FAFC] to-[#1D4ED8]/[0.10] dark:from-[#E11D48]/[0.16] dark:via-[#0F1D33] dark:to-[#1D4ED8]/[0.18] border border-[#D5E0F0] dark:border-slate-400/20 p-5 sm:p-7 grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
                 <div className="lg:col-span-4 flex flex-col items-center justify-center text-center p-5 rounded-2xl bg-white dark:bg-[#060D1A] border border-[#D5E0F0] dark:border-slate-400/20 shadow-xs space-y-2">
                   <div className="text-[11px] font-mono font-bold text-slate-500 dark:text-[#AAB8CC] flex items-center gap-1.5">
-                    <ShieldCheck className="w-3.5 h-3.5 text-[#1D4ED8] dark:text-[#38BDF8]" />
-                    <span>CYBER DEFENSE RATING</span>
+                    <Gauge className="w-3.5 h-3.5 text-[#1D4ED8] dark:text-[#38BDF8]" />
+                    <span>CYBER DEFENSE RATING GAUGE</span>
                   </div>
-                  <div className="flex items-baseline justify-center gap-2">
-                    <span className="text-4xl sm:text-5xl font-extrabold font-mono bg-gradient-to-r from-[#E11D48] to-[#1D4ED8] dark:from-[#FB7185] dark:to-[#38BDF8] bg-clip-text text-transparent">
-                      {diagnostic.overallScore}
-                    </span>
-                    <span className="text-sm font-mono text-slate-400">/ 100</span>
-                    <span className={`text-2xl sm:text-3xl font-extrabold font-mono ${diagnostic.defenseRatingColor} ml-1`}>
-                      ({diagnostic.defenseRatingGrade})
-                    </span>
+
+                  {/* High-Precision SVG Semicircular Speedometer Gauge */}
+                  <div className="relative w-full max-w-[210px] flex flex-col items-center justify-center pt-1">
+                    <svg viewBox="0 0 200 125" className="w-full h-auto overflow-visible">
+                      <defs>
+                        {/* Red to Blue AI Cyber Spectrum Gradient */}
+                        <linearGradient id="cyberGaugeGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                          <stop offset="0%" stopColor="#E11D48" />
+                          <stop offset="35%" stopColor="#FB7185" />
+                          <stop offset="65%" stopColor="#6366F1" />
+                          <stop offset="100%" stopColor="#1D4ED8" />
+                        </linearGradient>
+                        <filter id="gaugeGlow" x="-20%" y="-20%" width="140%" height="140%">
+                          <feDropShadow dx="0" dy="2" stdDeviation="3" floodColor="#1D4ED8" floodOpacity="0.25" />
+                        </filter>
+                      </defs>
+
+                      {/* Background Inactive Arc (180 degrees from -180 to 0) */}
+                      <path
+                        d="M 22 105 A 78 78 0 0 1 178 105"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="12"
+                        strokeLinecap="round"
+                        className="text-slate-100 dark:text-slate-800/80"
+                      />
+
+                      {/* Active Cyber Defense Score Arc */}
+                      {/* Circumference of semi-circle with r=78 is pi * 78 = 245.04 */}
+                      <path
+                        d="M 22 105 A 78 78 0 0 1 178 105"
+                        fill="none"
+                        stroke="url(#cyberGaugeGradient)"
+                        strokeWidth="12"
+                        strokeLinecap="round"
+                        strokeDasharray="245.04"
+                        strokeDashoffset={245.04 - (Math.max(4, Math.min(100, diagnostic.overallScore)) / 100) * 245.04}
+                        filter="url(#gaugeGlow)"
+                        className="transition-all duration-700 ease-out"
+                      />
+
+                      {/* Tick Marks for 0%, 25%, 50%, 75%, 100% */}
+                      {[0, 25, 50, 75, 100].map((tick) => {
+                        const angle = Math.PI - (tick / 100) * Math.PI;
+                        const x1 = 100 + 86 * Math.cos(angle);
+                        const y1 = 105 - 86 * Math.sin(angle);
+                        const x2 = 100 + 92 * Math.cos(angle);
+                        const y2 = 105 - 92 * Math.sin(angle);
+                        return (
+                          <line
+                            key={tick}
+                            x1={x1}
+                            y1={y1}
+                            x2={x2}
+                            y2={y2}
+                            stroke="currentColor"
+                            strokeWidth="1.5"
+                            className="text-slate-300 dark:text-slate-600"
+                          />
+                        );
+                      })}
+
+                      {/* Industry Peer Average Target Needle Marker */}
+                      {(() => {
+                        const peerAngle = Math.PI - (Math.min(100, activeBenchmark.peerAvg) / 100) * Math.PI;
+                        const px = 100 + 78 * Math.cos(peerAngle);
+                        const py = 105 - 78 * Math.sin(peerAngle);
+                        return (
+                          <g key="peer-marker">
+                            <circle
+                              cx={px}
+                              cy={py}
+                              r="3.5"
+                              fill="#FFFFFF"
+                              stroke="#0F172A"
+                              strokeWidth="2"
+                            />
+                            <title>{`Industry Peer Average: ${activeBenchmark.peerAvg}%`}</title>
+                          </g>
+                        );
+                      })()}
+
+                      {/* Gauge Dynamic Pointer Needle */}
+                      {(() => {
+                        const angle = Math.PI - (Math.max(4, Math.min(100, diagnostic.overallScore)) / 100) * Math.PI;
+                        const needleLength = 62;
+                        const nx = 100 + needleLength * Math.cos(angle);
+                        const ny = 105 - needleLength * Math.sin(angle);
+                        return (
+                          <g>
+                            <line
+                              x1="100"
+                              y1="105"
+                              x2={nx}
+                              y2={ny}
+                              stroke="#091122"
+                              strokeWidth="3"
+                              strokeLinecap="round"
+                              className="dark:stroke-white transition-all duration-500 ease-out"
+                            />
+                            <circle cx="100" cy="105" r="7" className="fill-[#091122] dark:fill-white" />
+                            <circle cx="100" cy="105" r="3.5" fill="#E11D48" />
+                          </g>
+                        );
+                      })()}
+
+                      {/* Sub-label indicators */}
+                      <text x="20" y="122" className="fill-slate-400 text-[8px] font-mono font-bold" textAnchor="start">
+                        0 (EXPOSED)
+                      </text>
+                      <text x="180" y="122" className="fill-slate-400 text-[8px] font-mono font-bold" textAnchor="end">
+                        100 (SHIELD)
+                      </text>
+                    </svg>
+
+                    {/* Numeric Score + Grade in Gauge Center */}
+                    <div className="absolute top-[68px] flex flex-col items-center">
+                      <div className="flex items-baseline gap-1">
+                        <span className="text-3xl font-extrabold font-mono text-[#091122] dark:text-[#F5F8FF]">
+                          {diagnostic.overallScore}
+                        </span>
+                        <span className="text-xs font-mono text-slate-400">/100</span>
+                      </div>
+                      <span className={`text-xs font-mono font-extrabold ${diagnostic.defenseRatingColor}`}>
+                        Grade: {diagnostic.defenseRatingGrade}
+                      </span>
+                    </div>
                   </div>
+
                   <span
-                    className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-gradient-to-r ${diagnostic.tierBadgeColor} text-white text-xs font-mono font-bold`}
+                    className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-gradient-to-r ${diagnostic.tierBadgeColor} text-white text-xs font-mono font-bold mt-1`}
                   >
                     <Award className="w-3.5 h-3.5" />
                     <span>{diagnostic.defenseRatingBadge}</span>
@@ -1674,69 +1810,139 @@ export const CounteroffensiveAssessment: React.FC<CounteroffensiveAssessmentProp
                   </div>
 
                   <div className="grid grid-cols-1 md:grid-cols-12 gap-4 items-center">
-                    {/* Interactive SVG Radar */}
-                    <div className="md:col-span-5 flex flex-col items-center justify-center bg-white dark:bg-[#081222] rounded-2xl border border-slate-200/80 dark:border-slate-400/15 p-3">
-                      <svg viewBox="0 0 260 260" className="w-full max-w-[230px] h-auto">
-                        {/* Concentric Radar Rings */}
+                    {/* Interactive Comparative SVG Radar Chart (Red AI vs. Blue AI vs. Industry Benchmark) */}
+                    <div className="md:col-span-5 flex flex-col items-center justify-center bg-white dark:bg-[#081222] rounded-2xl border border-slate-200/80 dark:border-slate-400/15 p-3.5 space-y-2">
+                      <svg viewBox="0 0 260 260" className="w-full max-w-[240px] h-auto overflow-visible">
+                        <defs>
+                          {/* Red AI Baseline Area Glow */}
+                          <radialGradient id="redRadarFill" cx="50%" cy="50%" r="50%">
+                            <stop offset="0%" stopColor="#E11D48" stopOpacity="0.45" />
+                            <stop offset="100%" stopColor="#BE123C" stopOpacity="0.15" />
+                          </radialGradient>
+                          {/* Blue AI Projected Target Glow */}
+                          <radialGradient id="blueRadarFill" cx="50%" cy="50%" r="50%">
+                            <stop offset="0%" stopColor="#38BDF8" stopOpacity="0.30" />
+                            <stop offset="100%" stopColor="#1D4ED8" stopOpacity="0.12" />
+                          </radialGradient>
+                          <filter id="radarGlowRed" x="-20%" y="-20%" width="140%" height="140%">
+                            <feDropShadow dx="0" dy="0" stdDeviation="2.5" floodColor="#E11D48" floodOpacity="0.5" />
+                          </filter>
+                          <filter id="radarGlowBlue" x="-20%" y="-20%" width="140%" height="140%">
+                            <feDropShadow dx="0" dy="0" stdDeviation="3" floodColor="#38BDF8" floodOpacity="0.6" />
+                          </filter>
+                        </defs>
+
+                        {/* Concentric Radar Rings: 25%, 50%, 75%, 100% */}
                         {[25, 50, 75, 100].map((pct) => {
                           const r = (pct / 100) * 86;
                           return (
-                            <circle
-                              key={pct}
-                              cx="130"
-                              cy="130"
-                              r={r}
-                              fill="none"
-                              stroke="currentColor"
-                              strokeWidth="0.75"
-                              strokeDasharray={pct === 100 ? undefined : '2 2'}
-                              className="text-slate-300 dark:text-slate-700"
-                            />
+                            <g key={pct}>
+                              <circle
+                                cx="130"
+                                cy="130"
+                                r={r}
+                                fill="none"
+                                stroke="currentColor"
+                                strokeWidth="0.85"
+                                strokeDasharray={pct === 100 ? undefined : '3 3'}
+                                className="text-slate-200 dark:text-slate-800"
+                              />
+                              <text
+                                x="133"
+                                y={130 - r + 9}
+                                className="fill-slate-400 dark:fill-slate-600 text-[7px] font-mono"
+                              >
+                                {pct}%
+                              </text>
+                            </g>
                           );
                         })}
-                        {/* Crosshair Axes */}
-                        <line x1="130" y1="36" x2="130" y2="224" stroke="currentColor" strokeWidth="0.75" className="text-slate-300 dark:text-slate-700" />
-                        <line x1="36" y1="130" x2="224" y2="130" stroke="currentColor" strokeWidth="0.75" className="text-slate-300 dark:text-slate-700" />
 
-                        {/* Peer Benchmark Polygon */}
+                        {/* Diagonal Crosshair Axes */}
+                        <line x1="130" y1="36" x2="130" y2="224" stroke="currentColor" strokeWidth="0.85" className="text-slate-300 dark:text-slate-700" />
+                        <line x1="36" y1="130" x2="224" y2="130" stroke="currentColor" strokeWidth="0.85" className="text-slate-300 dark:text-slate-700" />
+
+                        {/* Industry Peer Benchmark Polygon (Dashed Slate) */}
                         <polygon
                           points={radarPoints.peerPoly}
                           fill="rgba(148,163,184,0.12)"
                           stroke="#94A3B8"
-                          strokeWidth="1.5"
-                          strokeDasharray="3 3"
+                          strokeWidth="1.8"
+                          strokeDasharray="4 3"
                         />
+                        {radarPoints.peerVertices.map((v, i) => (
+                          <circle
+                            key={`peer-${i}`}
+                            cx={v.x}
+                            cy={v.y}
+                            r="3"
+                            fill="#94A3B8"
+                            stroke="#FFFFFF"
+                            strokeWidth="1"
+                          />
+                        ))}
 
-                        {/* Simulated Projected Polygon */}
+                        {/* Simulated Blue AI Projected Target Polygon (Cyan / Blue Gradient) */}
                         <polygon
                           points={radarPoints.projectedPoly}
-                          fill="rgba(56,189,248,0.18)"
+                          fill="url(#blueRadarFill)"
                           stroke="#0284C7"
-                          strokeWidth="2"
+                          strokeWidth="2.2"
+                          filter="url(#radarGlowBlue)"
+                          className="transition-all duration-500 ease-out"
                         />
+                        {radarPoints.projectedVertices.map((v, i) => (
+                          <circle
+                            key={`proj-${i}`}
+                            cx={v.x}
+                            cy={v.y}
+                            r="3.5"
+                            fill="#0284C7"
+                            stroke="#FFFFFF"
+                            strokeWidth="1.5"
+                          />
+                        ))}
 
-                        {/* User Baseline Polygon */}
+                        {/* User Baseline Posture Polygon (Red AI / Rose Theme) */}
                         <polygon
                           points={radarPoints.baselinePoly}
-                          fill="rgba(225,29,72,0.22)"
+                          fill="url(#redRadarFill)"
                           stroke="#E11D48"
-                          strokeWidth="2"
+                          strokeWidth="2.5"
+                          filter="url(#radarGlowRed)"
+                          className="transition-all duration-500 ease-out"
                         />
+                        {radarPoints.baselineVertices.map((v, i) => (
+                          <circle
+                            key={`base-${i}`}
+                            cx={v.x}
+                            cy={v.y}
+                            r="4"
+                            fill="#E11D48"
+                            stroke="#FFFFFF"
+                            strokeWidth="1.5"
+                          />
+                        ))}
 
-                        {/* Axis Labels */}
-                        <text x="130" y="24" textAnchor="middle" className="fill-slate-700 dark:fill-slate-300 text-[9px] font-mono font-bold">
-                          RAG &amp; THREAT
+                        {/* Radar Domain Labels & Scores */}
+                        <text x="130" y="24" textAnchor="middle" className="fill-slate-800 dark:fill-slate-200 text-[9px] font-mono font-bold">
+                          THREAT &amp; RAG ({diagnostic.domainBreakdown[0].score}%)
                         </text>
-                        <text x="252" y="133" textAnchor="end" className="fill-slate-700 dark:fill-slate-300 text-[8px] font-mono font-bold">
-                          RUNTIME
+                        <text x="254" y="133" textAnchor="end" className="fill-slate-800 dark:fill-slate-200 text-[8px] font-mono font-bold">
+                          RUNTIME ({diagnostic.domainBreakdown[1].score}%)
                         </text>
-                        <text x="130" y="244" textAnchor="middle" className="fill-slate-700 dark:fill-slate-300 text-[9px] font-mono font-bold">
-                          SELF-HEALING
+                        <text x="130" y="244" textAnchor="middle" className="fill-slate-800 dark:fill-slate-200 text-[9px] font-mono font-bold">
+                          SELF-HEALING ({diagnostic.domainBreakdown[2].score}%)
                         </text>
-                        <text x="8" y="133" textAnchor="start" className="fill-slate-700 dark:fill-slate-300 text-[8px] font-mono font-bold">
-                          OBO MESH
+                        <text x="6" y="133" textAnchor="start" className="fill-slate-800 dark:fill-slate-200 text-[8px] font-mono font-bold">
+                          OBO MESH ({diagnostic.domainBreakdown[3].score}%)
                         </text>
                       </svg>
+
+                      {/* Radar Footer Note */}
+                      <div className="text-[10px] font-mono text-center text-slate-500 dark:text-[#AAB8CC]">
+                        Red (Current) vs. Gray ({activeBenchmark.label} Avg: {activeBenchmark.peerAvg}%) vs. Blue (Target: {diagnostic.projectedScore}%)
+                      </div>
                     </div>
 
                     {/* 4-Domain Posture Bars */}
