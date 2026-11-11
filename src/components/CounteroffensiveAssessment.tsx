@@ -22,6 +22,10 @@ import {
   Building2,
   Eye,
   Gauge,
+  CheckCircle2,
+  AlertTriangle,
+  TrendingUp,
+  ShieldX,
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { CHAPTERS_DATA } from '../data/chaptersData';
@@ -846,11 +850,66 @@ export const CounteroffensiveAssessment: React.FC<CounteroffensiveAssessmentProp
     const redExposureRisk = Math.max(5, 100 - projectedScore);
     const peerDelta = overallScore - activeBenchmark.peerAvg;
 
+    // Cyber Defense Rating: Letter grade + status label
+    let defenseRatingGrade = 'D';
+    let defenseRatingBadge = 'CRITICAL EXPOSURE';
+    let defenseRatingColor = 'text-[#E11D48]';
+    if (overallScore >= 90) {
+      defenseRatingGrade = 'A+';
+      defenseRatingBadge = 'COUNTEROFFENSIVE LEADER';
+      defenseRatingColor = 'text-emerald-500';
+    } else if (overallScore >= 80) {
+      defenseRatingGrade = 'A-';
+      defenseRatingBadge = 'RESILIENT ARCHITECTURE';
+      defenseRatingColor = 'text-[#1D4ED8] dark:text-[#38BDF8]';
+    } else if (overallScore >= 70) {
+      defenseRatingGrade = 'B+';
+      defenseRatingBadge = 'STRUCTURED GUARDRAILS';
+      defenseRatingColor = 'text-indigo-600 dark:text-indigo-400';
+    } else if (overallScore >= 55) {
+      defenseRatingGrade = 'C+';
+      defenseRatingBadge = 'REACTIVE / MIXED DEFENSE';
+      defenseRatingColor = 'text-amber-500';
+    }
+
+    // Dynamic Strengths calculation based on user's answers >= 70 score
+    const strengths = activeQuestions
+      .filter((q) => (answers[q.id]?.score ?? 0) >= 70)
+      .map((q) => ({
+        id: q.id,
+        sequenceNumber: q.sequenceNumber,
+        title: q.frameworkPattern,
+        userChoice: answers[q.id]?.tag || 'Solid Control',
+        score: answers[q.id]?.score ?? 0,
+        summary: `You enforce ${q.frameworkPattern.toLowerCase()}, establishing a structured mitigation against ${q.domainTitle.toLowerCase()}.`,
+        impact: 'Lowers blast radius of autonomous agent exploits.',
+      }));
+
+    // Dynamic Weaknesses calculation based on user's answers < 70 score
+    const weaknesses = activeQuestions
+      .filter((q) => (answers[q.id]?.score ?? 0) < 70)
+      .map((q) => ({
+        id: q.id,
+        sequenceNumber: q.sequenceNumber,
+        sequenceSlug: q.sequenceSlug,
+        title: q.frameworkPattern,
+        userChoice: answers[q.id]?.tag || 'Exposed Surface',
+        score: answers[q.id]?.score ?? 0,
+        risk: q.curiosityHook,
+        remediation: `Deploy ${q.frameworkPattern} as detailed in Sequence ${String(q.sequenceNumber).padStart(2, '0')}.`,
+        killchain: q.redExploitTrace,
+      }));
+
     return {
       overallScore,
       projectedScore,
       redExposureRisk,
       peerDelta,
+      defenseRatingGrade,
+      defenseRatingBadge,
+      defenseRatingColor,
+      strengths,
+      weaknesses,
       domainBreakdown,
       tierName,
       tierBadgeColor,
@@ -1371,25 +1430,32 @@ export const CounteroffensiveAssessment: React.FC<CounteroffensiveAssessmentProp
               {/* Top Score, Sector Benchmark Comparison & Role Diagnosis Banner */}
               <div className="rounded-2xl bg-gradient-to-r from-[#E11D48]/[0.08] via-[#F8FAFC] to-[#1D4ED8]/[0.10] dark:from-[#E11D48]/[0.16] dark:via-[#0F1D33] dark:to-[#1D4ED8]/[0.18] border border-[#D5E0F0] dark:border-slate-400/20 p-5 sm:p-7 grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
                 <div className="lg:col-span-4 flex flex-col items-center justify-center text-center p-5 rounded-2xl bg-white dark:bg-[#060D1A] border border-[#D5E0F0] dark:border-slate-400/20 shadow-xs space-y-2">
-                  <div className="text-[11px] font-mono font-bold text-slate-500 dark:text-[#AAB8CC]">
-                    BASELINE COUNTEROFFENSIVE SCORE
+                  <div className="text-[11px] font-mono font-bold text-slate-500 dark:text-[#AAB8CC] flex items-center gap-1.5">
+                    <ShieldCheck className="w-3.5 h-3.5 text-[#1D4ED8] dark:text-[#38BDF8]" />
+                    <span>CYBER DEFENSE RATING</span>
                   </div>
-                  <div className="text-4xl sm:text-5xl font-extrabold font-mono bg-gradient-to-r from-[#E11D48] to-[#1D4ED8] dark:from-[#FB7185] dark:to-[#38BDF8] bg-clip-text text-transparent">
-                    {diagnostic.overallScore}%
+                  <div className="flex items-baseline justify-center gap-2">
+                    <span className="text-4xl sm:text-5xl font-extrabold font-mono bg-gradient-to-r from-[#E11D48] to-[#1D4ED8] dark:from-[#FB7185] dark:to-[#38BDF8] bg-clip-text text-transparent">
+                      {diagnostic.overallScore}
+                    </span>
+                    <span className="text-sm font-mono text-slate-400">/ 100</span>
+                    <span className={`text-2xl sm:text-3xl font-extrabold font-mono ${diagnostic.defenseRatingColor} ml-1`}>
+                      ({diagnostic.defenseRatingGrade})
+                    </span>
                   </div>
                   <span
                     className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-gradient-to-r ${diagnostic.tierBadgeColor} text-white text-xs font-mono font-bold`}
                   >
                     <Award className="w-3.5 h-3.5" />
-                    <span>{diagnostic.tierName}</span>
+                    <span>{diagnostic.defenseRatingBadge}</span>
                   </span>
 
                   <div className="w-full pt-2 mt-1 border-t border-slate-200/80 dark:border-slate-800 flex items-center justify-between text-[11px] font-mono">
                     <span className="text-slate-500 dark:text-[#AAB8CC]">
-                      {activeBenchmark.label} Avg: <strong>{activeBenchmark.peerAvg}%</strong>
+                      {activeBenchmark.label} Peer Avg: <strong>{activeBenchmark.peerAvg}%</strong>
                     </span>
                     <span className="text-emerald-600 dark:text-emerald-400 font-bold">
-                      With Book Patterns: {diagnostic.projectedScore}%
+                      Target with Book: {diagnostic.projectedScore}%
                     </span>
                   </div>
                 </div>
@@ -1462,6 +1528,125 @@ export const CounteroffensiveAssessment: React.FC<CounteroffensiveAssessmentProp
                       <RotateCcw className="w-3.5 h-3.5" />
                       <span>Retake Test</span>
                     </button>
+                  </div>
+                </div>
+              </div>
+
+              {/* DEDICATED STRENGTHS & WEAKNESSES BREAKDOWN DASHBOARD */}
+              <div className="rounded-2xl bg-[#F8FAFC] dark:bg-[#0F1D33] border border-[#D5E0F0] dark:border-slate-400/15 p-5 sm:p-6 space-y-5">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-200/80 dark:border-slate-400/15 pb-4">
+                  <div className="space-y-1">
+                    <div className="text-xs font-mono font-bold text-[#1D4ED8] dark:text-[#38BDF8] flex items-center gap-1.5">
+                      <TrendingUp className="w-4 h-4 text-[#E11D48]" />
+                      <span>CYBER DEFENSE POSTURE: STRENGTHS &amp; WEAKNESSES BREAKDOWN</span>
+                    </div>
+                    <h4 className="text-lg sm:text-xl font-bold font-display text-[#091122] dark:text-[#F5F8FF]">
+                      Architectural Strengths vs. Vulnerability Exposure Matrix
+                    </h4>
+                  </div>
+                  <div className="flex items-center gap-2 text-xs font-mono">
+                    <span className="px-2.5 py-1 rounded-lg bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 font-bold border border-emerald-500/20">
+                      {diagnostic.strengths.length} Confirmed Strengths
+                    </span>
+                    <span className="px-2.5 py-1 rounded-lg bg-red-500/10 text-[#E11D48] dark:text-[#FB7185] font-bold border border-red-500/20">
+                      {diagnostic.weaknesses.length} Vulnerability Gaps
+                    </span>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-start">
+                  {/* Left Column: Strengths (Controls >= 70%) */}
+                  <div className="space-y-3">
+                    <div className="flex items-center gap-2 text-xs font-mono font-bold text-emerald-600 dark:text-emerald-400">
+                      <CheckCircle2 className="w-4 h-4" />
+                      <span>KEY DEFENSIVE STRENGTHS ({diagnostic.strengths.length})</span>
+                    </div>
+
+                    {diagnostic.strengths.length > 0 ? (
+                      <div className="space-y-3">
+                        {diagnostic.strengths.map((item) => (
+                          <div
+                            key={item.id}
+                            className="rounded-xl bg-white dark:bg-[#081222] border border-emerald-200/70 dark:border-emerald-500/25 p-4 space-y-2 shadow-2xs"
+                          >
+                            <div className="flex items-start justify-between gap-2">
+                              <div className="flex items-center gap-2">
+                                <span className="w-2 h-2 rounded-full bg-emerald-500 shrink-0" />
+                                <span className="text-xs font-bold font-display text-[#091122] dark:text-[#F5F8FF]">
+                                  {item.title}
+                                </span>
+                              </div>
+                              <span className="px-2 py-0.5 rounded bg-emerald-500/15 text-emerald-700 dark:text-emerald-300 text-[10px] font-mono font-bold shrink-0">
+                                {item.score} pts · {item.userChoice}
+                              </span>
+                            </div>
+                            <p className="text-xs text-slate-600 dark:text-[#AAB8CC] leading-relaxed">
+                              {item.summary}
+                            </p>
+                            <div className="text-[11px] font-mono text-emerald-700 dark:text-emerald-400 bg-emerald-500/[0.06] dark:bg-emerald-500/[0.1] px-2.5 py-1.5 rounded-lg">
+                              ✓ <strong>Defensive Edge:</strong> {item.impact}
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    ) : (
+                      <div className="rounded-xl bg-white dark:bg-[#081222] border border-dashed border-slate-300 dark:border-slate-700 p-5 text-center text-xs text-slate-500">
+                        No high-maturity controls detected yet. Explore the book's 4 core patterns to build your first deterministic defenses.
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Right Column: Weaknesses & Exploits (Controls < 70%) */}
+                  <div className="space-y-3">
+                    <div className="flex items-center gap-2 text-xs font-mono font-bold text-[#E11D48] dark:text-[#FB7185]">
+                      <AlertTriangle className="w-4 h-4" />
+                      <span>CRITICAL DEFENSIVE GAPS &amp; WEAKNESSES ({diagnostic.weaknesses.length})</span>
+                    </div>
+
+                    {diagnostic.weaknesses.length > 0 ? (
+                      <div className="space-y-3">
+                        {diagnostic.weaknesses.map((item) => (
+                          <div
+                            key={item.id}
+                            className="rounded-xl bg-white dark:bg-[#081222] border border-red-200/80 dark:border-red-500/25 p-4 space-y-2 shadow-2xs"
+                          >
+                            <div className="flex items-start justify-between gap-2">
+                              <div className="flex items-center gap-2">
+                                <span className="w-2 h-2 rounded-full bg-[#E11D48] shrink-0" />
+                                <span className="text-xs font-bold font-display text-[#091122] dark:text-[#F5F8FF]">
+                                  {item.title}
+                                </span>
+                              </div>
+                              <span className="px-2 py-0.5 rounded bg-red-500/15 text-[#E11D48] dark:text-[#FB7185] text-[10px] font-mono font-bold shrink-0">
+                                {item.score} pts · {item.userChoice}
+                              </span>
+                            </div>
+
+                            <p className="text-xs text-slate-600 dark:text-[#AAB8CC] leading-relaxed">
+                              {item.risk}
+                            </p>
+
+                            <div className="text-[11px] font-mono text-slate-700 dark:text-[#AAB8CC] bg-red-500/[0.04] dark:bg-red-500/[0.08] px-2.5 py-1.5 rounded-lg border border-red-200/60 dark:border-red-400/15">
+                              <strong className="text-[#E11D48] dark:text-[#FB7185]">Exploit Risk:</strong> {item.killchain}
+                            </div>
+
+                            <div className="text-[11px] font-mono text-[#1D4ED8] dark:text-[#38BDF8] pt-1 flex items-center justify-between gap-2">
+                              <span className="truncate">→ {item.remediation}</span>
+                              <Link
+                                to={`/chapters/${item.sequenceSlug}`}
+                                className="shrink-0 font-bold hover:underline"
+                              >
+                                Read Blueprint →
+                              </Link>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    ) : (
+                      <div className="rounded-xl bg-white dark:bg-[#081222] border border-emerald-500/30 p-5 text-center text-xs text-emerald-600 dark:text-emerald-400 font-bold">
+                        All assessed scenarios met the high-maturity threshold! You have zero critical perimeter blind spots.
+                      </div>
+                    )}
                   </div>
                 </div>
               </div>
