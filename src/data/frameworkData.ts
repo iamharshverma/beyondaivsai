@@ -25,51 +25,48 @@ export interface SecurityDesignPattern {
 export const TRIAD_PILLARS = [
   {
     id: 'weapon',
-    label: 'Offensive AI Dimension',
+    label: 'Offensive AI · Red',
     title: 'AI as Weapon',
     accentColor: '#F05252',
     summary:
-      'AI-assisted reconnaissance, contextual deception, spear-phishing synthesis, polymorphic content generation, and task automation across the intrusion lifecycle.',
+      'Autonomous reconnaissance, synthetic identity deception, and machine-speed exploit chaining.',
     capabilities: [
-      'Automated open-source intelligence (OSINT) aggregation and organizational profiling',
-      'Context-aware spear-phishing and synthetic voice/identity impersonation',
-      'Iterative vulnerability probing and adaptive payload mutation against APIs',
-      'Multi-agent task chaining that compresses reconnaissance-to-exploitation timelines',
+      'Automated OSINT & target profiling',
+      'Real-time voice & video deepfake lures',
+      'Adaptive payload & API probing',
     ],
     engineeringReality:
-      'Offensive AI does not magically bypass strong cryptography, but it dramatically lowers the cost and latency of targeted reconnaissance, social engineering, and continuous probing.',
+      'Compresses reconnaissance-to-exploitation from weeks into seconds.',
   },
   {
     id: 'target',
-    label: 'Attack Surface Dimension',
+    label: 'Attack Surface · Purple',
     title: 'AI as Target',
     accentColor: '#37D5F5',
     summary:
-      'Models, training and fine-tuning data, prompts, Retrieval-Augmented Generation (RAG) pipelines, autonomous agents, APIs, connected tools, and underlying infrastructure.',
+      'Prompts, RAG vector stores, model weights, agent memory, and connected enterprise tools.',
     capabilities: [
-      'Direct and indirect prompt injection via untrusted documents, emails, and web content',
-      'RAG knowledge base poisoning, embedding manipulation, and cross-tenant context leakage',
-      'Confused deputy privilege escalation in autonomous tool calling and multi-agent delegation',
-      'Model supply-chain tampering, insecure adapters, and unbounded token/compute exhaustion',
+      'Indirect prompt injection via RAG docs',
+      'Vector embedding & memory poisoning',
+      'Confused-deputy agent tool hijacking',
     ],
     engineeringReality:
-      'Because language models process instructions and untrusted data in a single token stream, traditional perimeter firewalls cannot distinguish benign prose from embedded adversarial directives.',
+      'Shared token streams blur trusted instructions and untrusted data.',
   },
   {
     id: 'shield',
-    label: 'Defensive AI Dimension',
+    label: 'Defensive AI · Blue',
     title: 'AI as Shield',
     accentColor: '#3478F6',
     summary:
-      'AI-assisted anomaly detection, telemetry correlation, automated adversarial red teaming, semantic policy evaluation, and policy-bound defensive response.',
+      'Deterministic runtime guardrails, continuous red-teaming, and self-healing containment.',
     capabilities: [
-      'Continuous automated red-teaming harnesses that probe models and agents before production release',
-      'Inline and shadow semantic evaluators that audit prompts, reasoning traces, and tool arguments',
-      'Evidence-grounded SOC investigation co-pilots that synthesize logs with verifiable trace citations',
-      'Self-healing containment loops with episodic state rollback and human-in-the-loop approval gates',
+      'Pre-release automated red-teaming',
+      'Inline Circuit Breakers & Shadow Evaluators',
+      'Scoped OBO tokens & state rollback',
     ],
     engineeringReality:
-      'Defensive AI is most effective when paired with deterministic architectural wrappers—never as an unchecked black box making unilateral high-consequence decisions.',
+      'Pairs AI-speed detection with deterministic execution boundaries.',
   },
 ];
 

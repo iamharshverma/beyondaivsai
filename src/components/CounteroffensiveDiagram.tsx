@@ -615,14 +615,43 @@ export const PillarTechnicalIllustration: React.FC<{ type: 'weapon' | 'target' |
     return (
       <svg
         viewBox="0 0 320 120"
-        className={`w-full h-28 bg-[#F4F7FC] dark:bg-[#07111F] rounded-lg border border-slate-300/80 dark:border-slate-400/10 p-2 ${svgRootClass}`}
+        className={`w-full h-28 bg-[#F4F7FC] dark:bg-[#07111F] rounded-xl border border-slate-300/80 dark:border-slate-400/10 p-2 ${svgRootClass}`}
       >
+        <defs>
+          <path id="wPathTop" d="M 24 60 L 95 28 L 185 28 L 285 60" />
+          <path id="wPathMid" d="M 24 60 L 95 60 L 185 60 L 285 60" />
+          <path id="wPathBot" d="M 24 60 L 95 92 L 185 92 L 285 60" />
+        </defs>
         <g stroke={isLight ? deepInkStroke : offensiveAccent} strokeWidth="1.6" fill="none">
-          <path d="M 24 60 L 95 28 L 185 28 L 255 60" strokeOpacity="0.8" />
-          <path d="M 24 60 L 95 60 L 185 60 L 285 60" stroke={offensiveAccent} strokeWidth="2" />
-          <path d="M 24 60 L 95 92 L 185 92 L 255 60" strokeOpacity="0.8" />
+          <use href="#wPathTop" strokeOpacity="0.75" strokeDasharray="4 3">
+            <animate attributeName="stroke-dashoffset" from="28" to="0" dur="1.8s" repeatCount="indefinite" />
+          </use>
+          <use href="#wPathMid" stroke={offensiveAccent} strokeWidth="2.1" />
+          <use href="#wPathBot" strokeOpacity="0.75" strokeDasharray="4 3">
+            <animate attributeName="stroke-dashoffset" from="28" to="0" dur="1.8s" repeatCount="indefinite" />
+          </use>
         </g>
-        <circle cx="24" cy="60" r="6" fill={offensiveAccent} stroke={deepInkStroke} strokeWidth="1.5" />
+
+        {/* Animated Red Attack Signal Packets */}
+        <circle r="3.5" fill={offensiveAccent}>
+          <animateMotion dur="1.9s" repeatCount="indefinite">
+            <mpath href="#wPathTop" />
+          </animateMotion>
+        </circle>
+        <circle r="4" fill={offensiveAccent}>
+          <animateMotion dur="1.5s" begin="0.3s" repeatCount="indefinite">
+            <mpath href="#wPathMid" />
+          </animateMotion>
+        </circle>
+        <circle r="3.5" fill={offensiveAccent}>
+          <animateMotion dur="2.1s" begin="0.6s" repeatCount="indefinite">
+            <mpath href="#wPathBot" />
+          </animateMotion>
+        </circle>
+
+        <circle cx="24" cy="60" r="6" fill={offensiveAccent} stroke={deepInkStroke} strokeWidth="1.5">
+          <animate attributeName="r" values="5.5;7.5;5.5" dur="1.8s" repeatCount="indefinite" />
+        </circle>
         <circle cx="95" cy="28" r="4.5" fill={nodeFill} stroke={deepInkStroke} strokeWidth="2" />
         <circle cx="95" cy="60" r="5" fill={offensiveAccent} />
         <circle cx="95" cy="92" r="4.5" fill={nodeFill} stroke={deepInkStroke} strokeWidth="2" />
@@ -633,8 +662,8 @@ export const PillarTechnicalIllustration: React.FC<{ type: 'weapon' | 'target' |
           height="88"
           rx="6"
           fill={frameFill}
-          stroke={deepInkStroke}
-          strokeWidth="1.5"
+          stroke={offensiveAccent}
+          strokeWidth="1.6"
         />
         <text
           x="186"
@@ -645,7 +674,7 @@ export const PillarTechnicalIllustration: React.FC<{ type: 'weapon' | 'target' |
           fontWeight="600"
           textAnchor="middle"
         >
-          TASK
+          SWARM
         </text>
         <text
           x="186"
@@ -656,8 +685,13 @@ export const PillarTechnicalIllustration: React.FC<{ type: 'weapon' | 'target' |
           fontWeight="700"
           textAnchor="middle"
         >
-          AUTOMATION
+          EXPLOIT
         </text>
+        {/* Pulsing Target Lock Ring */}
+        <circle cx="285" cy="60" r="7" fill="none" stroke={offensiveAccent} strokeWidth="1.4">
+          <animate attributeName="r" values="7;15;7" dur="2s" repeatCount="indefinite" />
+          <animate attributeName="opacity" values="0.8;0;0.8" dur="2s" repeatCount="indefinite" />
+        </circle>
         <circle cx="285" cy="60" r="7" fill={nodeFill} stroke={offensiveAccent} strokeWidth="2.2" />
       </svg>
     );
@@ -667,8 +701,11 @@ export const PillarTechnicalIllustration: React.FC<{ type: 'weapon' | 'target' |
     return (
       <svg
         viewBox="0 0 320 120"
-        className={`w-full h-28 bg-[#F4F7FC] dark:bg-[#07111F] rounded-lg border border-slate-300/80 dark:border-slate-400/10 p-2 ${svgRootClass}`}
+        className={`w-full h-28 bg-[#F4F7FC] dark:bg-[#07111F] rounded-xl border border-slate-300/80 dark:border-slate-400/10 p-2 ${svgRootClass}`}
       >
+        <defs>
+          <path id="tStreamPath" d="M 18 60 L 302 60" />
+        </defs>
         <line
           x1="18"
           y1="60"
@@ -677,8 +714,23 @@ export const PillarTechnicalIllustration: React.FC<{ type: 'weapon' | 'target' |
           className={inkLineClass}
           stroke={deepInkStroke}
           strokeWidth="1.5"
-          strokeDasharray="3 3"
-        />
+          strokeDasharray="4 3"
+        >
+          <animate attributeName="stroke-dashoffset" from="28" to="0" dur="1.6s" repeatCount="indefinite" />
+        </line>
+
+        {/* Animated Token Stream Particles */}
+        <circle r="3.8" fill={defensiveAccent}>
+          <animateMotion dur="2.2s" repeatCount="indefinite">
+            <mpath href="#tStreamPath" />
+          </animateMotion>
+        </circle>
+        <circle r="3.8" fill={offensiveAccent}>
+          <animateMotion dur="2.2s" begin="1.1s" repeatCount="indefinite">
+            <mpath href="#tStreamPath" />
+          </animateMotion>
+        </circle>
+
         <rect
           x="18"
           y="18"
@@ -709,7 +761,9 @@ export const PillarTechnicalIllustration: React.FC<{ type: 'weapon' | 'target' |
           fill={frameFill}
           stroke={defensiveAccent}
           strokeWidth="1.6"
-        />
+        >
+          <animate attributeName="stroke-opacity" values="1;0.45;1" dur="2.4s" repeatCount="indefinite" />
+        </rect>
         <text
           x="112"
           y="58"
@@ -773,7 +827,9 @@ export const PillarTechnicalIllustration: React.FC<{ type: 'weapon' | 'target' |
           fill={frameFill}
           stroke={offensiveAccent}
           strokeWidth="1.6"
-        />
+        >
+          <animate attributeName="stroke-opacity" values="0.5;1;0.5" dur="2s" repeatCount="indefinite" />
+        </rect>
         <text
           x="268"
           y="58"
@@ -803,9 +859,25 @@ export const PillarTechnicalIllustration: React.FC<{ type: 'weapon' | 'target' |
   return (
     <svg
       viewBox="0 0 320 120"
-      className={`w-full h-28 bg-[#F4F7FC] dark:bg-[#07111F] rounded-lg border border-slate-300/80 dark:border-slate-400/10 p-2 ${svgRootClass}`}
+      className={`w-full h-28 bg-[#F4F7FC] dark:bg-[#07111F] rounded-xl border border-slate-300/80 dark:border-slate-400/10 p-2 ${svgRootClass}`}
     >
-      <line x1="20" y1="60" x2="295" y2="60" stroke={deepInkStroke} strokeWidth="2.2" />
+      <defs>
+        <path id="sGuardPath" d="M 20 60 L 295 60" />
+      </defs>
+      <line x1="20" y1="60" x2="295" y2="60" stroke={defBlue} strokeWidth="2.2" strokeOpacity="0.8" />
+
+      {/* Animated Blue Guardrail Verification Pulses */}
+      <circle r="4" fill={defensiveAccent}>
+        <animateMotion dur="2s" repeatCount="indefinite">
+          <mpath href="#sGuardPath" />
+        </animateMotion>
+      </circle>
+      <circle r="3.5" fill={defBlue}>
+        <animateMotion dur="2s" begin="1s" repeatCount="indefinite">
+          <mpath href="#sGuardPath" />
+        </animateMotion>
+      </circle>
+
       <rect
         x="35"
         y="28"
@@ -813,7 +885,7 @@ export const PillarTechnicalIllustration: React.FC<{ type: 'weapon' | 'target' |
         height="64"
         rx="6"
         fill={frameFill}
-        stroke={deepInkStroke}
+        stroke={defensiveAccent}
         strokeWidth="1.6"
       />
       <text
@@ -839,6 +911,12 @@ export const PillarTechnicalIllustration: React.FC<{ type: 'weapon' | 'target' |
         ACL + Scan
       </text>
 
+      {/* Pulsing Shield Ring around Circuit Breaker */}
+      <circle cx="160" cy="60" r="24" fill="none" stroke={defBlue} strokeWidth="1.2">
+        <animate attributeName="r" values="24;36;24" dur="2.4s" repeatCount="indefinite" />
+        <animate attributeName="opacity" values="0.5;0;0.5" dur="2.4s" repeatCount="indefinite" />
+      </circle>
+
       <rect
         x="126"
         y="28"
@@ -847,7 +925,7 @@ export const PillarTechnicalIllustration: React.FC<{ type: 'weapon' | 'target' |
         rx="6"
         fill={frameFill}
         stroke={defBlue}
-        strokeWidth="1.75"
+        strokeWidth="1.85"
       />
       <text
         x="160"

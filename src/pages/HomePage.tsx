@@ -198,7 +198,7 @@ export const HomePage: React.FC = () => {
       {/* 6.3 THREE CENTRAL PILLARS — BOOK FEATURES WITH SCROLL FADE-IN-UP */}
       <section className="py-12 sm:py-16 md:py-24 border-b border-[#D5E0F0] dark:border-slate-400/15">
         <div className="w-full max-w-[1280px] mx-auto px-4 sm:px-6">
-          <FadeInUp className="max-w-3xl mb-8 sm:mb-12">
+          <FadeInUp className="max-w-2xl mb-8 sm:mb-10">
             <div className="inline-flex items-center gap-1.5 text-xs font-mono font-bold bg-gradient-to-r from-[#E11D48] to-[#1D4ED8] dark:from-[#FB7185] dark:to-[#38BDF8] bg-clip-text text-transparent mb-2">
               <Zap className="w-3.5 h-3.5 text-[#E11D48] shrink-0" />
               <span>THE CENTRAL PROPOSITION</span>
@@ -208,8 +208,8 @@ export const HomePage: React.FC = () => {
               <span>AI Is the Target.</span>{' '}
               <span className="text-[#1D4ED8] dark:text-[#38BDF8]">AI Is the Shield.</span>
             </h2>
-            <p className="mt-3 text-sm sm:text-base text-[#334155] dark:text-[#AAB8CC] leading-relaxed">
-              Artificial intelligence is changing the capabilities available to both attackers and defenders—while introducing a complex new attack surface across models, prompts, retrieval systems, agents, APIs, and connected tools.
+            <p className="mt-2.5 text-sm sm:text-base text-[#334155] dark:text-[#AAB8CC] leading-relaxed">
+              Three simultaneous forces define the modern cyber battlefield across models, RAG pipelines, and autonomous agents.
             </p>
           </FadeInUp>
 
@@ -228,64 +228,93 @@ export const HomePage: React.FC = () => {
                 : isShield
                 ? 'from-[#1D4ED8] to-[#38BDF8]'
                 : 'from-[#E11D48] via-[#7C3AED] to-[#0284C7]';
+              const borderHoverClass = isWeapon
+                ? 'hover:border-[#E11D48]/60 dark:hover:border-[#FB7185]/60'
+                : isShield
+                ? 'hover:border-[#1D4ED8]/60 dark:hover:border-[#38BDF8]/60'
+                : 'hover:border-[#6366F1]/60 dark:hover:border-[#37D5F5]/60';
 
               return (
                 <motion.div
                   key={pillar.id}
                   variants={fadeInUpVariants}
-                  whileHover={{ y: -5 }}
-                  className="rounded-2xl bg-white dark:bg-[#0F1D33] border border-[#D5E0F0] dark:border-slate-400/15 overflow-hidden flex flex-col justify-between transition-all shadow-sm hover:shadow-xl min-w-0"
+                  animate={{ y: [0, idx % 2 === 0 ? -5 : -3.5, 0] }}
+                  transition={{
+                    duration: 4.5 + idx * 0.6,
+                    repeat: Infinity,
+                    ease: 'easeInOut',
+                  }}
+                  whileHover={{
+                    y: -10,
+                    scale: 1.018,
+                    transition: { type: 'spring', stiffness: 280, damping: 20 },
+                  }}
+                  className={`group relative rounded-2xl bg-white dark:bg-[#0F1D33] border border-[#D5E0F0] dark:border-slate-400/15 ${borderHoverClass} overflow-hidden flex flex-col justify-between transition-shadow shadow-sm hover:shadow-[0_18px_38px_-12px_rgba(29,78,216,0.18)] min-w-0`}
                 >
-                  <div className={`h-1.5 w-full bg-gradient-to-r ${topBarClass}`} />
-                  <div className="p-5 sm:p-6 flex-1 flex flex-col justify-between">
+                  {/* Animated Top Gradient Bar */}
+                  <div className={`h-1.5 w-full bg-gradient-to-r ${topBarClass} bg-ai-clash-gradient`} />
+
+                  {/* Subtle Hover Light Sweep */}
+                  <div className="pointer-events-none absolute inset-y-0 -left-full group-hover:left-[120%] transition-all duration-700 w-1/2 -skew-x-12 bg-gradient-to-r from-transparent via-slate-400/10 dark:via-white/5 to-transparent" />
+
+                  <div className="p-5 flex-1 flex flex-col justify-between relative z-10">
                     <div>
-                      <div className="flex flex-wrap items-center justify-between gap-2 text-xs font-mono font-bold mb-3">
+                      <div className="flex items-center justify-between gap-2 text-xs font-mono font-bold mb-2">
                         <span
-                          className={
+                          className={`inline-flex items-center gap-1.5 ${
                             isWeapon
                               ? 'text-[#E11D48] dark:text-[#FB7185]'
                               : isShield
                               ? 'text-[#1D4ED8] dark:text-[#38BDF8]'
                               : 'text-[#6366F1] dark:text-[#37D5F5]'
-                          }
+                          }`}
                         >
-                          {pillar.label}
+                          <span
+                            className="w-2 h-2 rounded-full animate-pulse"
+                            style={{ backgroundColor: pillar.accentColor }}
+                          />
+                          <span>{pillar.label}</span>
                         </span>
-                        <span className="text-slate-500 dark:text-[#AAB8CC] font-normal">
+                        <span className="px-2 py-0.5 rounded bg-[#F4F7FC] dark:bg-[#07111F] text-[10px] text-slate-500 dark:text-[#AAB8CC]">
                           0{idx + 1} / 03
                         </span>
                       </div>
-                      <h3 className="text-lg sm:text-xl font-bold font-display text-[#091122] dark:text-[#F5F8FF] mb-2.5">
+
+                      <h3 className="text-lg sm:text-xl font-bold font-display text-[#091122] dark:text-[#F5F8FF] mb-1.5">
                         {pillar.title}
                       </h3>
-                      <p className="text-xs sm:text-sm text-[#334155] dark:text-[#AAB8CC] leading-relaxed mb-5">
+                      <p className="text-xs text-[#334155] dark:text-[#AAB8CC] leading-relaxed mb-4">
                         {pillar.summary}
                       </p>
 
-                      <div className="mb-5">
+                      {/* Animated Technical Diagram */}
+                      <div className="mb-4 transition-transform duration-300 group-hover:scale-[1.02]">
                         <PillarTechnicalIllustration
                           type={pillar.id as 'weapon' | 'target' | 'shield'}
                         />
                       </div>
 
-                      <ul className="space-y-2 text-xs text-[#091122] dark:text-[#F5F8FF]">
+                      {/* Concise Scannable Capability Pills */}
+                      <ul className="space-y-1.5 text-xs">
                         {pillar.capabilities.map((cap) => (
-                          <li key={cap} className="flex items-start gap-2">
+                          <li
+                            key={cap}
+                            className="flex items-center gap-2 px-2.5 py-1.5 rounded-lg bg-[#F8FAFC] dark:bg-[#0A1426] border border-slate-200/70 dark:border-slate-400/10"
+                          >
                             <span
-                              className="w-1.5 h-1.5 rounded-full mt-1.5 shrink-0"
+                              className="w-1.5 h-1.5 rounded-full shrink-0"
                               style={{ backgroundColor: pillar.accentColor }}
                             />
-                            <span className="text-[#334155] dark:text-[#AAB8CC] break-words">{cap}</span>
+                            <span className="font-medium text-[#091122] dark:text-[#F5F8FF] truncate">
+                              {cap}
+                            </span>
                           </li>
                         ))}
                       </ul>
                     </div>
 
-                    <div className="mt-6 pt-4 border-t border-slate-200 dark:border-slate-400/10 text-xs text-[#334155] dark:text-[#AAB8CC]">
-                      <strong className="text-[#091122] dark:text-[#F5F8FF] block mb-1">
-                        Engineering Implication:
-                      </strong>
-                      {pillar.engineeringReality}
+                    <div className="mt-4 pt-3 border-t border-slate-200 dark:border-slate-400/10 text-[11px] font-mono text-[#334155] dark:text-[#AAB8CC] flex items-center justify-between gap-2">
+                      <span className="truncate">{pillar.engineeringReality}</span>
                     </div>
                   </div>
                 </motion.div>
@@ -401,6 +430,18 @@ export const HomePage: React.FC = () => {
         </div>
       </section>
 
+      {/* 6.45 INTERACTIVE AI COUNTEROFFENSIVE READINESS ASSESSMENT & DIAGNOSTIC (MOVED ABOVE ATLAS) */}
+      <section
+        id="assessment"
+        className="py-12 sm:py-16 md:py-24 border-b border-[#D5E0F0] dark:border-slate-400/15"
+      >
+        <div className="w-full max-w-[1280px] mx-auto px-4 sm:px-6">
+          <FadeInUp>
+            <CounteroffensiveAssessment />
+          </FadeInUp>
+        </div>
+      </section>
+
       {/* 6.5 EXPLORE THE BOOK — INTERACTIVE INFOGRAPHIC ATLAS */}
       <section className="py-12 sm:py-16 md:py-24 border-b border-[#D5E0F0] dark:border-slate-400/15">
         <div className="w-full max-w-[1280px] mx-auto px-4 sm:px-6 space-y-8">
@@ -437,18 +478,6 @@ export const HomePage: React.FC = () => {
           {/* Interactive Master Blueprint & Chapter Infographic Explorer */}
           <FadeInUp delay={0.05}>
             <ChapterInfographicAtlas />
-          </FadeInUp>
-        </div>
-      </section>
-
-      {/* 6.55 INTERACTIVE AI COUNTEROFFENSIVE READINESS ASSESSMENT & DIAGNOSTIC */}
-      <section
-        id="assessment"
-        className="py-12 sm:py-16 md:py-24 border-b border-[#D5E0F0] dark:border-slate-400/15"
-      >
-        <div className="w-full max-w-[1280px] mx-auto px-4 sm:px-6">
-          <FadeInUp>
-            <CounteroffensiveAssessment />
           </FadeInUp>
         </div>
       </section>

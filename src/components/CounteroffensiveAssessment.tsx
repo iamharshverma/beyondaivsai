@@ -18,6 +18,10 @@ import {
   UserCheck,
   Activity,
   Terminal,
+  Code2,
+  Building2,
+  Eye,
+  Gauge,
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { CHAPTERS_DATA } from '../data/chaptersData';
@@ -25,6 +29,7 @@ import { SequenceMinimalIcon } from './SequenceMinimalIcons';
 import { trackEvent, usePageSEO } from '../utils/analytics';
 
 export type PractitionerRole = 'ciso' | 'architect' | 'redteam' | 'founder';
+export type IndustrySectorId = 'finserv' | 'saas' | 'healthcare' | 'infra' | 'aistartup';
 
 export interface RoleProfile {
   id: PractitionerRole;
@@ -33,6 +38,52 @@ export interface RoleProfile {
   focusTagline: string;
   bookValueHook: string;
 }
+
+export interface IndustryBenchmark {
+  id: IndustrySectorId;
+  label: string;
+  peerAvg: number;
+  domainAvgs: [number, number, number, number];
+  regulatoryNote: string;
+}
+
+export const INDUSTRY_BENCHMARKS: IndustryBenchmark[] = [
+  {
+    id: 'finserv',
+    label: 'FinServ & Banking',
+    peerAvg: 64,
+    domainAvgs: [66, 62, 58, 68],
+    regulatoryNote: 'High exposure to deepfake treasury fraud & confused-deputy ledger mutations.',
+  },
+  {
+    id: 'saas',
+    label: 'Cloud & Enterprise SaaS',
+    peerAvg: 58,
+    domainAvgs: [60, 61, 52, 59],
+    regulatoryNote: 'Primary risk in multi-tenant RAG context bleed & indirect prompt injection.',
+  },
+  {
+    id: 'healthcare',
+    label: 'Healthcare & Bio',
+    peerAvg: 52,
+    domainAvgs: [54, 50, 49, 55],
+    regulatoryNote: 'Strict PHI provenance requirements & zero-trust clinical decision guardrails.',
+  },
+  {
+    id: 'infra',
+    label: 'Critical Infrastructure',
+    peerAvg: 61,
+    domainAvgs: [63, 59, 64, 58],
+    regulatoryNote: 'Requires sub-second deterministic circuit breakers & air-gapped rollback.',
+  },
+  {
+    id: 'aistartup',
+    label: 'AI-Native Builder',
+    peerAvg: 46,
+    domainAvgs: [48, 52, 39, 45],
+    regulatoryNote: 'Fast shipping velocity often outpaces OBO agent scoping & episodic rollback.',
+  },
+];
 
 export const PRACTITIONER_ROLES: RoleProfile[] = [
   {
@@ -91,6 +142,7 @@ export interface AssessmentQuestion {
   blueDefenseTrace: string;
   curiosityHook: string;
   frameworkPattern: string;
+  guardrailSnippet: string;
   options: AssessmentOption[];
 }
 
@@ -113,6 +165,13 @@ export const ASSESSMENT_QUESTIONS: AssessmentQuestion[] = [
     curiosityHook:
       'In the HK$200M deepfake CFO incident analyzed in Sequence 01 & 02, no traditional perimeter firewall was breached—attackers manufactured synthetic human trust at machine speed.',
     frameworkPattern: 'Cryptographic Out-of-Band Verification & Zero-Trust Action Gates',
+    guardrailSnippet: `action_verification_gate:
+  trigger_on: ["treasury_transfer", "iam_privilege_grant", "prod_secret_export"]
+  trust_voice_video_biometrics: false
+  require_cryptographic_step_up:
+    protocol: "FIDO2_WEBAUTHN_QUORUM"
+    min_hardware_signers: 2
+    velocity_cooldown_seconds: 300`,
     options: [
       {
         id: 'q1-a',
@@ -162,6 +221,14 @@ export const ASSESSMENT_QUESTIONS: AssessmentQuestion[] = [
     curiosityHook:
       'LLMs process system instructions and untrusted retrieved data in the same token stream—making Indirect Prompt Injection the #1 architectural blind spot in enterprise RAG.',
     frameworkPattern: 'Pattern 03: Retrieval Gatekeeper & Provenance Spotlight Delimiters',
+    guardrailSnippet: `retrieval_gatekeeper:
+  pre_retrieval_acl: "ENFORCE_CALLER_TENANT_SCOPE"
+  chunk_sanitizer:
+    strip_imperative_overrides: true
+    max_instructional_entropy: 0.18
+  provenance_spotlighting:
+    wrap_untrusted_chunks: "<untrusted_data id='{chunk_hash}' acl='{tenant}'>"
+    allow_tool_calls_from_untrusted_context: false`,
     options: [
       {
         id: 'q2-a',
@@ -211,6 +278,14 @@ export const ASSESSMENT_QUESTIONS: AssessmentQuestion[] = [
     curiosityHook:
       'Probabilistic models cannot police themselves reliably. Sequence 04 demonstrates why deterministic wrappers must sit inline and out-of-band around every model invocation.',
     frameworkPattern: 'Pattern 01 & 02: Inline Circuit Breaker + Out-of-Band Shadow Evaluator',
+    guardrailSnippet: `runtime_mediation:
+  inline_circuit_breaker:
+    max_latency_budget_ms: 15
+    halt_on: ["pii_secret_emission", "recursive_tool_depth > 4", "schema_violation"]
+  shadow_evaluator:
+    mode: "ASYNC_OUT_OF_BAND"
+    inspect_window_turns: 10
+    on_crescendo_jailbreak: "REVOKE_OBO_SESSION_IMMEDIATELY"`,
     options: [
       {
         id: 'q3-a',
@@ -260,6 +335,13 @@ export const ASSESSMENT_QUESTIONS: AssessmentQuestion[] = [
     curiosityHook:
       'Single-turn static benchmarks miss 80%+ of multi-turn crescendo jailbreaks and cross-tool exploit chains covered in Sequence 05.',
     frameworkPattern: 'Continuous Automated Red-Teaming & Adversarial Regression Gates',
+    guardrailSnippet: `adversarial_ci_gate:
+  run_on: ["prompt_template_diff", "model_weight_bump", "tool_schema_change"]
+  red_agent_suites:
+    - "multi_turn_crescendo_250"
+    - "indirect_rag_poisoning_matrix"
+    - "confused_deputy_obo_escalation"
+  block_release_if_asr_exceeds: 0.005`,
     options: [
       {
         id: 'q4-a',
@@ -309,6 +391,13 @@ export const ASSESSMENT_QUESTIONS: AssessmentQuestion[] = [
     curiosityHook:
       'Restarting a container does not cure a poisoned vector index or contaminated agent memory. Sequence 06 defines AI-specific RTO/RPO and self-healing rollback.',
     frameworkPattern: 'Detect → Contain → Recover → Verify Self-Healing Loop',
+    guardrailSnippet: `self_healing_resilience:
+  vector_index_snapshots: "IMMUTABLE_MERKLE_EPOCH"
+  semantic_honeytokens: true
+  on_contamination_alert:
+    quarantine_ingestion_batch: true
+    rollback_episodic_memory_to: "LAST_VERIFIED_CLEAN_EPOCH"
+    target_ai_rto_seconds: 30`,
     options: [
       {
         id: 'q5-a',
@@ -358,6 +447,11 @@ export const ASSESSMENT_QUESTIONS: AssessmentQuestion[] = [
     curiosityHook:
       'Giving an AI agent a static service account turns it into a super-privileged "Confused Deputy." Sequence 07 & 08 replace static keys with intent-bound Agent Identity.',
     frameworkPattern: 'Pattern 04: Sandboxed Tool Broker + Ephemeral On-Behalf-Of (OBO) Tokens',
+    guardrailSnippet: `sandboxed_tool_broker:
+  static_service_keys: "FORBIDDEN"
+  token_exchange: "OAUTH2_OBO_INTENT_SCOPED"
+  effective_permissions: "INTERSECT(user_jwt.scopes, agent_manifest.allowed_tools, task_intent.scope)"
+  token_ttl_seconds: 45`,
     options: [
       {
         id: 'q6-a',
@@ -407,6 +501,11 @@ export const ASSESSMENT_QUESTIONS: AssessmentQuestion[] = [
     curiosityHook:
       'In multi-agent ecosystems, a single poisoned sub-agent can trigger cascading lateral compromise across peer agents—the central challenge of Sequence 07 & 12.',
     frameworkPattern: 'Zero-Trust Inter-Agent Attestation & Capability Attenuation',
+    guardrailSnippet: `multi_agent_mesh:
+  inter_agent_transport: "MTLS_SIGNED_ENVELOPE"
+  delegation_policy: "MONOTONIC_CAPABILITY_ATTENUATION"
+  max_delegation_hops: 3
+  quarantine_sub_agent_on_schema_drift: true`,
     options: [
       {
         id: 'q7-a',
@@ -456,6 +555,13 @@ export const ASSESSMENT_QUESTIONS: AssessmentQuestion[] = [
     curiosityHook:
       'Traditional SIEM logs only see HTTP 200 OK. Sequence 09, 10 & 11 provide the reference telemetry graph and 30/60/90-day governance blueprint.',
     frameworkPattern: 'Tamper-Evident AI Lineage Graph & Cryptographic Human Approval Gates',
+    guardrailSnippet: `lineage_telemetry_graph:
+  log_correlated_tuple:
+    - "caller_obo_jwt_hash"
+    - "retrieved_chunk_merkle_ids"
+    - "model_reasoning_trace_digest"
+    - "tool_invocation_payload"
+  tamper_evident_sink: "WORM_APPEND_ONLY_LEDGER"`,
     options: [
       {
         id: 'q8-a',
@@ -520,6 +626,44 @@ const SIMULATOR_CONTROLS = [
   },
 ];
 
+// Helper to compute runtime simulation metrics per option posture
+function getOptionRuntimeTelemetry(postureType: AssessmentOption['postureType']) {
+  switch (postureType) {
+    case 'exposed':
+      return {
+        verdict: 'RED AI BREACH SUCCESS (< 45s)',
+        mttc: 'Manual / Unbounded (Hours–Days)',
+        containmentPct: 12,
+        badgeClass: 'bg-[#E11D48]/15 text-[#E11D48] dark:text-[#FB7185] border-[#E11D48]/30',
+        barClass: 'from-[#E11D48] to-orange-500',
+      };
+    case 'reactive':
+      return {
+        verdict: 'BYPASSED VIA MULTI-TURN EVASION',
+        mttc: '~4–12 Hours (Log Review)',
+        containmentPct: 42,
+        badgeClass: 'bg-amber-500/15 text-amber-700 dark:text-amber-300 border-amber-500/30',
+        barClass: 'from-amber-500 to-indigo-500',
+      };
+    case 'structured':
+      return {
+        verdict: 'CONTAINED AT PERIMETER · AGENT GAP REMAINS',
+        mttc: '~3–10 Minutes (Alert Triage)',
+        containmentPct: 74,
+        badgeClass: 'bg-indigo-500/15 text-indigo-700 dark:text-indigo-300 border-indigo-500/30',
+        barClass: 'from-indigo-500 to-[#1D4ED8]',
+      };
+    case 'counteroffensive':
+      return {
+        verdict: 'DETERMINISTIC HALT & AUTO-ROLLBACK',
+        mttc: '< 15ms Inline Circuit Breaker',
+        containmentPct: 99,
+        badgeClass: 'bg-emerald-500/15 text-emerald-700 dark:text-emerald-300 border-emerald-500/30',
+        barClass: 'from-[#1D4ED8] to-emerald-500',
+      };
+  }
+}
+
 interface CounteroffensiveAssessmentProps {
   compact?: boolean;
 }
@@ -527,18 +671,24 @@ interface CounteroffensiveAssessmentProps {
 export const CounteroffensiveAssessment: React.FC<CounteroffensiveAssessmentProps> = () => {
   const [mode, setMode] = useState<'quick' | 'full'>('quick');
   const [role, setRole] = useState<PractitionerRole>('architect');
+  const [sector, setSector] = useState<IndustrySectorId>('finserv');
   const [currentIdx, setCurrentIdx] = useState(0);
   const [answers, setAnswers] = useState<Record<string, AssessmentOption>>({});
   const [showAttackTrace, setShowAttackTrace] = useState(true);
+  const [showGuardrailCode, setShowGuardrailCode] = useState(false);
+  const [copiedCode, setCopiedCode] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [copiedBlueprint, setCopiedBlueprint] = useState(false);
   const [simulatedControls, setSimulatedControls] = useState<Record<string, boolean>>({
     'circuit-breaker': true,
     'retrieval-gatekeeper': true,
+    'tool-broker': true,
   });
 
   const activeRoleProfile =
     PRACTITIONER_ROLES.find((r) => r.id === role) || PRACTITIONER_ROLES[1];
+  const activeBenchmark =
+    INDUSTRY_BENCHMARKS.find((b) => b.id === sector) || INDUSTRY_BENCHMARKS[0];
 
   const activeQuestions = useMemo(() => {
     if (mode === 'quick') {
@@ -570,6 +720,18 @@ export const CounteroffensiveAssessment: React.FC<CounteroffensiveAssessmentProp
     setIsSubmitted(false);
   };
 
+  const handleInstantDemoReport = () => {
+    // Populate realistic mixed enterprise baseline so user can immediately explore the full interactive report
+    const sampleAnswers: Record<string, AssessmentOption> = {};
+    ASSESSMENT_QUESTIONS.forEach((q, idx) => {
+      const optIdx = idx % 3 === 0 ? 1 : idx % 2 === 0 ? 2 : 1;
+      sampleAnswers[q.id] = q.options[optIdx];
+    });
+    setAnswers((prev) => ({ ...sampleAnswers, ...prev }));
+    setIsSubmitted(true);
+    trackEvent('order_cta_clicked', { source: 'assessment_instant_demo' });
+  };
+
   const handleReset = () => {
     setAnswers({});
     setCurrentIdx(0);
@@ -580,46 +742,67 @@ export const CounteroffensiveAssessment: React.FC<CounteroffensiveAssessmentProp
     setSimulatedControls((prev) => ({ ...prev, [id]: !prev[id] }));
   };
 
+  const handleCopySnippet = (snippet: string) => {
+    navigator.clipboard.writeText(snippet);
+    setCopiedCode(true);
+    setTimeout(() => setCopiedCode(false), 2000);
+  };
+
   // Compute comprehensive diagnostic results + domain matrix + simulator projection
   const diagnostic = useMemo(() => {
     const totalScore = activeQuestions.reduce((acc, q) => acc + (answers[q.id]?.score ?? 0), 0);
     const overallScore = Math.round(totalScore / activeQuestions.length);
 
-    // Compute 4 domain scores
     const domainMeta = [
       {
         id: 'threat-rag',
         label: 'Offensive AI & RAG Boundary',
+        shortAxis: 'RAG & Threat',
         seqRange: 'Seq 01–03',
         iconKey: 3 as const,
       },
       {
         id: 'architecture-redteam',
         label: 'Deterministic Patterns & Red-Teaming',
+        shortAxis: 'Runtime & RedTeam',
         seqRange: 'Seq 04–05',
         iconKey: 4 as const,
       },
       {
         id: 'resilience',
         label: 'Self-Healing & State Rollback',
+        shortAxis: 'Self-Healing',
         seqRange: 'Seq 06',
         iconKey: 6 as const,
       },
       {
         id: 'agentic-governance',
         label: 'Agent Identity, Swarms & Lineage',
+        shortAxis: 'Agent OBO & Mesh',
         seqRange: 'Seq 07–12',
         iconKey: 8 as const,
       },
     ];
 
-    const domainBreakdown = domainMeta.map((dom) => {
+    const simBoost = SIMULATOR_CONTROLS.reduce(
+      (acc, ctrl) => acc + (simulatedControls[ctrl.id] ? ctrl.boost : 0),
+      0
+    );
+
+    const domainBreakdown = domainMeta.map((dom, index) => {
       const qs = activeQuestions.filter((q) => q.domainId === dom.id);
-      if (qs.length === 0) {
-        return { ...dom, score: overallScore };
-      }
-      const sum = qs.reduce((s, q) => s + (answers[q.id]?.score ?? 0), 0);
-      return { ...dom, score: Math.round(sum / qs.length) };
+      const rawScore =
+        qs.length === 0
+          ? overallScore
+          : Math.round(qs.reduce((s, q) => s + (answers[q.id]?.score ?? 0), 0) / qs.length);
+      const projectedDomainScore = Math.min(99, rawScore + simBoost);
+      const peerDomainScore = activeBenchmark.domainAvgs[index] ?? activeBenchmark.peerAvg;
+      return {
+        ...dom,
+        score: rawScore,
+        projectedDomainScore,
+        peerDomainScore,
+      };
     });
 
     let tierName = 'Tier 1 · Exposed AI Surface';
@@ -659,34 +842,35 @@ export const CounteroffensiveAssessment: React.FC<CounteroffensiveAssessmentProp
       };
     });
 
-    const simBoost = SIMULATOR_CONTROLS.reduce(
-      (acc, ctrl) => acc + (simulatedControls[ctrl.id] ? ctrl.boost : 0),
-      0
-    );
     const projectedScore = Math.min(99, overallScore + simBoost);
     const redExposureRisk = Math.max(5, 100 - projectedScore);
+    const peerDelta = overallScore - activeBenchmark.peerAvg;
 
     return {
       overallScore,
       projectedScore,
       redExposureRisk,
+      peerDelta,
       domainBreakdown,
       tierName,
       tierBadgeColor,
       tierSummary,
       priorityChapters,
     };
-  }, [activeQuestions, answers, simulatedControls]);
+  }, [activeQuestions, answers, simulatedControls, activeBenchmark]);
 
   const handleCopyFrameworkReport = () => {
     const lines = [
       `# AI vs. AI Counteroffensive Readiness Assessment (${activeRoleProfile.label})`,
+      `Sector Benchmark: ${activeBenchmark.label} (Peer Avg: ${activeBenchmark.peerAvg}%)`,
       `Baseline Readiness Score: ${diagnostic.overallScore}/100 (${diagnostic.tierName})`,
       `Projected Score with Book Patterns Deployed: ${diagnostic.projectedScore}/100`,
       `Executive Diagnosis: ${diagnostic.tierSummary}`,
       ``,
       `## Domain Readiness Matrix:`,
-      ...diagnostic.domainBreakdown.map((d) => `- ${d.label} (${d.seqRange}): ${d.score}%`),
+      ...diagnostic.domainBreakdown.map(
+        (d) => `- ${d.label} (${d.seqRange}): ${d.score}% (Peer Avg: ${d.peerDomainScore}% -> Projected: ${d.projectedDomainScore}%)`
+      ),
       ``,
       `## Priority Architectural Controls to Deploy (From "AI vs. AI" by Harsh Verma):`,
       ...diagnostic.priorityChapters.map(
@@ -710,6 +894,39 @@ export const CounteroffensiveAssessment: React.FC<CounteroffensiveAssessmentProp
     setTimeout(() => setCopiedBlueprint(false), 2500);
   };
 
+  // Compute SVG Radar coordinates for 4 domains (Top, Right, Bottom, Left)
+  const radarPoints = useMemo(() => {
+    const cx = 130;
+    const cy = 130;
+    const maxR = 86;
+    const dirs = [
+      { dx: 0, dy: -1 }, // Top: Threat & RAG
+      { dx: 1, dy: 0 },  // Right: Architecture & Red-Team
+      { dx: 0, dy: 1 },  // Bottom: Resilience
+      { dx: -1, dy: 0 }, // Left: Agentic Governance
+    ];
+
+    const toPolygon = (values: number[]) =>
+      values
+        .map((val, i) => {
+          const r = (Math.max(8, Math.min(100, val)) / 100) * maxR;
+          const x = cx + dirs[i].dx * r;
+          const y = cy + dirs[i].dy * r;
+          return `${x},${y}`;
+        })
+        .join(' ');
+
+    return {
+      baselinePoly: toPolygon(diagnostic.domainBreakdown.map((d) => d.score)),
+      peerPoly: toPolygon(diagnostic.domainBreakdown.map((d) => d.peerDomainScore)),
+      projectedPoly: toPolygon(diagnostic.domainBreakdown.map((d) => d.projectedDomainScore)),
+    };
+  }, [diagnostic.domainBreakdown]);
+
+  const currentTelemetry = currentSelectedOption
+    ? getOptionRuntimeTelemetry(currentSelectedOption.postureType)
+    : null;
+
   return (
     <div className="rounded-3xl bg-white dark:bg-[#0B1628] border border-[#D5E0F0] dark:border-slate-400/20 shadow-[0_20px_50px_-15px_rgba(29,78,216,0.12)] overflow-hidden">
       {/* Top Red-vs-Blue Counteroffensive Header Bar */}
@@ -719,57 +936,68 @@ export const CounteroffensiveAssessment: React.FC<CounteroffensiveAssessmentProp
             <div className="inline-flex flex-wrap items-center gap-2 text-[11px] font-mono font-bold">
               <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-[#E11D48] text-white">
                 <Sparkles className="w-3 h-3" />
-                <span>INTERACTIVE ARCHITECTURE SIMULATOR &amp; DIAGNOSTIC</span>
+                <span>LIVE RED VS. BLUE ARCHITECTURE SIMULATOR</span>
               </span>
               <span className="text-[#1D4ED8] dark:text-[#38BDF8]">
-                AI VS. AI COUNTEROFFENSIVE READINESS BENCHMARK
+                COUNTEROFFENSIVE READINESS LAB
               </span>
             </div>
             <h2 className="text-xl sm:text-2xl md:text-3xl font-bold font-display text-[#091122] dark:text-[#F5F8FF]">
-              Test Your AI Security Posture &amp; Generate Your Custom Counteroffensive Blueprint
+              Benchmark Your AI Security Posture &amp; Simulate Book Patterns
             </h2>
             <p className="text-xs sm:text-sm text-[#334155] dark:text-[#AAB8CC] max-w-3xl">
-              Select your role, step through real-world Red AI vs. Blue AI scenarios from the book, inspect live exploit traces, and unlock a tailored{' '}
+              Select your role and industry benchmark, test your architecture against real-world Red AI exploit chains, inspect deterministic YAML guardrails, and unlock a custom{' '}
               <strong className="text-[#091122] dark:text-[#F5F8FF]">
-                30/60/90-Day Counteroffensive Framework
+                30/60/90-Day Counteroffensive Blueprint
               </strong>
               .
             </p>
           </div>
 
-          {/* Mode Switcher: Quick 4-Scenario vs Full 8-Scenario */}
-          <div className="flex items-center gap-1.5 self-start lg:self-center p-1 rounded-xl bg-white dark:bg-[#0F1D33] border border-[#D5E0F0] dark:border-slate-400/20 shrink-0">
+          {/* Mode Switcher + 1-Click Instant Demo Report */}
+          <div className="flex flex-wrap items-center gap-2 self-start lg:self-center shrink-0">
+            <div className="flex items-center gap-1 p-1 rounded-xl bg-white dark:bg-[#0F1D33] border border-[#D5E0F0] dark:border-slate-400/20">
+              <button
+                type="button"
+                onClick={() => handleSwitchMode('quick')}
+                className={`px-3 py-1.5 rounded-lg text-xs font-mono font-semibold transition-all cursor-pointer ${
+                  mode === 'quick' && !isSubmitted
+                    ? 'bg-gradient-to-r from-[#E11D48] to-[#1D4ED8] text-white shadow-2xs'
+                    : 'text-slate-600 dark:text-[#AAB8CC] hover:text-[#091122] dark:hover:text-white'
+                }`}
+              >
+                ⚡ Quick (4)
+              </button>
+              <button
+                type="button"
+                onClick={() => handleSwitchMode('full')}
+                className={`px-3 py-1.5 rounded-lg text-xs font-mono font-semibold transition-all cursor-pointer ${
+                  mode === 'full' && !isSubmitted
+                    ? 'bg-gradient-to-r from-[#E11D48] to-[#1D4ED8] text-white shadow-2xs'
+                    : 'text-slate-600 dark:text-[#AAB8CC] hover:text-[#091122] dark:hover:text-white'
+                }`}
+              >
+                🛡️ Full Lab (8)
+              </button>
+            </div>
+
             <button
               type="button"
-              onClick={() => handleSwitchMode('quick')}
-              className={`px-3 py-1.5 rounded-lg text-xs font-mono font-semibold transition-all cursor-pointer ${
-                mode === 'quick'
-                  ? 'bg-gradient-to-r from-[#E11D48] to-[#1D4ED8] text-white shadow-2xs'
-                  : 'text-slate-600 dark:text-[#AAB8CC] hover:text-[#091122] dark:hover:text-white'
-              }`}
+              onClick={() => (isSubmitted ? setIsSubmitted(false) : handleInstantDemoReport())}
+              className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-[#091122] dark:bg-white text-white dark:text-[#091122] text-xs font-mono font-bold shadow-xs hover:opacity-90 transition-all cursor-pointer"
             >
-              ⚡ Quick Pulse (4 Scenarios)
-            </button>
-            <button
-              type="button"
-              onClick={() => handleSwitchMode('full')}
-              className={`px-3 py-1.5 rounded-lg text-xs font-mono font-semibold transition-all cursor-pointer ${
-                mode === 'full'
-                  ? 'bg-gradient-to-r from-[#E11D48] to-[#1D4ED8] text-white shadow-2xs'
-                  : 'text-slate-600 dark:text-[#AAB8CC] hover:text-[#091122] dark:hover:text-white'
-              }`}
-            >
-              🛡️ Full Diagnostic (8 Scenarios)
+              <Eye className="w-3.5 h-3.5 text-[#FB7185] dark:text-[#E11D48]" />
+              <span>{isSubmitted ? '← Back to Scenarios' : '⚡ Instant Demo Report'}</span>
             </button>
           </div>
         </div>
 
-        {/* Practitioner Role / Persona Selector Bar */}
-        <div className="pt-3 border-t border-[#D5E0F0]/80 dark:border-slate-400/10 flex flex-col md:flex-row md:items-center justify-between gap-3">
-          <div className="flex flex-wrap items-center gap-1.5">
+        {/* Practitioner Role + Industry Peer Benchmark Selector Bar */}
+        <div className="pt-3 border-t border-[#D5E0F0]/80 dark:border-slate-400/10 grid grid-cols-1 xl:grid-cols-12 gap-3 items-center">
+          <div className="xl:col-span-7 flex flex-wrap items-center gap-1.5">
             <span className="inline-flex items-center gap-1 text-[11px] font-mono font-bold text-slate-600 dark:text-[#AAB8CC] mr-1">
               <UserCheck className="w-3.5 h-3.5 text-[#1D4ED8] dark:text-[#38BDF8]" />
-              <span>TAILOR FOR ROLE:</span>
+              <span>ROLE:</span>
             </span>
             {PRACTITIONER_ROLES.map((r) => {
               const active = r.id === role;
@@ -790,8 +1018,28 @@ export const CounteroffensiveAssessment: React.FC<CounteroffensiveAssessmentProp
             })}
           </div>
 
-          <div className="text-[11px] font-mono text-slate-600 dark:text-[#AAB8CC] truncate">
-            Focus: <strong className="text-[#1D4ED8] dark:text-[#38BDF8]">{activeRoleProfile.focusTagline}</strong>
+          <div className="xl:col-span-5 flex flex-wrap items-center xl:justify-end gap-1.5">
+            <span className="inline-flex items-center gap-1 text-[11px] font-mono font-bold text-slate-600 dark:text-[#AAB8CC] mr-1">
+              <Building2 className="w-3.5 h-3.5 text-[#E11D48] dark:text-[#FB7185]" />
+              <span>PEER BENCHMARK:</span>
+            </span>
+            {INDUSTRY_BENCHMARKS.map((b) => {
+              const active = b.id === sector;
+              return (
+                <button
+                  key={b.id}
+                  type="button"
+                  onClick={() => setSector(b.id)}
+                  className={`px-2 py-1 rounded-lg text-[11px] font-mono font-semibold transition-all cursor-pointer border ${
+                    active
+                      ? 'bg-[#1D4ED8] text-white border-[#1D4ED8] shadow-2xs'
+                      : 'bg-white/80 dark:bg-[#0F1D33] text-slate-600 dark:text-[#AAB8CC] border-[#D5E0F0] dark:border-slate-400/15 hover:text-[#091122] dark:hover:text-white'
+                  }`}
+                >
+                  {b.label.split(' ')[0]} ({b.peerAvg}%)
+                </button>
+              );
+            })}
           </div>
         </div>
 
@@ -826,7 +1074,7 @@ export const CounteroffensiveAssessment: React.FC<CounteroffensiveAssessmentProp
 
             <div className="flex items-center gap-3 text-xs font-mono text-slate-600 dark:text-[#AAB8CC]">
               <span>
-                Answered: <strong className="text-[#091122] dark:text-white">{answeredCount}</strong> /{' '}
+                Completed: <strong className="text-[#091122] dark:text-white">{answeredCount}</strong> /{' '}
                 {activeQuestions.length}
               </span>
               <div className="w-28 h-2 rounded-full bg-slate-200 dark:bg-slate-800 overflow-hidden">
@@ -852,7 +1100,7 @@ export const CounteroffensiveAssessment: React.FC<CounteroffensiveAssessmentProp
               transition={{ duration: 0.25 }}
               className="space-y-6"
             >
-              {/* Question Scenario Header with Minimalist Sequence Icon */}
+              {/* Question Scenario Header with Minimalist Sequence Icon & Action Toggles */}
               <div className="space-y-3">
                 <div className="flex flex-wrap items-center justify-between gap-2">
                   <div className="inline-flex items-center gap-2">
@@ -864,14 +1112,26 @@ export const CounteroffensiveAssessment: React.FC<CounteroffensiveAssessmentProp
                     </span>
                   </div>
 
-                  <div className="flex flex-wrap items-center gap-3">
+                  <div className="flex flex-wrap items-center gap-2.5">
                     <button
                       type="button"
                       onClick={() => setShowAttackTrace((prev) => !prev)}
-                      className="inline-flex items-center gap-1 text-xs font-mono font-semibold text-slate-600 dark:text-[#AAB8CC] hover:text-[#E11D48] dark:hover:text-[#38BDF8] cursor-pointer"
+                      className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-slate-100 dark:bg-[#0F1D33] text-xs font-mono font-semibold text-slate-700 dark:text-[#AAB8CC] hover:text-[#E11D48] dark:hover:text-[#38BDF8] cursor-pointer"
                     >
                       <Terminal className="w-3.5 h-3.5" />
-                      <span>{showAttackTrace ? 'Hide Attack vs. Defense Trace' : 'Show Attack vs. Defense Trace'}</span>
+                      <span>{showAttackTrace ? 'Hide Kill-Chain' : 'Show Kill-Chain'}</span>
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setShowGuardrailCode((prev) => !prev)}
+                      className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-mono font-semibold transition-colors cursor-pointer ${
+                        showGuardrailCode
+                          ? 'bg-[#1D4ED8] text-white'
+                          : 'bg-slate-100 dark:bg-[#0F1D33] text-slate-700 dark:text-[#AAB8CC] hover:text-[#1D4ED8] dark:hover:text-[#38BDF8]'
+                      }`}
+                    >
+                      <Code2 className="w-3.5 h-3.5" />
+                      <span>{showGuardrailCode ? 'Hide Policy YAML' : 'Inspect Guardrail YAML'}</span>
                     </button>
                     <Link
                       to={`/chapters/${currentQuestion.sequenceSlug}`}
@@ -910,6 +1170,33 @@ export const CounteroffensiveAssessment: React.FC<CounteroffensiveAssessmentProp
                     </div>
                   </div>
                 )}
+
+                {/* Inspectable Reference Policy / Guardrail YAML Drawer */}
+                {showGuardrailCode && (
+                  <motion.div
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: 'auto' }}
+                    className="rounded-xl bg-[#070E1B] text-slate-200 border border-slate-700/80 p-3.5 font-mono text-xs space-y-2"
+                  >
+                    <div className="flex items-center justify-between gap-2 border-b border-slate-800 pb-2">
+                      <span className="text-[10px] font-bold text-[#38BDF8] flex items-center gap-1.5">
+                        <Code2 className="w-3.5 h-3.5 text-[#FB7185]" />
+                        <span>REFERENCE DETERMINISTIC POLICY SPEC · {currentQuestion.frameworkPattern.toUpperCase()}</span>
+                      </span>
+                      <button
+                        type="button"
+                        onClick={() => handleCopySnippet(currentQuestion.guardrailSnippet)}
+                        className="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-slate-800 hover:bg-slate-700 text-[10px] text-slate-200 cursor-pointer"
+                      >
+                        {copiedCode ? <Check className="w-3 h-3 text-emerald-400" /> : <Copy className="w-3 h-3" />}
+                        <span>{copiedCode ? 'Copied YAML' : 'Copy Spec'}</span>
+                      </button>
+                    </div>
+                    <pre className="text-[11px] leading-relaxed text-emerald-300/95 overflow-x-auto">
+                      {currentQuestion.guardrailSnippet}
+                    </pre>
+                  </motion.div>
+                )}
               </div>
 
               {/* 4 Answer Options with Maturity Score Meter */}
@@ -931,15 +1218,20 @@ export const CounteroffensiveAssessment: React.FC<CounteroffensiveAssessmentProp
                         <span className="inline-flex items-center justify-center w-6 h-6 rounded-lg bg-white dark:bg-[#060D1A] border border-slate-200 dark:border-slate-700 text-xs font-mono font-bold text-[#091122] dark:text-[#F5F8FF] shrink-0">
                           {String.fromCharCode(65 + idx)}
                         </span>
-                        <span
-                          className={`px-2 py-0.5 rounded text-[10px] font-mono font-bold ${
-                            isSelected
-                              ? 'bg-[#1D4ED8] text-white'
-                              : 'bg-slate-200/75 dark:bg-slate-800 text-slate-600 dark:text-[#AAB8CC]'
-                          }`}
-                        >
-                          {opt.tag}
-                        </span>
+                        <div className="flex items-center gap-1.5">
+                          <span
+                            className={`px-2 py-0.5 rounded text-[10px] font-mono font-bold ${
+                              isSelected
+                                ? 'bg-[#1D4ED8] text-white'
+                                : 'bg-slate-200/75 dark:bg-slate-800 text-slate-600 dark:text-[#AAB8CC]'
+                            }`}
+                          >
+                            {opt.tag}
+                          </span>
+                          <span className="text-[10px] font-mono font-bold text-slate-500 dark:text-slate-400">
+                            {opt.score} pts
+                          </span>
+                        </div>
                       </div>
                       <p className="text-xs sm:text-sm font-medium text-[#091122] dark:text-[#F5F8FF] leading-relaxed">
                         {opt.label}
@@ -949,46 +1241,81 @@ export const CounteroffensiveAssessment: React.FC<CounteroffensiveAssessmentProp
                 })}
               </div>
 
-              {/* Instant Curiosity Reveal When Option Is Selected */}
-              {currentSelectedOption && (
+              {/* Live Runtime Simulation Telemetry & Curiosity Reveal When Option Is Selected */}
+              {currentSelectedOption && currentTelemetry && (
                 <motion.div
                   initial={{ opacity: 0, y: 8 }}
                   animate={{ opacity: 1, y: 0 }}
-                  className="rounded-2xl bg-gradient-to-r from-[#E11D48]/[0.05] via-white to-[#1D4ED8]/[0.06] dark:from-[#E11D48]/[0.12] dark:via-[#0F1D33] dark:to-[#1D4ED8]/[0.14] border border-[#D5E0F0] dark:border-slate-400/20 p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4"
+                  className="rounded-2xl bg-gradient-to-r from-[#E11D48]/[0.05] via-white to-[#1D4ED8]/[0.06] dark:from-[#E11D48]/[0.12] dark:via-[#0F1D33] dark:to-[#1D4ED8]/[0.14] border border-[#D5E0F0] dark:border-slate-400/20 p-4 sm:p-5 space-y-4"
                 >
-                  <div className="space-y-1">
-                    <div className="text-[11px] font-mono font-bold text-[#E11D48] dark:text-[#FB7185] flex items-center gap-1.5">
-                      <Zap className="w-3.5 h-3.5" />
-                      <span>BOOK ARCHITECTURE INSIGHT · {currentQuestion.frameworkPattern.toUpperCase()}</span>
+                  {/* Simulated Runtime Verdict Strip */}
+                  <div className="flex flex-wrap items-center justify-between gap-3 pb-3 border-b border-slate-200/80 dark:border-slate-400/15">
+                    <div className="flex flex-wrap items-center gap-2">
+                      <span
+                        className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-[10px] font-mono font-bold border ${currentTelemetry.badgeClass}`}
+                      >
+                        <Gauge className="w-3.5 h-3.5" />
+                        <span>SIMULATED OUTCOME: {currentTelemetry.verdict}</span>
+                      </span>
+                      <span className="text-[11px] font-mono text-slate-600 dark:text-[#AAB8CC]">
+                        Est. MTTC: <strong className="text-[#091122] dark:text-white">{currentTelemetry.mttc}</strong>
+                      </span>
                     </div>
-                    <p className="text-xs sm:text-sm text-[#334155] dark:text-[#AAB8CC] leading-relaxed">
-                      {currentQuestion.curiosityHook}
-                    </p>
+
+                    <div className="flex items-center gap-2 text-[11px] font-mono">
+                      <span className="text-slate-500 dark:text-[#AAB8CC]">Blast-Radius Containment:</span>
+                      <div className="w-24 h-2 rounded-full bg-slate-200 dark:bg-slate-800 overflow-hidden">
+                        <div
+                          className={`h-full bg-gradient-to-r ${currentTelemetry.barClass} transition-all duration-500`}
+                          style={{ width: `${currentTelemetry.containmentPct}%` }}
+                        />
+                      </div>
+                      <strong className="text-[#091122] dark:text-white">{currentTelemetry.containmentPct}%</strong>
+                    </div>
                   </div>
 
-                  <div className="shrink-0 flex items-center gap-2">
-                    {currentIdx < activeQuestions.length - 1 ? (
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                    <div className="space-y-1">
+                      <div className="text-[11px] font-mono font-bold text-[#E11D48] dark:text-[#FB7185] flex items-center gap-1.5">
+                        <Zap className="w-3.5 h-3.5" />
+                        <span>BOOK ARCHITECTURE INSIGHT · {currentQuestion.frameworkPattern.toUpperCase()}</span>
+                      </div>
+                      <p className="text-xs sm:text-sm text-[#334155] dark:text-[#AAB8CC] leading-relaxed">
+                        {currentQuestion.curiosityHook}
+                      </p>
+                    </div>
+
+                    <div className="shrink-0 flex items-center gap-2">
                       <button
                         type="button"
-                        onClick={() => setCurrentIdx((prev) => prev + 1)}
-                        className="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-xl bg-[#1D4ED8] hover:bg-[#1E40AF] text-white text-xs font-bold shadow-xs transition-all cursor-pointer"
+                        onClick={() => setShowGuardrailCode((prev) => !prev)}
+                        className="px-3 py-2.5 rounded-xl border border-[#D5E0F0] dark:border-slate-400/20 text-xs font-mono font-semibold text-[#091122] dark:text-[#F5F8FF] hover:border-[#1D4ED8] cursor-pointer"
                       >
-                        <span>Next Scenario</span>
-                        <ArrowRight className="w-3.5 h-3.5" />
+                        {showGuardrailCode ? 'Hide YAML' : 'View YAML Spec'}
                       </button>
-                    ) : (
-                      <button
-                        type="button"
-                        onClick={() => {
-                          trackEvent('order_cta_clicked', { source: 'assessment_completed' });
-                          setIsSubmitted(true);
-                        }}
-                        className="inline-flex items-center gap-1.5 px-5 py-2.5 rounded-xl bg-gradient-to-r from-[#E11D48] via-[#4F46E5] to-[#1D4ED8] text-white text-xs font-bold shadow-md transition-all cursor-pointer"
-                      >
-                        <span>Generate My Framework Assessment</span>
-                        <Sparkles className="w-3.5 h-3.5" />
-                      </button>
-                    )}
+                      {currentIdx < activeQuestions.length - 1 ? (
+                        <button
+                          type="button"
+                          onClick={() => setCurrentIdx((prev) => prev + 1)}
+                          className="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-xl bg-[#1D4ED8] hover:bg-[#1E40AF] text-white text-xs font-bold shadow-xs transition-all cursor-pointer"
+                        >
+                          <span>Next Scenario</span>
+                          <ArrowRight className="w-3.5 h-3.5" />
+                        </button>
+                      ) : (
+                        <button
+                          type="button"
+                          onClick={() => {
+                            trackEvent('order_cta_clicked', { source: 'assessment_completed' });
+                            setIsSubmitted(true);
+                          }}
+                          className="inline-flex items-center gap-1.5 px-5 py-2.5 rounded-xl bg-gradient-to-r from-[#E11D48] via-[#4F46E5] to-[#1D4ED8] text-white text-xs font-bold shadow-md transition-all cursor-pointer"
+                        >
+                          <span>Generate My Framework Assessment</span>
+                          <Sparkles className="w-3.5 h-3.5" />
+                        </button>
+                      )}
+                    </div>
                   </div>
                 </motion.div>
               )}
@@ -1016,22 +1343,24 @@ export const CounteroffensiveAssessment: React.FC<CounteroffensiveAssessmentProp
                   </button>
                 </div>
 
-                <button
-                  type="button"
-                  disabled={answeredCount === 0}
-                  onClick={() => {
-                    trackEvent('order_cta_clicked', { source: 'assessment_completed_direct' });
-                    setIsSubmitted(true);
-                  }}
-                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-[#E11D48] to-[#1D4ED8] text-white text-xs font-bold disabled:opacity-40 shadow-xs cursor-pointer"
-                >
-                  <span>View My Framework Assessment &amp; Score</span>
-                  <ArrowRight className="w-3.5 h-3.5" />
-                </button>
+                <div className="flex items-center gap-2">
+                  <button
+                    type="button"
+                    disabled={answeredCount === 0}
+                    onClick={() => {
+                      trackEvent('order_cta_clicked', { source: 'assessment_completed_direct' });
+                      setIsSubmitted(true);
+                    }}
+                    className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-[#E11D48] to-[#1D4ED8] text-white text-xs font-bold disabled:opacity-40 shadow-xs cursor-pointer"
+                  >
+                    <span>View My Framework Assessment &amp; Score</span>
+                    <ArrowRight className="w-3.5 h-3.5" />
+                  </button>
+                </div>
               </div>
             </motion.div>
           ) : (
-            /* DIAGNOSTIC RESULTS + 4-DOMAIN RADAR + WHAT-IF SIMULATOR + 30/60/90 ROADMAP + BOOK FUNNEL */
+            /* DIAGNOSTIC RESULTS + 4-AXIS SVG RADAR + WHAT-IF SIMULATOR + 30/60/90 ROADMAP + BOOK FUNNEL */
             <motion.div
               key="assessment-results"
               initial={{ opacity: 0, y: 14 }}
@@ -1039,7 +1368,7 @@ export const CounteroffensiveAssessment: React.FC<CounteroffensiveAssessmentProp
               transition={{ duration: 0.3 }}
               className="space-y-8"
             >
-              {/* Top Score, Role Diagnosis & Actions Banner */}
+              {/* Top Score, Sector Benchmark Comparison & Role Diagnosis Banner */}
               <div className="rounded-2xl bg-gradient-to-r from-[#E11D48]/[0.08] via-[#F8FAFC] to-[#1D4ED8]/[0.10] dark:from-[#E11D48]/[0.16] dark:via-[#0F1D33] dark:to-[#1D4ED8]/[0.18] border border-[#D5E0F0] dark:border-slate-400/20 p-5 sm:p-7 grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
                 <div className="lg:col-span-4 flex flex-col items-center justify-center text-center p-5 rounded-2xl bg-white dark:bg-[#060D1A] border border-[#D5E0F0] dark:border-slate-400/20 shadow-xs space-y-2">
                   <div className="text-[11px] font-mono font-bold text-slate-500 dark:text-[#AAB8CC]">
@@ -1054,23 +1383,50 @@ export const CounteroffensiveAssessment: React.FC<CounteroffensiveAssessmentProp
                     <Award className="w-3.5 h-3.5" />
                     <span>{diagnostic.tierName}</span>
                   </span>
-                  <div className="pt-2 text-[11px] font-mono text-emerald-600 dark:text-emerald-400 font-semibold">
-                    Simulated with Book Patterns: {diagnostic.projectedScore}%
+
+                  <div className="w-full pt-2 mt-1 border-t border-slate-200/80 dark:border-slate-800 flex items-center justify-between text-[11px] font-mono">
+                    <span className="text-slate-500 dark:text-[#AAB8CC]">
+                      {activeBenchmark.label} Avg: <strong>{activeBenchmark.peerAvg}%</strong>
+                    </span>
+                    <span className="text-emerald-600 dark:text-emerald-400 font-bold">
+                      With Book Patterns: {diagnostic.projectedScore}%
+                    </span>
                   </div>
                 </div>
 
-                <div className="lg:col-span-8 space-y-4">
-                  <div className="flex flex-wrap items-center gap-2 text-xs font-mono font-bold text-[#1D4ED8] dark:text-[#38BDF8]">
-                    <span>ROLE BRIEFING: {activeRoleProfile.label.toUpperCase()}</span>
+                <div className="lg:col-span-8 space-y-3.5">
+                  <div className="flex flex-wrap items-center gap-2 text-xs font-mono font-bold">
+                    <span className="text-[#1D4ED8] dark:text-[#38BDF8]">
+                      ROLE BRIEFING: {activeRoleProfile.label.toUpperCase()}
+                    </span>
+                    <span className="text-slate-400">·</span>
+                    <span
+                      className={
+                        diagnostic.peerDelta >= 0
+                          ? 'text-emerald-600 dark:text-emerald-400'
+                          : 'text-[#E11D48] dark:text-[#FB7185]'
+                      }
+                    >
+                      {diagnostic.peerDelta >= 0
+                        ? `+${diagnostic.peerDelta}% Above ${activeBenchmark.label} Peer Avg`
+                        : `${Math.abs(diagnostic.peerDelta)}% Below ${activeBenchmark.label} Peer Avg`}
+                    </span>
                   </div>
+
                   <h3 className="text-xl sm:text-2xl font-bold font-display text-[#091122] dark:text-[#F5F8FF]">
                     {diagnostic.overallScore < 75
                       ? 'Critical Gaps Detected Between Your AI Velocity and Deterministic Defense'
                       : 'Strong Foundation — Ready for Advanced Multi-Agent & Self-Healing Hardening'}
                   </h3>
+
                   <p className="text-xs sm:text-sm text-[#334155] dark:text-[#AAB8CC] leading-relaxed">
                     {diagnostic.tierSummary} {activeRoleProfile.bookValueHook}
                   </p>
+
+                  <div className="text-[11px] font-mono text-slate-600 dark:text-[#AAB8CC] bg-white/70 dark:bg-[#060D1A]/60 px-3 py-2 rounded-xl border border-[#D5E0F0] dark:border-slate-400/15">
+                    <strong className="text-[#E11D48] dark:text-[#FB7185]">Sector Risk Note ({activeBenchmark.label}):</strong>{' '}
+                    {activeBenchmark.regulatoryNote}
+                  </div>
 
                   <div className="flex flex-wrap items-center gap-2.5 pt-1">
                     <button
@@ -1110,75 +1466,146 @@ export const CounteroffensiveAssessment: React.FC<CounteroffensiveAssessmentProp
                 </div>
               </div>
 
-              {/* 4-Domain Architectural Readiness Matrix & "What-If" Pattern Simulator */}
+              {/* 4-Axis SVG Telemetry Radar + Domain Breakdown + "What-If" Pattern Simulator */}
               <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-                {/* Left 6 Cols: 4-Domain Posture Breakdown */}
-                <div className="lg:col-span-6 rounded-2xl bg-[#F8FAFC] dark:bg-[#0F1D33] border border-[#D5E0F0] dark:border-slate-400/15 p-5 space-y-4">
-                  <div className="flex items-center justify-between gap-2">
+                {/* Left 7 Cols: Interactive 4-Axis Radar Telemetry + 4-Domain Bars */}
+                <div className="lg:col-span-7 rounded-2xl bg-[#F8FAFC] dark:bg-[#0F1D33] border border-[#D5E0F0] dark:border-slate-400/15 p-5 space-y-5">
+                  <div className="flex flex-wrap items-center justify-between gap-2">
                     <div className="text-xs font-mono font-bold text-[#1D4ED8] dark:text-[#38BDF8] flex items-center gap-1.5">
                       <Activity className="w-4 h-4" />
-                      <span>4-DOMAIN ARCHITECTURAL POSTURE MATRIX</span>
+                      <span>4-AXIS COUNTEROFFENSIVE RADAR &amp; DOMAIN TELEMETRY</span>
                     </div>
-                    <span className="text-[11px] font-mono text-slate-500 dark:text-[#AAB8CC]">
-                      Mapped to Book Sequences
-                    </span>
+                    <div className="flex items-center gap-3 text-[10px] font-mono">
+                      <span className="inline-flex items-center gap-1 text-[#E11D48] dark:text-[#FB7185] font-bold">
+                        <span className="w-2 h-2 rounded-full bg-[#E11D48]" /> Baseline
+                      </span>
+                      <span className="inline-flex items-center gap-1 text-slate-500 dark:text-slate-400 font-bold">
+                        <span className="w-2 h-2 rounded-full bg-slate-400" /> Peer Avg
+                      </span>
+                      <span className="inline-flex items-center gap-1 text-[#1D4ED8] dark:text-[#38BDF8] font-bold">
+                        <span className="w-2 h-2 rounded-full bg-[#38BDF8]" /> Simulated
+                      </span>
+                    </div>
                   </div>
 
-                  <div className="space-y-3.5">
-                    {diagnostic.domainBreakdown.map((dom) => (
-                      <div
-                        key={dom.id}
-                        className="rounded-xl bg-white dark:bg-[#081222] border border-slate-200/80 dark:border-slate-400/15 p-3.5 space-y-2"
-                      >
-                        <div className="flex items-center justify-between gap-2">
-                          <div className="flex items-center gap-2 min-w-0">
-                            <SequenceMinimalIcon id={dom.iconKey} size="sm" />
-                            <span className="text-xs sm:text-sm font-bold font-display text-[#091122] dark:text-[#F5F8FF] truncate">
-                              {dom.label}
-                            </span>
+                  <div className="grid grid-cols-1 md:grid-cols-12 gap-4 items-center">
+                    {/* Interactive SVG Radar */}
+                    <div className="md:col-span-5 flex flex-col items-center justify-center bg-white dark:bg-[#081222] rounded-2xl border border-slate-200/80 dark:border-slate-400/15 p-3">
+                      <svg viewBox="0 0 260 260" className="w-full max-w-[230px] h-auto">
+                        {/* Concentric Radar Rings */}
+                        {[25, 50, 75, 100].map((pct) => {
+                          const r = (pct / 100) * 86;
+                          return (
+                            <circle
+                              key={pct}
+                              cx="130"
+                              cy="130"
+                              r={r}
+                              fill="none"
+                              stroke="currentColor"
+                              strokeWidth="0.75"
+                              strokeDasharray={pct === 100 ? undefined : '2 2'}
+                              className="text-slate-300 dark:text-slate-700"
+                            />
+                          );
+                        })}
+                        {/* Crosshair Axes */}
+                        <line x1="130" y1="36" x2="130" y2="224" stroke="currentColor" strokeWidth="0.75" className="text-slate-300 dark:text-slate-700" />
+                        <line x1="36" y1="130" x2="224" y2="130" stroke="currentColor" strokeWidth="0.75" className="text-slate-300 dark:text-slate-700" />
+
+                        {/* Peer Benchmark Polygon */}
+                        <polygon
+                          points={radarPoints.peerPoly}
+                          fill="rgba(148,163,184,0.12)"
+                          stroke="#94A3B8"
+                          strokeWidth="1.5"
+                          strokeDasharray="3 3"
+                        />
+
+                        {/* Simulated Projected Polygon */}
+                        <polygon
+                          points={radarPoints.projectedPoly}
+                          fill="rgba(56,189,248,0.18)"
+                          stroke="#0284C7"
+                          strokeWidth="2"
+                        />
+
+                        {/* User Baseline Polygon */}
+                        <polygon
+                          points={radarPoints.baselinePoly}
+                          fill="rgba(225,29,72,0.22)"
+                          stroke="#E11D48"
+                          strokeWidth="2"
+                        />
+
+                        {/* Axis Labels */}
+                        <text x="130" y="24" textAnchor="middle" className="fill-slate-700 dark:fill-slate-300 text-[9px] font-mono font-bold">
+                          RAG &amp; THREAT
+                        </text>
+                        <text x="252" y="133" textAnchor="end" className="fill-slate-700 dark:fill-slate-300 text-[8px] font-mono font-bold">
+                          RUNTIME
+                        </text>
+                        <text x="130" y="244" textAnchor="middle" className="fill-slate-700 dark:fill-slate-300 text-[9px] font-mono font-bold">
+                          SELF-HEALING
+                        </text>
+                        <text x="8" y="133" textAnchor="start" className="fill-slate-700 dark:fill-slate-300 text-[8px] font-mono font-bold">
+                          OBO MESH
+                        </text>
+                      </svg>
+                    </div>
+
+                    {/* 4-Domain Posture Bars */}
+                    <div className="md:col-span-7 space-y-2.5">
+                      {diagnostic.domainBreakdown.map((dom) => (
+                        <div
+                          key={dom.id}
+                          className="rounded-xl bg-white dark:bg-[#081222] border border-slate-200/80 dark:border-slate-400/15 p-3 space-y-1.5"
+                        >
+                          <div className="flex items-center justify-between gap-2">
+                            <div className="flex items-center gap-2 min-w-0">
+                              <SequenceMinimalIcon id={dom.iconKey} size="xs" />
+                              <span className="text-xs font-bold font-display text-[#091122] dark:text-[#F5F8FF] truncate">
+                                {dom.label}
+                              </span>
+                            </div>
+                            <div className="flex items-center gap-1.5 shrink-0 font-mono text-[10px]">
+                              <span className="text-slate-400">Peer {dom.peerDomainScore}%</span>
+                              <span className="font-bold text-[#E11D48] dark:text-[#FB7185]">
+                                {dom.score}%
+                              </span>
+                              <span className="text-emerald-600 dark:text-emerald-400 font-bold">
+                                → {dom.projectedDomainScore}%
+                              </span>
+                            </div>
                           </div>
-                          <div className="flex items-center gap-2 shrink-0">
-                            <span className="text-[10px] font-mono text-slate-500 dark:text-[#AAB8CC]">
-                              {dom.seqRange}
-                            </span>
-                            <span className="text-xs font-mono font-bold text-[#1D4ED8] dark:text-[#38BDF8]">
-                              {dom.score}%
-                            </span>
+                          <div className="w-full h-2 rounded-full bg-slate-200 dark:bg-slate-800 overflow-hidden relative">
+                            <motion.div
+                              initial={{ width: 0 }}
+                              animate={{ width: `${dom.score}%` }}
+                              transition={{ duration: 0.5, ease: 'easeOut' }}
+                              className="h-full rounded-full bg-gradient-to-r from-[#E11D48] to-[#1D4ED8]"
+                            />
                           </div>
                         </div>
-                        <div className="w-full h-2 rounded-full bg-slate-200 dark:bg-slate-800 overflow-hidden">
-                          <motion.div
-                            initial={{ width: 0 }}
-                            animate={{ width: `${dom.score}%` }}
-                            transition={{ duration: 0.6, ease: 'easeOut' }}
-                            className={`h-full rounded-full ${
-                              dom.score >= 75
-                                ? 'bg-gradient-to-r from-[#1D4ED8] to-[#38BDF8]'
-                                : dom.score >= 45
-                                ? 'bg-gradient-to-r from-indigo-500 to-[#1D4ED8]'
-                                : 'bg-gradient-to-r from-[#E11D48] to-amber-500'
-                            }`}
-                          />
-                        </div>
-                      </div>
-                    ))}
+                      ))}
+                    </div>
                   </div>
                 </div>
 
-                {/* Right 6 Cols: Interactive "What-If" Security Pattern Simulator */}
-                <div className="lg:col-span-6 rounded-2xl bg-[#F8FAFC] dark:bg-[#0F1D33] border border-[#D5E0F0] dark:border-slate-400/15 p-5 flex flex-col justify-between space-y-4">
+                {/* Right 5 Cols: Interactive "What-If" Security Pattern Simulator */}
+                <div className="lg:col-span-5 rounded-2xl bg-[#F8FAFC] dark:bg-[#0F1D33] border border-[#D5E0F0] dark:border-slate-400/15 p-5 flex flex-col justify-between space-y-4">
                   <div className="space-y-3">
                     <div className="flex items-center justify-between gap-2">
                       <div className="text-xs font-mono font-bold text-[#E11D48] dark:text-[#FB7185] flex items-center gap-1.5">
                         <Sliders className="w-4 h-4" />
-                        <span>INTERACTIVE "WHAT-IF" PATTERN SIMULATOR (SEQUENCE 04)</span>
+                        <span>"WHAT-IF" PATTERN SIMULATOR (SEQ 04)</span>
                       </div>
                       <span className="px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-700 dark:text-emerald-300 text-[11px] font-mono font-bold">
                         Projected: {diagnostic.projectedScore}%
                       </span>
                     </div>
                     <p className="text-xs text-slate-600 dark:text-[#AAB8CC]">
-                      Toggle the 4 deterministic security patterns from <em>AI vs. AI</em> below to simulate how deploying them elevates your posture and reduces autonomous Red AI exposure:
+                      Toggle the 4 deterministic patterns from <em>AI vs. AI</em> below to watch your Radar Telemetry expand in real time:
                     </p>
 
                     <div className="space-y-2">
@@ -1199,9 +1626,6 @@ export const CounteroffensiveAssessment: React.FC<CounteroffensiveAssessmentProp
                               <div className="flex items-center gap-2">
                                 <span className="text-xs font-bold font-display text-[#091122] dark:text-[#F5F8FF]">
                                   {ctrl.name}
-                                </span>
-                                <span className="text-[10px] font-mono text-[#1D4ED8] dark:text-[#38BDF8]">
-                                  ({ctrl.seq})
                                 </span>
                               </div>
                               <p className="text-[11px] text-slate-500 dark:text-[#AAB8CC]">
