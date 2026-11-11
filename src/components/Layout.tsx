@@ -9,6 +9,7 @@ import {
 import { BOOK_METADATA } from '../data/bookConfig';
 import { AUTHOR_DATA } from '../data/authorData';
 import { trackEvent } from '../utils/analytics';
+import { triggerBookingConfetti } from '../utils/confetti';
 import { BrandLogo, FloatingThemeSwitcher } from './BrandLogo';
 import { NavigationTreeModal } from './NavigationTreeModal';
 
@@ -181,7 +182,10 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
 
             <Link
               to="/order"
-              onClick={() => trackEvent('order_cta_clicked', { source: 'top_nav' })}
+              onClick={() => {
+                triggerBookingConfetti();
+                trackEvent('order_cta_clicked', { source: 'top_nav' });
+              }}
               className="hidden lg:inline-flex items-center px-4 py-2 text-xs font-semibold text-white bg-gradient-to-r from-[#E11D48] via-[#4F46E5] to-[#1D4ED8] hover:from-[#BE123C] hover:to-[#1E40AF] rounded-xl transition-all whitespace-nowrap shrink-0 shadow-[0_4px_14px_-3px_rgba(225,29,72,0.3),0_4px_14px_-3px_rgba(29,78,216,0.32)]"
             >
               <span>Order the Book</span>

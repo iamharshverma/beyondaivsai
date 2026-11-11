@@ -26,6 +26,7 @@ import { CounteroffensiveAssessment } from '../components/CounteroffensiveAssess
 import { LeadCaptureModule } from '../components/LeadCaptureModule';
 import { FadeInUp, fadeInUpVariants, staggerGridVariants } from '../components/FadeInUp';
 import { usePageSEO, trackEvent } from '../utils/analytics';
+import { triggerBookingConfetti, triggerReadinessTestConfetti } from '../utils/confetti';
 
 export const HomePage: React.FC = () => {
   const [selectedPatternId, setSelectedPatternId] = useState(FOUR_SECURITY_PATTERNS[0].id);
@@ -122,8 +123,11 @@ export const HomePage: React.FC = () => {
               <div className="pt-2 flex flex-col sm:flex-row flex-wrap items-stretch sm:items-center gap-3">
                 <Link
                   to="/order"
-                  onClick={() => trackEvent('order_cta_clicked', { source: 'hero_primary' })}
-                  className="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl bg-gradient-to-r from-[#E11D48] via-[#4F46E5] to-[#1D4ED8] hover:from-[#BE123C] hover:to-[#1E40AF] text-xs sm:text-sm font-bold text-white shadow-[0_10px_28px_-6px_rgba(225,29,72,0.4),0_10px_28px_-6px_rgba(29,78,216,0.45)] transition-all"
+                  onClick={() => {
+                    triggerBookingConfetti();
+                    trackEvent('order_cta_clicked', { source: 'hero_primary' });
+                  }}
+                  className="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl bg-gradient-to-r from-[#E11D48] via-[#4F46E5] to-[#1D4ED8] hover:from-[#BE123C] hover:to-[#1E40AF] text-xs sm:text-sm font-bold text-white shadow-[0_10px_28px_-6px_rgba(225,29,72,0.4),0_10px_28px_-6px_rgba(29,78,216,0.45)] transition-all cursor-pointer"
                 >
                   <span>ORDER THE BOOK</span>
                   <ArrowRight className="w-4 h-4 shrink-0" />
@@ -136,7 +140,11 @@ export const HomePage: React.FC = () => {
                 </Link>
                 <Link
                   to="/assessment"
-                  className="inline-flex items-center justify-center gap-2 px-4 py-3 rounded-xl text-xs sm:text-sm font-semibold text-[#E11D48] dark:text-[#FB7185] hover:text-[#1D4ED8] dark:hover:text-[#38BDF8] transition-colors"
+                  onClick={() => {
+                    triggerReadinessTestConfetti();
+                    trackEvent('order_cta_clicked', { source: 'hero_take_readiness_test' });
+                  }}
+                  className="inline-flex items-center justify-center gap-2 px-4 py-3 rounded-xl text-xs sm:text-sm font-semibold text-[#E11D48] dark:text-[#FB7185] hover:text-[#1D4ED8] dark:hover:text-[#38BDF8] transition-colors cursor-pointer"
                 >
                   <BookOpen className="w-4 h-4 shrink-0" />
                   <span>TAKE AI READINESS TEST</span>

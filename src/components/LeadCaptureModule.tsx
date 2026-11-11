@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, CheckCircle2, BookOpen } from 'lucide-react';
 import { trackEvent } from '../utils/analytics';
+import { triggerBookingConfetti } from '../utils/confetti';
 
 const SUBSCRIBER_ROLES = [
   'AI Engineer',
@@ -62,6 +63,7 @@ export const LeadCaptureModule: React.FC<LeadCaptureModuleProps> = ({ compact = 
           setErrorMsg(data.error || 'Unable to process request. Please check your details.');
         } else {
           setSuccessData(data);
+          triggerBookingConfetti();
           trackEvent('newsletter_signup', { role });
         }
         return;
@@ -92,6 +94,7 @@ export const LeadCaptureModule: React.FC<LeadCaptureModuleProps> = ({ compact = 
         message:
           'Your Chapter 1 preview access and technical architecture update subscription have been recorded. You can also read the full interactive Chapter 1 excerpt immediately online.',
       });
+      triggerBookingConfetti();
       trackEvent('newsletter_signup', { role });
     } finally {
       setSubmitting(false);

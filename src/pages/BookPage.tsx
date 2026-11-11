@@ -13,6 +13,7 @@ import {
 import { FadeInUp, fadeInUpVariants, staggerGridVariants } from '../components/FadeInUp';
 import { SequenceMinimalIcon } from '../components/SequenceMinimalIcons';
 import { usePageSEO, trackEvent } from '../utils/analytics';
+import { triggerBookingConfetti } from '../utils/confetti';
 
 const AUDIENCE_PROFILES = [
   {
@@ -180,8 +181,11 @@ export const BookPage: React.FC = () => {
               <div className="pt-2 flex flex-col sm:flex-row flex-wrap items-stretch sm:items-center gap-3.5">
                 <Link
                   to="/order"
-                  onClick={() => trackEvent('order_cta_clicked', { source: 'book_page_top' })}
-                  className="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl bg-gradient-to-r from-[#E11D48] via-[#4F46E5] to-[#1D4ED8] hover:opacity-95 text-xs sm:text-sm font-bold text-white transition-all shadow-md"
+                  onClick={() => {
+                    triggerBookingConfetti();
+                    trackEvent('order_cta_clicked', { source: 'book_page_top' });
+                  }}
+                  className="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl bg-gradient-to-r from-[#E11D48] via-[#4F46E5] to-[#1D4ED8] hover:opacity-95 text-xs sm:text-sm font-bold text-white transition-all shadow-md cursor-pointer"
                 >
                   <span>Order the Book</span>
                   <ArrowRight className="w-4 h-4" />
@@ -461,7 +465,11 @@ export const BookPage: React.FC = () => {
               </Link>
               <Link
                 to="/order"
-                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-lg bg-gradient-to-r from-[#E11D48] to-[#1D4ED8] text-xs font-semibold text-white transition-all"
+                onClick={() => {
+                  triggerBookingConfetti();
+                  trackEvent('order_cta_clicked', { source: 'book_page_excerpt_bottom' });
+                }}
+                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-lg bg-gradient-to-r from-[#E11D48] to-[#1D4ED8] text-xs font-semibold text-white transition-all cursor-pointer"
               >
                 <span>Order Full 11-Chapter Book</span>
                 <ArrowRight className="w-3.5 h-3.5" />
@@ -517,7 +525,11 @@ export const BookPage: React.FC = () => {
                   <div className="text-xs font-mono font-semibold text-slate-900 dark:text-[#F5F8FF] mb-3">{fmt.priceDisplay}</div>
                   <Link
                     to="/order"
-                    className="w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg bg-gradient-to-r from-[#E11D48] via-[#4F46E5] to-[#1D4ED8] hover:opacity-95 text-xs font-semibold text-white transition-all"
+                    onClick={() => {
+                      triggerBookingConfetti();
+                      trackEvent('order_cta_clicked', { source: `book_page_format_${fmt.id}` });
+                    }}
+                    className="w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg bg-gradient-to-r from-[#E11D48] via-[#4F46E5] to-[#1D4ED8] hover:opacity-95 text-xs font-semibold text-white transition-all cursor-pointer"
                   >
                     <span>Select Format on Order Page</span>
                     <ArrowRight className="w-3.5 h-3.5" />

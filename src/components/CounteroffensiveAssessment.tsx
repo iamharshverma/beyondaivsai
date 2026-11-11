@@ -33,6 +33,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { CHAPTERS_DATA } from '../data/chaptersData';
 import { SequenceMinimalIcon } from './SequenceMinimalIcons';
 import { trackEvent, usePageSEO } from '../utils/analytics';
+import { triggerBookingConfetti, triggerReadinessTestConfetti } from '../utils/confetti';
 
 export type PractitionerRole = 'ciso' | 'architect' | 'redteam' | 'founder';
 export type IndustrySectorId = 'finserv' | 'saas' | 'healthcare' | 'infra' | 'aistartup';
@@ -738,6 +739,7 @@ export const CounteroffensiveAssessment: React.FC<CounteroffensiveAssessmentProp
     });
     setAnswers((prev) => ({ ...sampleAnswers, ...prev }));
     setIsSubmitted(true);
+    triggerReadinessTestConfetti();
     trackEvent('order_cta_clicked', { source: 'assessment_instant_demo' });
   };
 
@@ -1433,6 +1435,7 @@ https://www.beyondaivsai.com/assessment
                           onClick={() => {
                             trackEvent('order_cta_clicked', { source: 'assessment_completed' });
                             setIsSubmitted(true);
+                            triggerReadinessTestConfetti();
                           }}
                           className="inline-flex items-center gap-1.5 px-5 py-2.5 rounded-xl bg-gradient-to-r from-[#E11D48] via-[#4F46E5] to-[#1D4ED8] text-white text-xs font-bold shadow-md transition-all cursor-pointer"
                         >
@@ -1475,6 +1478,7 @@ https://www.beyondaivsai.com/assessment
                     onClick={() => {
                       trackEvent('order_cta_clicked', { source: 'assessment_completed_direct' });
                       setIsSubmitted(true);
+                      triggerReadinessTestConfetti();
                     }}
                     className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-[#E11D48] to-[#1D4ED8] text-white text-xs font-bold disabled:opacity-40 shadow-xs cursor-pointer"
                   >
@@ -2562,12 +2566,13 @@ https://www.beyondaivsai.com/assessment
                 <div className="flex flex-col sm:flex-row flex-wrap items-stretch sm:items-center gap-3 shrink-0">
                   <Link
                     to="/order"
-                    onClick={() =>
+                    onClick={() => {
+                      triggerBookingConfetti();
                       trackEvent('order_cta_clicked', {
                         source: 'assessment_results_primary',
                         score: diagnostic.overallScore,
-                      })
-                    }
+                      });
+                    }}
                     className="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl bg-gradient-to-r from-[#E11D48] via-[#4F46E5] to-[#1D4ED8] hover:from-[#BE123C] hover:to-[#1E40AF] text-xs sm:text-sm font-bold text-white shadow-lg transition-all"
                   >
                     <span>Order the Book Now</span>

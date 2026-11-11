@@ -13,6 +13,7 @@ import {
 import { BOOK_METADATA } from '../data/bookConfig';
 import { AUTHOR_DATA } from '../data/authorData';
 import { usePageSEO } from '../utils/analytics';
+import { triggerBookingConfetti } from '../utils/confetti';
 
 const INTERVIEW_TOPICS = [
   'Why the next era of cybersecurity is an AI vs. AI counteroffensive—and why static perimeter defenses fail against machine-speed automation.',
@@ -326,6 +327,7 @@ export const ContactPage: React.FC = () => {
           setErrorMsg(data.error || 'Please check your form inputs.');
         } else {
           setSuccessData(data);
+          triggerBookingConfetti();
         }
         return;
       }
@@ -357,6 +359,7 @@ export const ContactPage: React.FC = () => {
         referenceId,
         message: `Thank you, ${name.trim()}. Your "${category}" enquiry (${referenceId}) has been routed to harshverma59@gmail.com.`,
       });
+      triggerBookingConfetti();
     } finally {
       setSubmitting(false);
     }

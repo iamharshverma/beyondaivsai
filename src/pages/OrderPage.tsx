@@ -18,38 +18,7 @@ import {
   LAUNCH_CAMPAIGN_CONFIG,
 } from '../data/bookConfig';
 import { usePageSEO, trackEvent } from '../utils/analytics';
-
-const triggerOrderConfetti = () => {
-  try {
-    const colors = ['#1D4ED8', '#0284C7', '#37D5F5', '#28D17C', '#F5A524'];
-    // Primary center burst
-    confetti({
-      particleCount: 85,
-      spread: 72,
-      origin: { y: 0.62 },
-      colors,
-    });
-    // Left & right celebratory side cannons
-    setTimeout(() => {
-      confetti({
-        particleCount: 45,
-        angle: 60,
-        spread: 55,
-        origin: { x: 0.12, y: 0.68 },
-        colors,
-      });
-      confetti({
-        particleCount: 45,
-        angle: 120,
-        spread: 55,
-        origin: { x: 0.88, y: 0.68 },
-        colors,
-      });
-    }, 180);
-  } catch {
-    // Fallback safely if canvas is unavailable
-  }
-};
+import { triggerBookingConfetti } from '../utils/confetti';
 
 export const OrderPage: React.FC = () => {
   const [selectedFormatId, setSelectedFormatId] = useState<'hardcover' | 'ebook' | 'institutional'>(
@@ -165,7 +134,7 @@ export const OrderPage: React.FC = () => {
           setDirectError(data.error || 'Please check your order details.');
         } else {
           setDirectResult(data);
-          triggerOrderConfetti();
+          triggerBookingConfetti();
           if (data.status === 'redirect_to_checkout' && data.checkoutUrl) {
             window.location.href = data.checkoutUrl;
           }
@@ -203,7 +172,7 @@ export const OrderPage: React.FC = () => {
         notificationRecipient: 'harshverma59@gmail.com',
         message: `Your book order (${referenceId}) for ${quantity} copy/copies of the ${selectedFormat.name} has been registered and dispatched to harshverma59@gmail.com. Our fulfillment desk will reply to ${customerEmail.trim()} with your direct invoice and delivery confirmation.`,
       });
-      triggerOrderConfetti();
+      triggerBookingConfetti();
     } finally {
       setDirectSubmitting(false);
     }
@@ -255,7 +224,7 @@ export const OrderPage: React.FC = () => {
           setBulkError(data.error || 'Please check your bulk order fields.');
         } else {
           setBulkSuccess(data);
-          triggerOrderConfetti();
+          triggerBookingConfetti();
           trackEvent('bulk_order_enquiry', { quantity: bulkQty, intendedUse });
         }
         return;
@@ -290,7 +259,7 @@ export const OrderPage: React.FC = () => {
         notificationRecipient: 'harshverma59@gmail.com',
         message: `Bulk order enquiry (${referenceId}) for ${bulkQty} copies (${orgName.trim()}) has been dispatched to harshverma59@gmail.com. Our institutional fulfillment desk will contact ${bulkEmail.trim()} within 24–48 business hours.`,
       });
-      triggerOrderConfetti();
+      triggerBookingConfetti();
       trackEvent('bulk_order_enquiry', { quantity: bulkQty, intendedUse });
     } finally {
       setBulkSubmitting(false);
@@ -655,7 +624,10 @@ export const OrderPage: React.FC = () => {
                           href={ret.url}
                           target="_blank"
                           rel="noopener noreferrer"
-                          onClick={() => trackEvent('retailer_selected', { retailer: ret.id })}
+                          onClick={() => {
+                            triggerBookingConfetti();
+                            trackEvent('retailer_selected', { retailer: ret.id });
+                          }}
                           className="w-full inline-flex items-center justify-center gap-1.5 px-4 py-2 rounded-lg bg-[#1D4ED8] dark:bg-[#3478F6] hover:bg-[#1E40AF] text-xs font-semibold text-white transition-colors"
                         >
                           <span>Order on {ret.name}</span>
@@ -664,7 +636,10 @@ export const OrderPage: React.FC = () => {
                       ) : (
                         <a
                           href="#direct-allocation"
-                          onClick={() => trackEvent('retailer_selected', { retailer: ret.id })}
+                          onClick={() => {
+                            triggerBookingConfetti();
+                            trackEvent('retailer_selected', { retailer: ret.id });
+                          }}
                           className="w-full inline-flex items-center justify-center gap-1.5 px-4 py-2 rounded-lg bg-white dark:bg-[#101F34] hover:bg-slate-100 dark:hover:bg-[#162944] border border-slate-300 dark:border-slate-400/20 text-xs font-semibold text-[#1D4ED8] dark:text-[#37D5F5] transition-colors"
                         >
                           <span>Reserve via Direct Order Form Above</span>

@@ -27,6 +27,7 @@ import { CHAPTERS_DATA, MASTER_BLUEPRINT_INFOGRAPHIC } from '../data/chaptersDat
 import { BOOK_METADATA } from '../data/bookConfig';
 import { useTheme } from '../context/ThemeContext';
 import { SequenceMinimalIcon } from './SequenceMinimalIcons';
+import { triggerReadinessTestConfetti } from '../utils/confetti';
 
 interface NavTreeItem {
   to: string;
@@ -408,7 +409,10 @@ export const NavigationTreeModal: React.FC<NavigationTreeModalProps> = ({ isOpen
                 <div className="flex items-center gap-2 shrink-0">
                   <Link
                     to="/assessment"
-                    onClick={onClose}
+                    onClick={() => {
+                      triggerReadinessTestConfetti();
+                      onClose();
+                    }}
                     className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-[#091122] dark:bg-white text-white dark:text-[#091122] text-xs font-bold shadow-2xs hover:opacity-90 transition-opacity"
                   >
                     <span>Take Readiness Test</span>

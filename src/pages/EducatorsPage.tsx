@@ -11,6 +11,7 @@ import {
 import { CHAPTERS_DATA } from '../data/chaptersData';
 import { BOOK_METADATA } from '../data/bookConfig';
 import { usePageSEO, trackEvent } from '../utils/analytics';
+import { triggerBookingConfetti } from '../utils/confetti';
 
 const CLASSROOM_MODULES = [
   {
@@ -92,6 +93,7 @@ export const EducatorsPage: React.FC = () => {
         setErrorMsg(data.error || 'Please check your institutional enquiry details.');
       } else {
         setSuccessData(data);
+        triggerBookingConfetti();
         trackEvent('bulk_order_enquiry', { source: 'educators_page', quantity });
       }
     } catch {
