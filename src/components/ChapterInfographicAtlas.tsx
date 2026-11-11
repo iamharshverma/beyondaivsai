@@ -442,25 +442,15 @@ export const ChapterInfographicAtlas: React.FC<ChapterInfographicAtlasProps> = (
       : activeSlide.imageUrl;
 
   return (
-    <motion.div
-      variants={galleryContainerVariants}
-      initial="hidden"
-      whileInView="visible"
-      viewport={{ once: true, amount: 0.08 }}
-      className="space-y-6"
-    >
-      {/* Staggered Interactive Sequence & Master Blueprint Pill Bar with Minimalist Icons */}
-      <motion.div
-        variants={galleryContainerVariants}
-        className="flex items-center gap-1.5 sm:gap-2 overflow-x-auto no-scrollbar pb-1.5"
-      >
+    <div className="space-y-6">
+      {/* Interactive Sequence & Master Blueprint Pill Bar with Minimalist Icons */}
+      <div className="flex items-center gap-1.5 sm:gap-2 overflow-x-auto no-scrollbar pb-1.5 pt-1">
         {slides.map((slide) => {
           const isSelected = slide.id === selectedSlideId;
           const isMaster = slide.id === 'master-blueprint';
           return (
-            <motion.button
+            <button
               key={slide.id}
-              variants={galleryItemVariants}
               type="button"
               onClick={() => {
                 setSelectedSlideId(slide.id);
@@ -468,7 +458,7 @@ export const ChapterInfographicAtlas: React.FC<ChapterInfographicAtlasProps> = (
               }}
               className={`inline-flex items-center gap-2 px-3 sm:px-3.5 py-2 rounded-xl text-xs font-mono font-semibold whitespace-nowrap shrink-0 transition-all cursor-pointer border ${
                 isSelected
-                  ? 'bg-gradient-to-r from-[#E11D48] via-[#4F46E5] to-[#1D4ED8] text-white border-transparent shadow-sm'
+                  ? 'bg-gradient-to-r from-[#E11D48] via-[#4F46E5] to-[#1D4ED8] text-white border-transparent shadow-sm ring-2 ring-[#1D4ED8]/30 dark:ring-[#38BDF8]/40'
                   : isMaster
                   ? 'bg-white dark:bg-[#0F1D33] text-[#E11D48] dark:text-[#FB7185] border-[#E11D48]/30 hover:border-[#E11D48]'
                   : 'bg-white dark:bg-[#0F1D33] text-slate-700 dark:text-[#AAB8CC] border-[#D5E0F0] dark:border-slate-400/15 hover:border-[#1D4ED8] dark:hover:text-white'
@@ -484,16 +474,15 @@ export const ChapterInfographicAtlas: React.FC<ChapterInfographicAtlasProps> = (
                       .slice(0, 3)
                       .join(' ')}…`}
               </span>
-            </motion.button>
+            </button>
           );
         })}
-      </motion.div>
+      </div>
 
       {/* Main Interactive Infographic Showcase Stage */}
-      <motion.div
+      <div
         key={activeSlide.id}
-        variants={galleryItemVariants}
-        className="rounded-2xl bg-white dark:bg-[#0F1D33] border border-[#D5E0F0] dark:border-slate-400/15 p-4 sm:p-6 md:p-7 shadow-sm"
+        className="rounded-2xl bg-white dark:bg-[#0F1D33] border border-[#D5E0F0] dark:border-slate-400/15 p-4 sm:p-6 md:p-7 shadow-sm transition-all duration-200"
       >
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 items-start">
           {/* Left/Center High-Res Infographic Stage */}
@@ -657,14 +646,14 @@ export const ChapterInfographicAtlas: React.FC<ChapterInfographicAtlasProps> = (
             </div>
           </div>
         </div>
-      </motion.div>
+      </div>
 
       <InfographicLightboxModal
         isOpen={lightboxOpen}
         initialSlideId={activeSlide.id}
         onClose={() => setLightboxOpen(false)}
       />
-    </motion.div>
+    </div>
   );
 };
 
