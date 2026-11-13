@@ -15,7 +15,7 @@ import { motion } from 'framer-motion';
 import { AUTHOR_BLOG_ARTICLES } from '../data/blogsData';
 import { AUTHOR_DATA } from '../data/authorData';
 import { BOOK_METADATA } from '../data/bookConfig';
-import { FadeInUp, fadeInUpVariants, staggerGridVariants } from '../components/FadeInUp';
+import { FadeInUp } from '../components/FadeInUp';
 import { usePageSEO, trackEvent } from '../utils/analytics';
 
 const CATEGORIES = ['All', 'Cybersecurity', 'AI Research', 'Engineering', 'Interviews'] as const;
@@ -246,20 +246,19 @@ export const BlogsPage: React.FC = () => {
             </button>
           </div>
         ) : (
-          <motion.div
-            variants={staggerGridVariants}
-            initial="hidden"
-            animate="visible"
+          <div
             className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
           >
-            {filteredBlogs.map((blog) => {
+            {filteredBlogs.map((blog, idx) => {
               const isCyber = blog.category === 'Cybersecurity';
               const hasImg = blog.thumbnail && !failedImages[blog.id];
 
               return (
                 <motion.article
                   key={blog.id}
-                  variants={fadeInUpVariants}
+                  initial={{ opacity: 0, y: 14 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.28, delay: Math.min(idx * 0.025, 0.35), ease: [0.22, 1, 0.36, 1] }}
                   whileHover={{ y: -5 }}
                   className="group rounded-2xl bg-white dark:bg-[#0F1D33] border border-[#D5E0F0] dark:border-slate-400/15 hover:border-[#1D4ED8] dark:hover:border-[#38BDF8]/50 overflow-hidden flex flex-col justify-between shadow-2xs hover:shadow-lg transition-all duration-200 min-w-0"
                 >
@@ -401,7 +400,7 @@ export const BlogsPage: React.FC = () => {
                 </motion.article>
               );
             })}
-          </motion.div>
+          </div>
         )}
 
         {/* Bottom Book Conversion Banner */}
